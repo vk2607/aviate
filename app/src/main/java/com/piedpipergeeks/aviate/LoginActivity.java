@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +44,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 if(lAuth.getCurrentUser().isEmailVerified()){
-                                    Toast.makeText(LoginActivity.this,"You can sign in",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this,"Signed in successfully",Toast.LENGTH_SHORT).show();
+                                    toHomeScreen();
                                 }
                                 else{
                                     Toast.makeText(LoginActivity.this,"Please verify your email",Toast.LENGTH_SHORT).show();
@@ -67,5 +69,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    protected void toHomeScreen () {
+        startActivity(new Intent(LoginActivity.this, HomeScreenActivity.class));
     }
 }
