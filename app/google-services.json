@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "549856409562",
+    "firebase_url": "https://aviate-312dc.firebaseio.com",
+    "project_id": "aviate-312dc",
+    "storage_bucket": "aviate-312dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549856409562:android:ea1bf102c8a8adf8",
+        "android_client_info": {
+          "package_name": "com.piedpipergeeks.aviate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549856409562-cqs8vjvlovjjqe58sgv295l98j5nrgin.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piedpipergeeks.aviate",
+            "certificate_hash": "96ed14139637f1f5249850087e05c8de00cd657d"
+          }
+        },
+        {
+          "client_id": "549856409562-pf6s9ru0mrkurquuhd87mhh8tmero9ch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDg1QFw55M5Zyim-qgZ8wqjRS4LNuXlG0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549856409562-pf6s9ru0mrkurquuhd87mhh8tmero9ch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
