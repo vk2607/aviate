@@ -1,15 +1,23 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private Button logOutButton;
+    private FirebaseAuth hAuth;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,6 +51,24 @@ public class HomeScreenActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        hAuth=FirebaseAuth.getInstance();
+        Intialize();
+        LogOut();
+    }
+    protected void Intialize(){
+        logOutButton=(Button)findViewById(R.id.logout_homescreen_button);
+    }
+    protected void LogOut(){
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeScreenActivity.this,"Logging Out...",Toast.LENGTH_SHORT).show();
+                hAuth.signOut();
+                Intent logOutIntent=new Intent(HomeScreenActivity.this,MainActivity.class);
+                startActivity(logOutIntent);
+                finish();
+            }
+        });
     }
 
 }

@@ -10,9 +10,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
-    @Override
+
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -28,7 +34,11 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        mAuth= FirebaseAuth.getInstance();
+        DefaultLogin();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,5 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void toSignUpActivity(View view) {
         startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+    }
+    public void DefaultLogin(){
+        currentUser=mAuth.getCurrentUser();
+        if(currentUser !=null){
+            Intent homeIntent=new Intent(MainActivity.this,HomeScreenActivity.class);
+            startActivity(homeIntent);
+            finish();
+        }
     }
 }
