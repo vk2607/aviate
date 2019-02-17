@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String email=emailEditText.getText().toString();
                 String password=passwordEditText.getText().toString();
+//                gygyyh
                 regAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
