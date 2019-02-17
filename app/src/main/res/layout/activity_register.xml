@@ -7,7 +7,7 @@
     tools:context=".RegisterActivity">
 
     <EditText
-        android:id="@+id/firstName_edittext"
+        android:id="@+id/firstName_register_edittext"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -20,19 +20,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/lastName_edittext"
+        android:id="@+id/lastName_register_edittext"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:ems="10"
         android:hint="Last Name"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/firstName_edittext"
-        app:layout_constraintStart_toEndOf="@+id/firstName_edittext" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/firstName_register_edittext"
+        app:layout_constraintStart_toEndOf="@+id/firstName_register_edittext" />
 
     <EditText
-        android:id="@+id/email_edittext"
+        android:id="@+id/email_register_edittext"
         android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
@@ -42,10 +41,10 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/firstName_register_edittext" />
 
     <EditText
-        android:id="@+id/password_edittext"
+        android:id="@+id/password_register_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -55,10 +54,10 @@
         android:hint="Create Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/email_register_edittext" />
 
     <EditText
-        android:id="@+id/aadharNumber_edittext"
+        android:id="@+id/aadharNumber_register_edittext"
         android:layout_width="213dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
@@ -68,10 +67,10 @@
         android:hint="Aadhar Number"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/password_register_edittext" />
 
     <EditText
-        android:id="@+id/mobileNumber_edittext"
+        android:id="@+id/mobileNumber_register_edittext"
         android:layout_width="213dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
@@ -81,20 +80,19 @@
         android:hint="Mobile Number"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aadharNumber_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/aadharNumber_register_edittext" />
 
     <Button
-        android:id="@+id/sendOtp_button"
+        android:id="@+id/sendOtp_register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:text="Send otp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mobileNumber_edittext"
-        app:layout_constraintStart_toEndOf="@+id/mobileNumber_edittext" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/mobileNumber_register_edittext"
+        app:layout_constraintStart_toEndOf="@+id/mobileNumber_register_edittext" />
 
     <EditText
-        android:id="@+id/enterOtp_edittext"
+        android:id="@+id/enterOtp_register_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -107,21 +105,19 @@
         android:inputType="numberPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mobileNumber_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/mobileNumber_register_edittext" />
 
     <Button
-        android:id="@+id/signUp_button"
+        android:id="@+id/signUp_register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:text="sign up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterOtp_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/enterOtp_register_edittext" />
 
 </android.support.constraint.ConstraintLayout>
