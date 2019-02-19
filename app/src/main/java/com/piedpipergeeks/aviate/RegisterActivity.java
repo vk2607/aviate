@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String rVerificationId;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
     private int btnId=0;
+    private boolean phoneVerified=false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String mobilenumber = mobilenumberEditText.getText().toString();
                 if (!mobilenumber.isEmpty()) {
+
                     if(btnId==0){
                         mobilenumberEditText.setEnabled(false);
-
                         pAuth.verifyPhoneNumber(mobilenumber, 100, TimeUnit.SECONDS, RegisterActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
@@ -116,7 +118,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                if (!password.isEmpty() && !email.isEmpty() ) {
+                String firstname = firstNameEditText.getText().toString();
+                String lastname= lastNameEditText.getText().toString();
+                String mobilenumber=mobilenumberEditText.getText().toString();
+                String aadharnumber=aadharNumberEditText.getText().toString();
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified==true){
                     regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -126,6 +132,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
+                                            Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+                                            startActivity(intent);
                                         } else {
                                             Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
@@ -137,10 +145,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
-                } else if (email.isEmpty()) {
+                }
+                else if(!phoneVerified){
+                    Toast.makeText(RegisterActivity.this,"Please verify mobile number first...",Toast.LENGTH_SHORT).show();
+                }
+                else if (email.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(RegisterActivity.this,"Please fill all the fields",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,6 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Toast.makeText(RegisterActivity.this,"Mobile Number is Verified...",Toast.LENGTH_SHORT).show();
                     otpButton.setEnabled(false);
+                    phoneVerified=true;
                     mobilenumberEditText.setEnabled(false);
                     otpEditText.setEnabled(false);
                     otpEditText.setVisibility(View.INVISIBLE);
