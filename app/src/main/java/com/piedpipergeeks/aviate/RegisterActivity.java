@@ -17,25 +17,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth regAuth;
     private PhoneAuthProvider pAuth;
+    private FirebaseFirestore fsClient;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, aadharNumberEditText, mobilenumberEditText, otpEditText;
     private Button otpButton, signUpButton;
-    private String rVerificationId;
+    private String rVerificationId, email, firstname, lastname, aadharnumber, mobilenumber;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
-    private int btnId=0;
-    private boolean phoneVerified=false;
+    private int btnId = 0;
+    private boolean phoneVerified = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         regAuth = FirebaseAuth.getInstance();
         pAuth = PhoneAuthProvider.getInstance();
+        fsClient = FirebaseFirestore.getInstance();
 //        Log.d("CHECK", String.valueOf(pAuth == null));
 
         Intialise();
@@ -63,23 +69,24 @@ public class RegisterActivity extends AppCompatActivity {
                 final String mobilenumber = mobilenumberEditText.getText().toString();
                 if (!mobilenumber.isEmpty()) {
 
-                    if(btnId==0){
+                    if (btnId == 0) {
                         mobilenumberEditText.setEnabled(false);
                         pAuth.verifyPhoneNumber(mobilenumber, 100, TimeUnit.SECONDS, RegisterActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                               signInWithPhoneAuthCredential(phoneAuthCredential);
+                                signInWithPhoneAuthCredential(phoneAuthCredential);
                             }
 
                             @Override
                             public void onVerificationFailed(FirebaseException e) {
                                 mobilenumberEditText.setEnabled(true);
-                                Toast.makeText(RegisterActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
+
                             public void onCodeSent(String verificationId,
-                                                   PhoneAuthProvider.ForceResendingToken token){
+                                                   PhoneAuthProvider.ForceResendingToken token) {
                                 rVerificationId = verificationId;
-                                btnId=1;
+                                btnId = 1;
                                 rResendToken = token;
                                 otpEditText.setEnabled(true);
                                 otpButton.setText("Verify Otp");
@@ -87,25 +94,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                         });
 
-                    }
-                    else{
-                        String verificationcode=otpEditText.getText().toString();
-                        if(!verificationcode.isEmpty()) {
+                    } else {
+                        String verificationcode = otpEditText.getText().toString();
+                        if (!verificationcode.isEmpty()) {
                             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(rVerificationId, verificationcode);
                             signInWithPhoneAuthCredential(credential);
-                        }
-                        else
-                        {
-                            Toast.makeText(RegisterActivity.this,"Please enter the otp",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Please enter the otp", Toast.LENGTH_SHORT).show();
                         }
                     }
 
 
-
-
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this,"Enter the mobile number..",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Enter the mobile number..", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,13 +117,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = emailEditText.getText().toString();
+                email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                String firstname = firstNameEditText.getText().toString();
-                String lastname= lastNameEditText.getText().toString();
-                String mobilenumber=mobilenumberEditText.getText().toString();
-                String aadharnumber=aadharNumberEditText.getText().toString();
-                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified==true){
+                firstname = firstNameEditText.getText().toString();
+                lastname = lastNameEditText.getText().toString();
+                mobilenumber = mobilenumberEditText.getText().toString();
+                aadharnumber = aadharNumberEditText.getText().toString();
+
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified) {
                     regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -132,7 +134,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
-                                            Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+                                            uploadUserData();
+                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                             startActivity(intent);
                                         } else {
                                             Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -145,38 +148,61 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
-                }
-                else if(!phoneVerified){
-                    Toast.makeText(RegisterActivity.this,"Please verify mobile number first...",Toast.LENGTH_SHORT).show();
-                }
-                else if (email.isEmpty()) {
+                } else if (!phoneVerified) {
+                    Toast.makeText(RegisterActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
+                } else if (email.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this,"Please fill all the fields",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential){
+
+    private void uploadUserData() {
+        String userId = regAuth.getUid();
+        Boolean emailVerified = regAuth.getCurrentUser().isEmailVerified();
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("userId", userId);
+        userData.put("email", email);
+        userData.put("emailVerified", emailVerified);
+        userData.put("firstName", firstname);
+        userData.put("lastName", lastname);
+        userData.put("phoneNumber", mobilenumber);
+
+        fsClient.collection("Users")
+                .document(userId)
+                .set(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Data uploaded to cloud", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         regAuth.signInWithCredential(credential).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this,"Mobile Number is Verified...",Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Mobile Number is Verified...", Toast.LENGTH_SHORT).show();
                     otpButton.setEnabled(false);
-                    phoneVerified=true;
+                    phoneVerified = true;
                     mobilenumberEditText.setEnabled(false);
                     otpEditText.setEnabled(false);
                     otpEditText.setVisibility(View.INVISIBLE);
                     otpButton.setText("OTP verified");
 
-                    FirebaseUser user=task.getResult().getUser();
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                    FirebaseUser user = task.getResult().getUser();
+                } else {
+                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }

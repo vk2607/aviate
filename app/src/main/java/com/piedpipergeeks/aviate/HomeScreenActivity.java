@@ -12,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private Button logOutButton;
     private FirebaseAuth hAuth;
+    private FirebaseFirestore fsClient;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,6 +56,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         hAuth = FirebaseAuth.getInstance();
         Intialize();
         LogOut();
+
+        fsClient = FirebaseFirestore.getInstance();
     }
 
     protected void Intialize() {
