@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void toHomeScreen () {
-        startActivity(new Intent(LoginActivity.this, HomeScreenActivity.class));
+        Intent intent=new Intent(LoginActivity.this,HomeScreenActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 }
