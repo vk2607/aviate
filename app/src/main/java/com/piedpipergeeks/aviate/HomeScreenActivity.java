@@ -51,20 +51,22 @@ public class HomeScreenActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        hAuth=FirebaseAuth.getInstance();
+        hAuth = FirebaseAuth.getInstance();
         Intialize();
         LogOut();
     }
-    protected void Intialize(){
-        logOutButton=(Button)findViewById(R.id.logout_homescreen_button);
+
+    protected void Intialize() {
+        logOutButton = (Button) findViewById(R.id.logout_homescreen_button);
     }
-    protected void LogOut(){
+
+    protected void LogOut() {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeScreenActivity.this,"Logging Out...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeScreenActivity.this, "Logging Out...", Toast.LENGTH_SHORT).show();
                 hAuth.signOut();
-                Intent logOutIntent=new Intent(HomeScreenActivity.this,MainActivity.class);
+                Intent logOutIntent = new Intent(HomeScreenActivity.this, MainActivity.class);
                 startActivity(logOutIntent);
                 finish();
             }

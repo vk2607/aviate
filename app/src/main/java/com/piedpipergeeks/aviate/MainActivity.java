@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         DefaultLogin();
 
     }
@@ -63,17 +63,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void toSignInActivity (View view) {
+    public void toSignInActivity(View view) {
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
     public void toSignUpActivity(View view) {
         startActivity(new Intent(MainActivity.this, RegisterActivity.class));
     }
-    public void DefaultLogin(){
-        currentUser=mAuth.getCurrentUser();
-        if(currentUser !=null && currentUser.isEmailVerified()){
-            Intent homeIntent=new Intent(MainActivity.this,HomeScreenActivity.class);
+
+    public void DefaultLogin() {
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
             startActivity(homeIntent);
             finish();
         }
