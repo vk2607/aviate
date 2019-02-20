@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mobilenumber = mobilenumberEditText.getText().toString();
                 aadharnumber = aadharNumberEditText.getText().toString();
 
-                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified && verifyAadahaar()) {
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified && verifyAadhar()) {
                     regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -150,11 +150,9 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 } else if (!phoneVerified) {
                     Toast.makeText(RegisterActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
-                }
-                else if(!verifyAadahaar()){
-                    Toast.makeText(RegisterActivity.this,"Enter a valid aadhar",Toast.LENGTH_SHORT).show();
-                }
-                else if (email.isEmpty()) {
+                } else if (!verifyAadhar()) {
+                    Toast.makeText(RegisterActivity.this, "Enter a valid aadhar", Toast.LENGTH_SHORT).show();
+                } else if (email.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
@@ -212,10 +210,9 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean verifyAadahaar(){
-        boolean result;
-        result=Verhoeff.validateVerhoeff(aadharnumber);
-        return result;
+
+    private boolean verifyAadhar() {
+        return Verhoeff.validateVerhoeff(aadharnumber);
     }
 
 
