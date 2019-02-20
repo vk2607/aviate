@@ -61,10 +61,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void resendVerificationEmail(View view) {
 
-        // Don't know how Firebase can getCurrentUser when nothing is provided
-        // But shit works fine
+      Toast.makeText(LoginActivity.this,"Function called",Toast.LENGTH_SHORT).show();
 
-        lAuth.getCurrentUser().sendEmailVerification();
+
     }
 
     protected void SignIn() {
