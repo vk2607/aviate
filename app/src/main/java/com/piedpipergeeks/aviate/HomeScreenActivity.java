@@ -61,7 +61,7 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         setContentView(R.layout.activity_home_screen);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.getMenu().getItem(2).setChecked(true);
+//        navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         hAuth = FirebaseAuth.getInstance();
         Intialize();
