@@ -1,9 +1,14 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+//import android.support.v4.app.FragmentManager;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+//import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +19,14 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity implements DiscoverFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private Button logOutButton;
     private FirebaseAuth hAuth;
     private FirebaseFirestore fsClient;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -28,13 +35,16 @@ public class HomeScreenActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_updates:
-//                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_search:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_area, new SearchFragment());
+                    fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_discover:
-//                    mTextMessage.setText(R.string.title_notifications);
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_area, new DiscoverFragment());
+                    fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_chats:
                     return true;
@@ -58,6 +68,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         LogOut();
 
         fsClient = FirebaseFirestore.getInstance();
+        fragmentManager = getFragmentManager();
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        // Do not delete me
     }
 
     protected void Intialize() {
