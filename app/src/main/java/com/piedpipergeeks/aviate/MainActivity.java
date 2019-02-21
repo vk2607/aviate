@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_profile_page);
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-        mAuth = FirebaseAuth.getInstance();
-        DefaultLogin();
+//        mAuth = FirebaseAuth.getInstance();
+//        DefaultLogin();
 
     }
 
