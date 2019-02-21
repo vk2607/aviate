@@ -5,9 +5,16 @@ import android.net.Uri;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -19,6 +26,11 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DiscoverFragment extends Fragment {
+
+    RecyclerView recyclerView;
+    LinearLayoutManager manager;
+    DiscoverAdapter discoverAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +77,33 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        View v = inflater.inflate(R.layout.fragment_discover, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.discover_recycler_view);
+        manager = new LinearLayoutManager(getActivity());
+
+//        String[] a = {"25", "43", "24", "63", "24", "63", "43", "24", "75", "20", "62", "69", "25", "43", "24", "63", "24", "63", "43", "24", "75", "20", "62", "69"};
+        ArrayList list = new ArrayList();
+
+        Profile user = new Profile();
+        user.setFirstName("Adwait");
+        user.setLastName("Bhope");
+        user.setBusinessName("Alchem Services");
+        user.setBusinessCategory("Electronics");
+        user.setBusinessDescription("Alchem Services is an authorized service center for Canon EOS DSLRs");
+        user.setBio("I am an enthusiastic entrepreneur who like to grow by collaborating with other electronics manufacturers");
+        user.addHaves("Servicing");
+        user.addHaves("Part replacement");
+        user.addWants("Eletronic products");
+        user.addWants("Spare parts");
+
+        list.add(user);
+        list.add(user);
+
+        discoverAdapter = new DiscoverAdapter(list, getActivity());
+        recyclerView.setAdapter(discoverAdapter);
+        recyclerView.setLayoutManager(manager);
+        return v;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

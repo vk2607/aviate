@@ -59,6 +59,7 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+//        getActionBar().setTitle(R.string.app_name);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 //        navigation.getMenu().getItem(2).setChecked(true);
