@@ -34,18 +34,18 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_updates:
-                    return true;
-                case R.id.navigation_search:
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_area, new SearchFragment());
-                    fragmentTransaction.commit();
-                    return true;
-                case R.id.navigation_discover:
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_area, new DiscoverFragment());
-                    fragmentTransaction.commit();
-                    return true;
+//                case R.id.navigation_updates:
+//                    return true;
+//                case R.id.navigation_search:
+//                    fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.fragment_area, new SearchFragment());
+//                    fragmentTransaction.commit();
+//                    return true;
+//                case R.id.navigation_discover:
+//                    fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.fragment_area, new DiscoverFragment());
+//                    fragmentTransaction.commit();
+//                    return true;
                 case R.id.navigation_chats:
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_area, new ChatsFragment());
@@ -68,7 +68,7 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
 //        navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         hAuth = FirebaseAuth.getInstance();
-        Intialize();
+//        Intialize();
 //        LogOut();
 
         fsClient = FirebaseFirestore.getInstance();
@@ -81,9 +81,9 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         // Do not delete me
     }
 
-    protected void Intialize() {
-        logOutButton = (Button) findViewById(R.id.logout_homescreen_button);
-    }
+//    protected void Intialize() {
+//        logOutButton = (Button) findViewById(R.id.logout_homescreen_button);
+//    }
 
 //    protected void LogOut() {
 //        logOutButton.setOnClickListener(new View.OnClickListener() {
