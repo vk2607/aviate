@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterdeAsraActivity">
 
     <EditText
-        android:id="@+id/firstName_register_edittext"
+        android:id="@+id/firstName_registerdeAsra_edittext"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="First Name"
@@ -20,79 +19,68 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/lastName_register_edittext"
+        android:id="@+id/lastName_registerdeAsra_edittext"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Last Name"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/firstName_register_edittext"
-        app:layout_constraintStart_toEndOf="@+id/firstName_register_edittext" />
+        app:layout_constraintStart_toEndOf="@+id/firstName_registerdeAsra_edittext"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/email_register_edittext"
+        android:id="@+id/email_registerdeAsra_edittext"
         android:layout_width="250dp"
         android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName_register_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/firstName_registerdeAsra_edittext" />
 
     <EditText
-        android:id="@+id/password_register_edittext"
+        android:id="@+id/password_registerdeAsra_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Create Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_register_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/email_registerdeAsra_edittext" />
 
     <EditText
-        android:id="@+id/aadharNumber_register_edittext"
+        android:id="@+id/mobileNumber_registerdeAsra_edittext"
         android:layout_width="213dp"
         android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Aadhar Number"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_register_edittext" />
-
-    <EditText
-        android:id="@+id/mobileNumber_register_edittext"
-        android:layout_width="213dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Mobile Number"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aadharNumber_register_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/password_registerdeAsra_edittext" />
 
     <Button
-        android:id="@+id/sendOtp_register_button"
+        android:id="@+id/sendOtp_registerdeAsra_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="Send otp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mobileNumber_register_edittext"
-        app:layout_constraintStart_toEndOf="@+id/mobileNumber_register_edittext" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toEndOf="@+id/mobileNumber_registerdeAsra_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/password_registerdeAsra_edittext" />
 
     <EditText
-        android:id="@+id/enterOtp_register_edittext"
+        android:id="@+id/enterOtp_registerdeAsra_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -105,19 +93,32 @@
         android:inputType="numberPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mobileNumber_register_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/mobileNumber_registerdeAsra_edittext" />
 
     <Button
-        android:id="@+id/signUp_register_button"
+        android:id="@+id/signUp_registerdeAsra_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="sign up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterOtp_register_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/enterOtp_registerdeAsra_edittext" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="128dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="88dp"
+        android:text="deAsra Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

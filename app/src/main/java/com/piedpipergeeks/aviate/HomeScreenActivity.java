@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeScreenActivity extends AppCompatActivity implements DiscoverFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener {
+public class HomeScreenActivity extends AppCompatActivity implements DiscoverFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,ChatsFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private Button logOutButton;
@@ -47,6 +47,9 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_chats:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_area, new ChatsFragment());
+                    fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_my_profile:
                     return true;

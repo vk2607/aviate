@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
-
+import android.app.ProgressDialog;
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -78,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+                                pd.setMessage("Loading...");
+                                pd.show();
                                 if (lAuth.getCurrentUser().isEmailVerified()) {
                                     Toast.makeText(LoginActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
 

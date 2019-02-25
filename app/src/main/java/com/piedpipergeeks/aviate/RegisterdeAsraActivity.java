@@ -17,52 +17,49 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterdeAsraActivity extends AppCompatActivity {
 
     private FirebaseAuth regAuth;
     private PhoneAuthProvider pAuth;
     private FirebaseFirestore fsClient;
-    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, aadharNumberEditText, mobilenumberEditText, otpEditText;
+    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, mobilenumberEditText, otpEditText;
     private Button otpButton, signUpButton;
-    private String rVerificationId, email, firstname, lastname, aadharnumber, mobilenumber;
+    private String rVerificationId, email, firstname, lastname, mobilenumber;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
     private int btnId = 0;
     private boolean phoneVerified = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_registerde_asra);
         regAuth = FirebaseAuth.getInstance();
         pAuth = PhoneAuthProvider.getInstance();
         fsClient = FirebaseFirestore.getInstance();
-//        Log.d("CHECK", String.valueOf(pAuth == null));
 
-        Intialise();
-        PhoneAuthentication();
-        EmailAuthentication();
+        Intialise1();
+        PhoneAuthentication1();
+        EmailAuthentication1();
     }
 
-    protected void Intialise() {
-        firstNameEditText = (EditText) findViewById(R.id.firstName_register_edittext);
-        lastNameEditText = (EditText) findViewById(R.id.lastName_register_edittext);
-        emailEditText = (EditText) findViewById(R.id.email_register_edittext);
-        passwordEditText = (EditText) findViewById(R.id.password_register_edittext);
-        aadharNumberEditText = (EditText) findViewById(R.id.aadharNumber_register_edittext);
-        mobilenumberEditText = (EditText) findViewById(R.id.mobileNumber_register_edittext);
-        otpEditText = (EditText) findViewById(R.id.enterOtp_register_edittext);
-        otpButton = (Button) findViewById(R.id.sendOtp_register_button);
-        signUpButton = (Button) findViewById(R.id.signUp_register_button);
+    protected void Intialise1() {
+        firstNameEditText = (EditText) findViewById(R.id.firstName_registerdeAsra_edittext);
+        lastNameEditText = (EditText) findViewById(R.id.lastName_registerdeAsra_edittext);
+        emailEditText = (EditText) findViewById(R.id.email_registerdeAsra_edittext);
+        passwordEditText = (EditText) findViewById(R.id.password_registerdeAsra_edittext);
+        mobilenumberEditText = (EditText) findViewById(R.id.mobileNumber_registerdeAsra_edittext);
+        otpEditText = (EditText) findViewById(R.id.enterOtp_registerdeAsra_edittext);
+        otpButton = (Button) findViewById(R.id.sendOtp_registerdeAsra_button);
+        signUpButton = (Button) findViewById(R.id.signUp_registerdeAsra_button);
         otpEditText.setEnabled(false);
     }
 
-    protected void PhoneAuthentication() {
+    protected void PhoneAuthentication1() {
         otpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (btnId == 0) {
                         mobilenumberEditText.setEnabled(false);
-                        pAuth.verifyPhoneNumber(mobilenumber, 100, TimeUnit.SECONDS, RegisterActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        pAuth.verifyPhoneNumber(mobilenumber, 100, TimeUnit.SECONDS, RegisterdeAsraActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                                 signInWithPhoneAuthCredential(phoneAuthCredential);
@@ -80,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onVerificationFailed(FirebaseException e) {
                                 mobilenumberEditText.setEnabled(true);
-                                Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterdeAsraActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                             public void onCodeSent(String verificationId,
@@ -100,19 +97,19 @@ public class RegisterActivity extends AppCompatActivity {
                             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(rVerificationId, verificationcode);
                             signInWithPhoneAuthCredential(credential);
                         } else {
-                            Toast.makeText(RegisterActivity.this, "Please enter the otp", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterdeAsraActivity.this, "Please enter the otp", Toast.LENGTH_SHORT).show();
                         }
                     }
 
 
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Enter the mobile number..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, "Enter the mobile number..", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    protected void EmailAuthentication() {
+    protected void EmailAuthentication1() {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,10 +119,10 @@ public class RegisterActivity extends AppCompatActivity {
                 firstname = firstNameEditText.getText().toString();
                 lastname = lastNameEditText.getText().toString();
                 mobilenumber = mobilenumberEditText.getText().toString();
-                aadharnumber = aadharNumberEditText.getText().toString();
 
-                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified && verifyAadhar()) {
-                    regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty()  && phoneVerified ) {
+                    regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterdeAsraActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -133,31 +130,30 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(RegisterActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegisterdeAsraActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
                                             uploadUserData();
-                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                            Intent intent = new Intent(RegisterdeAsraActivity.this, LoginActivity.class);
                                             startActivity(intent);
                                         } else {
-                                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegisterdeAsraActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
                             } else {
-                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterdeAsraActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                         }
                     });
                 } else if (!phoneVerified) {
-                    Toast.makeText(RegisterActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
-                } else if (!verifyAadhar()) {
-                    Toast.makeText(RegisterActivity.this, "Enter a valid aadhar", Toast.LENGTH_SHORT).show();
-                } else if (email.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
+                }
+                else if (email.isEmpty()) {
+                    Toast.makeText(RegisterdeAsraActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -182,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Data uploaded to cloud", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterdeAsraActivity.this, "Data uploaded to cloud", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -190,11 +186,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        regAuth.signInWithCredential(credential).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+        regAuth.signInWithCredential(credential).addOnCompleteListener(RegisterdeAsraActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Mobile Number is Verified...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, "Mobile Number is Verified...", Toast.LENGTH_SHORT).show();
                     otpButton.setEnabled(false);
                     phoneVerified = true;
                     mobilenumberEditText.setEnabled(false);
@@ -204,15 +200,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                     FirebaseUser user = task.getResult().getUser();
                 } else {
-                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterdeAsraActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-    }
-
-    private boolean verifyAadhar() {
-        return Verhoeff.validateVerhoeff(aadharnumber);
     }
 
 

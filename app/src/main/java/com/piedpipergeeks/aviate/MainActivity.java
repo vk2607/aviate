@@ -1,12 +1,8 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,8 +68,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
-    public void toSignUpActivity(View view) {
-        startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+    public void toSignUpeEntrepreneurActivity(View view) {
+        startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
+    }
+    public void toSignUpdeAsraActivity(View view){
+        startActivity(new Intent(MainActivity.this, RegisterdeAsraActivity.class));
     }
 
     public void DefaultLogin() {
