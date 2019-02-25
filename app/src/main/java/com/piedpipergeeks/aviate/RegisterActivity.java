@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (btnId == 0) {
                         mobilenumberEditText.setEnabled(false);
-                        pAuth.verifyPhoneNumber(mobilenumber, 100, TimeUnit.SECONDS, RegisterActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        pAuth.verifyPhoneNumber(mobilenumber, 120, TimeUnit.SECONDS, RegisterActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                                 signInWithPhoneAuthCredential(phoneAuthCredential);
@@ -125,29 +125,32 @@ public class RegisterActivity extends AppCompatActivity {
                 aadharnumber = aadharNumberEditText.getText().toString();
 
                 if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && !aadharnumber.isEmpty() && phoneVerified && verifyAadhar()) {
-                    regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                regAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(RegisterActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
-                                            uploadUserData();
-                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
+                    regAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        regAuth.getCurrentUser()
+                                                .sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(RegisterActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
+                                                            uploadUserData();
+                                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                            startActivity(intent);
+                                                        } else {
+                                                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
-                                });
-                            } else {
-                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
 
-                        }
-                    });
+                                }
+                            });
                 } else if (!phoneVerified) {
                     Toast.makeText(RegisterActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
                 } else if (!verifyAadhar()) {

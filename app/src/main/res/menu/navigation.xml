@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item
-        android:id="@+id/navigation_discover"
-        android:icon="@drawable/baseline_supervisor_account_black_18dp"
-        android:title="@string/title_notifications" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_discover"-->
+        <!--android:icon="@drawable/baseline_supervisor_account_black_18dp"-->
+        <!--android:title="@string/title_notifications" />-->
 
-    <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/round_search_black_18dp"
-        android:title="@string/title_dashboard" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_search"-->
+        <!--android:icon="@drawable/round_search_black_18dp"-->
+        <!--android:title="@string/title_dashboard" />-->
 
 
-    <item
-        android:id="@+id/navigation_updates"
-        android:icon="@drawable/round_notifications_black_18dp"
-        android:title="@string/title_home" />
+    <!--<item-->
+        <!--android:id="@+id/navigation_updates"-->
+        <!--android:icon="@drawable/round_notifications_black_18dp"-->
+        <!--android:title="@string/title_home" />-->
 
 
     <item
         android:id="@+id/navigation_chats"
         android:icon="@drawable/round_chat_black_18dp"
-        android:title="@string/title_chats" />
+        android:title="Clubs" />
 
     <item
         android:id="@+id/navigation_my_profile"
         android:icon="@drawable/sharp_account_circle_black_18dp"
-        android:title="@string/title_profile" />
+        android:title="Registrations" />
 
 </menu>

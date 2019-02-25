@@ -66,7 +66,7 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         hAuth = FirebaseAuth.getInstance();
         Intialize();
-        LogOut();
+//        LogOut();
 
         fsClient = FirebaseFirestore.getInstance();
         fragmentManager = getFragmentManager();
@@ -82,17 +82,17 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         logOutButton = (Button) findViewById(R.id.logout_homescreen_button);
     }
 
-    protected void LogOut() {
-        logOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeScreenActivity.this, "Logging Out...", Toast.LENGTH_SHORT).show();
-                hAuth.signOut();
-                Intent logOutIntent = new Intent(HomeScreenActivity.this, MainActivity.class);
-                startActivity(logOutIntent);
-                finish();
-            }
-        });
-    }
+//    protected void LogOut() {
+//        logOutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(HomeScreenActivity.this, "Logging Out...", Toast.LENGTH_SHORT).show();
+//                hAuth.signOut();
+//                Intent logOutIntent = new Intent(HomeScreenActivity.this, MainActivity.class);
+//                startActivity(logOutIntent);
+//                finish();
+//            }
+//        });
+//    }
 
 }
