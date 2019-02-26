@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeScreenUserActivity extends AppCompatActivity implements CalendarFragment.OnFragmentInteractionListener {
+public class HomeScreenUserActivity extends AppCompatActivity implements CalendarFragment.OnFragmentInteractionListener, ChatsFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -23,13 +23,15 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_user_calender:
-                    fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_user_area,new CalendarFragment());
+                case R.id.navigation_user_calendar:
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_user_area, new CalendarFragment());
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_user_clubs:
-                     Toast.makeText(HomeScreenUserActivity.this,"In Club fragment",Toast.LENGTH_SHORT).show();
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
+                    fragmentTransaction.commit();
                     return true;
             }
             return false;
@@ -45,12 +47,13 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_user);
-
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_bar);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        fragmentManager=getFragmentManager();
+        fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
+        fragmentTransaction.commit();
     }
 
 }
