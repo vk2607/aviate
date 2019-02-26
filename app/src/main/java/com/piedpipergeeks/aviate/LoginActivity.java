@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
@@ -26,12 +27,14 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore fsClient;
     private EditText emailEditText, passwordEditText;
     private Button signInButton;
+    private FirebaseUser currentUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         lAuth = FirebaseAuth.getInstance();
         fsClient = FirebaseFirestore.getInstance();
+        DefaultLogin1();
         Intialiaze();
         SignIn();
     }
@@ -70,6 +73,9 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+                pd.setMessage("Loading...");
+                pd.show();
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
@@ -78,12 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-                                pd.setMessage("Loading...");
-                                pd.show();
+
                                 if (lAuth.getCurrentUser().isEmailVerified()) {
                                     Toast.makeText(LoginActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
-
                                     fsClient.collection("Users")
                                             .document(lAuth.getCurrentUser().getUid())
                                             .update("emailVerified", true)
@@ -123,5 +126,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
 
+    }
+    public void DefaultLogin1() {
+        currentUser = lAuth.getCurrentUser();
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            Intent homeIntent = new Intent(LoginActivity.this, HomeScreenActivity.class);
+            startActivity(homeIntent);
+            finish();
+        }
     }
 }
