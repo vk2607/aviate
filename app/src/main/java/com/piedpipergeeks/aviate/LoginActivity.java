@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         lAuth = FirebaseAuth.getInstance();
         fsClient = FirebaseFirestore.getInstance();
-        DefaultLogin1();
         Intialiaze();
         SignIn();
     }
@@ -127,12 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
 
     }
-    public void DefaultLogin1() {
-        currentUser = lAuth.getCurrentUser();
-        if (currentUser != null && currentUser.isEmailVerified()) {
-            Intent homeIntent = new Intent(LoginActivity.this, HomeScreenActivity.class);
-            startActivity(homeIntent);
-            finish();
-        }
-    }
+
+
+
 }
