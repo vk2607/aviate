@@ -78,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
     public void DefaultLogin() {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null && currentUser.isEmailVerified()) {
-            Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
-            startActivity(homeIntent);
+//            Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
+//            startActivity(homeIntent);
+//            finish();
+            Intent homeUserIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
+           startActivity(homeUserIntent);
             finish();
         }
     }
