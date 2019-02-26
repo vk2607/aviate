@@ -1,6 +1,5 @@
 package com.piedpipergeeks.aviate;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,10 +10,8 @@ import android.app.FragmentTransaction;
 //import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,7 +61,7 @@ public class HomeScreenActivity extends AppCompatActivity implements DiscoverFra
         setContentView(R.layout.activity_home_screen);
 //        getActionBar().setTitle(R.string.app_name);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_bar);
 //        navigation.getMenu().getItem(2).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         hAuth = FirebaseAuth.getInstance();
