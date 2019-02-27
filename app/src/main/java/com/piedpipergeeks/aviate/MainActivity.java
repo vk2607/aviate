@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startActivity(new Intent(MainActivity.this, PickClubActivity.class));
+
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //
@@ -71,19 +73,18 @@ public class MainActivity extends AppCompatActivity {
     public void toSignUpeEntrepreneurActivity(View view) {
         startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
     }
-    public void toSignUpdeAsraActivity(View view){
+
+    public void toSignUpdeAsraActivity(View view) {
         startActivity(new Intent(MainActivity.this, RegisterdeAsraActivity.class));
     }
 
     public void DefaultLogin() {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null && currentUser.isEmailVerified()) {
-//            Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
-//            startActivity(homeIntent);
-//            finish();
-            Intent homeUserIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
-           startActivity(homeUserIntent);
-            finish();
+             Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
+             startActivity(homeIntent);
+             finish();
+
         }
     }
 }

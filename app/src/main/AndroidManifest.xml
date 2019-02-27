@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PickClubActivity"></activity>
         <activity
             android:name=".HomeScreenUserActivity"
-            android:label="@string/title_activity_home_screen_user"></activity>
+            android:label="@string/title_activity_home_screen_user" />
         <activity
             android:name=".RegisterdeAsraActivity"
             android:label="@string/title_activity_registerde_asra"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ProfilePage"
             android:parentActivityName=".HomeScreenActivity" />
