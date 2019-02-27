@@ -29,7 +29,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
                     fragmentTransaction.commit();
                     return true;
                 case R.id.navigation_user_clubs:
-                     Toast.makeText(HomeScreenUserActivity.this,"In Club fragment",Toast.LENGTH_SHORT).show();
+                     Toast.makeText(HomeScreenUserActivity.this,"In Club_1 fragment",Toast.LENGTH_SHORT).show();
                     return true;
             }
             return false;

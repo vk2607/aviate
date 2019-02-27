@@ -3,7 +3,7 @@ package com.piedpipergeeks.aviate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Club {
+public class Club_1 {
     private String clubname;
 
     public void setClubname(String clubname){this.clubname=clubname;}

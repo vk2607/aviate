@@ -1,15 +1,9 @@
 package com.piedpipergeeks.aviate;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -19,7 +13,7 @@ public class PickClubActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     PickClubAdapter pickClubAdapter;
 
-    ArrayList<Club> display_list = new ArrayList<>();
+    ArrayList<Club_1> display_list = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +23,10 @@ public class PickClubActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Club club = new Club();
-        club.setClubname("deAsra");
+        Club_1 club1 = new Club_1();
+        club1.setClubname("deAsra");
         for (int i = 0; i < 15; i++) {
-            display_list.add(club);
+            display_list.add(club1);
         }
 
         pickClubAdapter = new PickClubAdapter(display_list, this);

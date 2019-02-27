@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,12 +16,12 @@ import java.util.ArrayList;
 
 public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolder> {
 
-    ArrayList<Club> clubs;
+    ArrayList<Club_1> club1s;
     Context context;
     int pos;
 
-    public PickClubAdapter(ArrayList<Club> users,Context context){
-        this.clubs=users;
+    public PickClubAdapter(ArrayList<Club_1> users, Context context){
+        this.club1s =users;
         this.context=context;
     }
 
@@ -35,17 +33,17 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
 
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        Club club=clubs.get(position);
+        Club_1 club1 = club1s.get(position);
         pos = position;
-        vHolder.clubname.setText(club.getClubname());
+        vHolder.clubname.setText(club1.getClubname());
         vHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(context)
                         .setIcon(null)
 
-                        .setTitle("Add to club")
-                        .setMessage("Are you sure you want to add in club")
+                        .setTitle("Add to club1")
+                        .setMessage("Are you sure you want to add in club1")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -59,14 +57,14 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
     }
     private void openClub(PickClubAdapter.VHolder vHolder) {
         Toast.makeText(context, String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-        Club club = clubs.get(vHolder.getAdapterPosition());
+        Club_1 club1 = club1s.get(vHolder.getAdapterPosition());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return clubs.size();
+        return club1s.size();
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
