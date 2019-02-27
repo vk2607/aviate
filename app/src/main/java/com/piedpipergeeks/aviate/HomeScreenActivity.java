@@ -76,7 +76,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
 
         fsClient = FirebaseFirestore.getInstance();
         fragmentManager = getFragmentManager();
-
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_area, new ClubFragment());
+        fragmentTransaction.commit();
     }
 
     @Override

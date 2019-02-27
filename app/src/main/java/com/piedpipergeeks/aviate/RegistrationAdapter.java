@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,10 +18,10 @@ import java.util.ArrayList;
 
 
 public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapter.VHolder>{
-        ArrayList<Registration>users;
+        ArrayList<Profile>users;
         Context context;
         int pos;
-    public RegistrationAdapter (ArrayList<Registration> users, Context context) {
+    public RegistrationAdapter (ArrayList<Profile> users, Context context) {
         this.users = users;
         this.context = context;
     }
@@ -33,10 +35,20 @@ public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapt
 
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        Registration user=users.get(position);
+        Profile user=users.get(position);
         pos=position;
-        vHolder.name.setText(user.getName());
+        vHolder.name.setText(user.getFirstName()+ " "+user.getLastName());
         vHolder.email.setText(user.getEmail());
+        vHolder.addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectClub(vHolder);
+            }
+        });
+    }
+
+    private void selectClub(VHolder vHolder) {
+        Profile user = users.get(vHolder.getAdapterPosition());
 
     }
 
@@ -48,11 +60,12 @@ public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapt
     public class VHolder extends RecyclerView.ViewHolder {
 
         TextView name,email;
+        FloatingActionButton addUser;
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.user_name_registration);
             email=(TextView)itemView.findViewById(R.id.user_email_registration);
-
+            addUser = (FloatingActionButton) itemView.findViewById(R.id.add_user_button_registration);
         }
     }
 }

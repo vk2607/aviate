@@ -7,7 +7,7 @@ import java.util.Map;
 public class Profile {
 
     private String userId;
-    private String firstName, lastName, phoneNumber, aadharNumber, businessName, businessCategory, bio, businessDescription;
+    private String firstName, lastName, phoneNumber, aadharNumber, email,businessName, businessCategory, bio, businessDescription;
     private ArrayList<String> haves, wants, connections;
     private Map<String, String> dob;
 
@@ -61,6 +61,8 @@ public class Profile {
         return phoneNumber;
     }
 
+    public void setEmail(String firstName) {this.email=email ;  }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -79,6 +81,10 @@ public class Profile {
 
     public ArrayList<String> getConnections() {
         return connections;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public ArrayList<String> getHaves() {
