@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,12 +60,12 @@ public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapt
     public class VHolder extends RecyclerView.ViewHolder {
 
         TextView name,email;
-        Button addUser;
+        FloatingActionButton addUser;
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.user_name_registration);
             email=(TextView)itemView.findViewById(R.id.user_email_registration);
-            addUser = (Button) itemView.findViewById(R.id.add_user_button_registration);
+            addUser = (FloatingActionButton) itemView.findViewById(R.id.add_user_button_registration);
         }
     }
 }
