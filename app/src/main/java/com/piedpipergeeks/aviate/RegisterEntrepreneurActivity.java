@@ -125,7 +125,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                 mobilenumber = mobilenumberEditText.getText().toString();
 
 
-                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty()  && phoneVerified ) {
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && phoneVerified) {
                     regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterEntrepreneurActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -151,8 +151,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                     });
                 } else if (!phoneVerified) {
                     Toast.makeText(RegisterEntrepreneurActivity.this, "Please verify mobile number first...", Toast.LENGTH_SHORT).show();
-                }
-                 else if (email.isEmpty()) {
+                } else if (email.isEmpty()) {
                     Toast.makeText(RegisterEntrepreneurActivity.this, "Please enter the email", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()) {
                     Toast.makeText(RegisterEntrepreneurActivity.this, "Please enter the password", Toast.LENGTH_SHORT).show();
@@ -170,6 +169,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         Map<String, Object> userData = new HashMap<>();
         userData.put("userId", userId);
         userData.put("email", email);
+        userData.put("userType", "user");
         userData.put("emailVerified", emailVerified);
         userData.put("firstName", firstname);
         userData.put("lastName", lastname);

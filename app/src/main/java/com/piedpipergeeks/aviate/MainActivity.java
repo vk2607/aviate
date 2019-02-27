@@ -93,10 +93,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
     }
 
-    public void toSignUpdeAsraActivity(View view) {
-        startActivity(new Intent(MainActivity.this, RegisterdeAsraActivity.class));
-    }
-
     public void DefaultLogin() {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null && currentUser.isEmailVerified()) {
@@ -117,39 +113,37 @@ public class MainActivity extends AppCompatActivity {
         String userId;
         if (currentUser != null && currentUser.isEmailVerified()) {
             userId = currentUser.getUid();
-        } else {
-            userId = "null";
-        }
-        fsClient.collection("Users")
-                .document(userId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
-                            DocumentSnapshot snapshot = task.getResult();
-                            try {
-                                if (snapshot.get("userType").equals("user")) {
+            fsClient.collection("Users")
+                    .document(userId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
+                                DocumentSnapshot snapshot = task.getResult();
+                                try {
+                                    if (snapshot.get("userType").equals("user")) {
 //                                function call is checked
 //                                startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
 //                                finish();
-                                } else {
+                                    } else {
 //                                startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
 //                                finish();
+                                    }
+                                } catch (Exception e) {
+                                    Log.d("QUERY", e.toString());
                                 }
-                            } catch (Exception e) {
-                                Log.d("QUERY", e.toString());
                             }
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
-                        Log.d("QUERY", e.toString());
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
+                            Log.d("QUERY", e.toString());
+                        }
+                    });
+        }
     }
 }
