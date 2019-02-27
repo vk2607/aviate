@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 public class HomeScreenActivity extends AppCompatActivity implements ClubFragment.OnFragmentInteractionListener, RegistrationFragment.OnFragmentInteractionListener,ChatsFragment.OnFragmentInteractionListener {
+
 
     private TextView mTextMessage;
     private Button logOutButton;
@@ -86,7 +88,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
 //        logOutButton = (Button) findViewById(R.id.logout_homescreen_button);
 //    }
 
-//    protected void LogOut() {
+    //    protected void LogOut() {
 //        logOutButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -98,5 +100,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
 //            }
 //        });
 //    }
-
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+    }
 }
