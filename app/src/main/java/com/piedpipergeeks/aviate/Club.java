@@ -6,10 +6,10 @@ public class Club {
     private String info, name, president, secretary;
     private ArrayList<String> admins, members, guests;
 
-    public Club () {
-        admins=new ArrayList<>();
-        members=new ArrayList<>();
-        guests=new ArrayList<>();
+    public Club() {
+        admins = new ArrayList<>();
+        members = new ArrayList<>();
+        guests = new ArrayList<>();
     }
 
     public String getName() {
@@ -55,16 +55,16 @@ public class Club {
     public ArrayList<String> getMembers() {
         return members;
     }
-    public void addMember(String memberName)
-    {
+
+    public void addMember(String memberName) {
         members.add(memberName);
     }
 
     public ArrayList<String> getGuests() {
         return guests;
     }
-    public void addGuest (String guestName)
-    {
+
+    public void addGuest(String guestName) {
         guests.add(guestName);
     }
 }
