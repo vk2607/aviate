@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +31,7 @@ public class CalendarFragment extends Fragment {
     String USER_ID;
     FirebaseFirestore fsClient;
     CalendarView calendarView;
-    //    MaterialCalendarView calendarView;
+    ProgressBar progressBar;
     View v;
 
     RecyclerView recyclerView;
@@ -115,6 +116,7 @@ public class CalendarFragment extends Fragment {
                                 }
 
                             }
+                            progressBar.setVisibility(View.GONE);
                             adapter.updateEvents(events);
                             adapter.notifyDataSetChanged();
                         }
@@ -142,6 +144,9 @@ public class CalendarFragment extends Fragment {
         manager = new LinearLayoutManager(getActivity());
         ((LinearLayoutManager) manager).setOrientation(LinearLayoutManager.VERTICAL);
 
+        progressBar = (ProgressBar) v.findViewById(R.id.recycler_calendar_events_progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager((LinearLayoutManager) manager);
 
@@ -160,9 +165,9 @@ public class CalendarFragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                progressBar.setVisibility(View.VISIBLE);
                 events.clear();
                 fetchEventsForUser(dayOfMonth, month, year);
-
                 Log.d("FRAGMENT", String.valueOf(events.size()));
 
             }
