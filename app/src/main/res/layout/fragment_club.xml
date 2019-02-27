@@ -23,7 +23,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/sharp_add_white_18dp" />
+            app:srcCompat="@drawable/sharp_account_circle_black_18dp"/>
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
