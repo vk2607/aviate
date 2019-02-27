@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp" />
     <android.support.v7.widget.CardView
-        android:id="@+id/profile_card"
+        android:id="@+id/user_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"

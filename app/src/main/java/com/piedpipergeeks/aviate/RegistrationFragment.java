@@ -79,6 +79,8 @@ public class RegistrationFragment extends Fragment {
         v=inflater.inflate(R.layout.fragment_registration, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.registration_recycler_view);
         manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+
         Registration user=new Registration();
         user.setName("Shreyas");
         user.setEmail("shreyas.garud08@gmail.com");
@@ -87,7 +89,9 @@ public class RegistrationFragment extends Fragment {
             display_List.add(user);
         }
 
-
+        registrationAdapter = new RegistrationAdapter(display_List, getActivity());
+        recyclerView.setAdapter(registrationAdapter);
+        recyclerView.setLayoutManager(manager);
         return v;
     }
 

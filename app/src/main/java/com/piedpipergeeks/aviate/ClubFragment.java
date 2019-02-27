@@ -73,7 +73,7 @@ public class ClubFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        Toast.makeText(getActivity(), "Fragment called", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Fragment called", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -82,26 +82,30 @@ public class ClubFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_club, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.club_recycler_view);
-        clubadapter = new ClubAdapter(display_list, getActivity());
-        recyclerView.setAdapter(clubadapter);
+//        recyclerView.setAdapter(clubadapter);
+
         manager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(clubadapter);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
 
         Club user = new Club();
+        user.setName("deAsra Club");
         user.setInfo("deAsra Club");
         user.setPresident("Shreyas Garud");
         user.setSecretary("Prashant Bhandari");
         user.addAdmin("Adwait Bhope");
-        user.addGuest("Vinode Kamat");
+        user.addGuest("Vinod Kamat");
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 13; i++) {
             display_list.add(user);
         }
 
 //        recyclerView.noti
 //        recyclerView.setLayoutManager(manager);
-        clubadapter.notifyDataSetChanged();
+        clubadapter = new ClubAdapter(display_list, getActivity());
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(clubadapter);
+//        clubadapter.updateData(display_list);
+//        clubadapter.notifyDataSetChanged();
         return v;
     }
 
