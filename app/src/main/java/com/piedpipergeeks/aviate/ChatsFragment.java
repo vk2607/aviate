@@ -8,11 +8,20 @@ import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -41,7 +50,11 @@ public class ChatsFragment extends Fragment {
     ChatsAdapter chatsAdapter;
     Boolean isScrolling = false;
     ArrayList<Groups> display_list = new ArrayList<>();
+    ArrayList<String> groups=new ArrayList<>();
     View v;
+    FirebaseFirestore firebaseFirestore;
+    FirebaseUser firebaseUser;
+    int groupsFetched=0;
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -72,6 +85,7 @@ public class ChatsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        firebaseFirestore= FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -81,7 +95,8 @@ public class ChatsFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_chats, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.chats_recycler_view);
         manager1 = new LinearLayoutManager(getActivity());
-        Groups group = new Groups();
+
+        recyclerView.setLayoutManager(manager1);Groups group = new Groups();
         group.setName("deAsra");
         for (int i = 0; i < 15; i++) {
             display_list.add(group);
@@ -89,7 +104,7 @@ public class ChatsFragment extends Fragment {
         chatsAdapter = new ChatsAdapter(getActivity(), display_list);
 
         recyclerView.setAdapter(chatsAdapter);
-        recyclerView.setLayoutManager(manager1);
+//        fetchGroups();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -102,6 +117,30 @@ public class ChatsFragment extends Fragment {
         });
         return v;
     }
+
+//    private void fetchGroups() {
+//        firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+//        try{
+//            firebaseFirestore.collection("Clubs")
+//                    .whereEqualTo("name",groups.get(groupsFetched++))
+//                    .whereEqualTo("name",groups.get(groupsFetched++))
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    display_list.add(document.toObject(Groups.class));
+//                                }
+//                            }
+//                        }
+//                    });
+//            chatsAdapter.notifyDataSetChanged();
+//    }
+//        catch (Exception e){
+//            Log.d("QUERY ERROR:", "NO USERS IN MATCHED USERS ARRAY");
+//        }
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

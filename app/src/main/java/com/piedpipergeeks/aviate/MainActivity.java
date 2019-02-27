@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    String userType = "user";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-        startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
         mAuth = FirebaseAuth.getInstance();
         DefaultLogin();
 
@@ -82,13 +83,15 @@ public class MainActivity extends AppCompatActivity {
     public void DefaultLogin() {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null && currentUser.isEmailVerified()) {
-             Intent homeIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
-             startActivity(homeIntent);
-             finish();
-
-//            Intent clubIntennt = new Intent(MainActivity.this, PickClubActivity.class);
-//            startActivity(clubIntennt);
-//            finish();
+            Intent homeScreenIntent;
+            if (userType.equals("user")) {
+                Toast.makeText(this, "Default is user", Toast.LENGTH_SHORT).show();
+                homeScreenIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
+            } else {
+                homeScreenIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
+            }
+            startActivity(homeScreenIntent);
+            finish();
         }
     }
 }

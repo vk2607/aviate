@@ -17,9 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import org.w3c.dom.Text;
+
 import android.app.ProgressDialog;
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -28,12 +31,20 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button signInButton;
     private FirebaseUser currentUser;
+    private String userType = "user";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         lAuth = FirebaseAuth.getInstance();
+
         fsClient = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        fsClient.setFirestoreSettings(settings);
+
         Intialiaze();
         SignIn();
     }
@@ -63,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void resendVerificationEmail(View view) {
 
-      Toast.makeText(LoginActivity.this,"Function called",Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, "Function called", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -121,12 +132,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void toHomeScreen() {
-        Intent intent = new Intent(LoginActivity.this, HomeScreenActivity.class);
-        startActivity(intent);
+        Intent homeScreenIntent;
+        if (userType.equals("user")) {
+            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenUserActivity.class);
+        } else {
+            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenActivity.class);
+        }
+        startActivity(homeScreenIntent);
         finish();
 
     }
-
 
 
 }

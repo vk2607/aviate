@@ -152,10 +152,6 @@ public class CalendarFragment extends Fragment {
 
         USER_ID = "some id";    //fetch userid from shared pref storage
         fsClient = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true)
-                .build();
-        fsClient.setFirestoreSettings(settings);
 
         calendarView = v.findViewById(R.id.calendarView);
 

@@ -1,6 +1,7 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,10 +33,18 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1>
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder1 viewHolder1, int position) {
-        Groups groups = mgroups.get(position);
+        final Groups groups = mgroups.get(position);
         pos = position;
 
         viewHolder1.groupName.setText(groups.getName());
+        viewHolder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mcontext,MessageActivity.class);
+                intent.putExtra("clubname",groups.getName());
+                mcontext.startActivity(intent);
+            }
+        });
     }
 
     @Override
