@@ -4,12 +4,41 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class CalendarFragment extends Fragment {
+
+    String USER_ID;
+    FirebaseFirestore fsClient;
+    CalendarView calendarView;
+    //    MaterialCalendarView calendarView;
+    View v;
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager manager;
+    CalendarEventsAdapter adapter;
+
+    ArrayList<Event> events;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,13 +79,96 @@ public class CalendarFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+    }
+
+    private void fetchEventsForUser(final int day, final int month, final int year) {
+
+        final String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+//        for(int i = 0; i < user.clubs.size(); i++) {
+
+        Timestamp currentTime = new Timestamp(new Date().getTime() / 1000, 0);
+
+        fsClient.collection("Clubs")
+                .document("lorem ipsum")
+                .collection("Events")
+                .whereLessThanOrEqualTo("timestamp", currentTime)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                Event event = documentSnapshot.toObject(Event.class);
+                                EpochConverter time = new EpochConverter(event.getTimestamp());
+
+                                int d = time.getDay();
+                                String m = time.getMonth();
+                                int y = time.getYear();
+
+                                if (d == day && m.equals(months[month]) && y == year) {
+                                    Log.d("LIST", "ADDED EVENT TO LIST");
+                                    events.add(event);
+                                    Log.d("ADDING EVENT", String.valueOf(events.size()));
+                                }
+
+                            }
+                            adapter.updateEvents(events);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("QUERY", e.toString());
+                    }
+                });
+//        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        v = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        events = new ArrayList<>();
+        recyclerView = v.findViewById(R.id.recycler_calendar_events);
+        adapter = new CalendarEventsAdapter(events, getActivity());
+        manager = new LinearLayoutManager(getActivity());
+        ((LinearLayoutManager) manager).setOrientation(LinearLayoutManager.VERTICAL);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager((LinearLayoutManager) manager);
+
+        USER_ID = "some id";    //fetch userid from shared pref storage
+        fsClient = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        fsClient.setFirestoreSettings(settings);
+
+        calendarView = v.findViewById(R.id.calendarView);
+
+        EpochConverter time = new EpochConverter(calendarView.getDate());
+        fetchEventsForUser(time.getYear(), time.getMonthAsInt(), time.getDay());
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                events.clear();
+                fetchEventsForUser(dayOfMonth, month, year);
+
+                Log.d("FRAGMENT", String.valueOf(events.size()));
+
+            }
+        });
+        return v;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -97,4 +209,61 @@ public class CalendarFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public class EpochConverter {
+        private int day, year;
+        private String month;
+        private long epochSeconds;
+        private String date;
+        private ArrayList<String> months;
+
+        public EpochConverter(Timestamp timestamp) {
+            epochSeconds = timestamp.getSeconds() * 1000;
+            date = new Date(epochSeconds).toString();
+            calculate();
+        }
+
+        private void calculate() {
+            months = new ArrayList<>();
+            months.add("Jan");
+            months.add("Feb");
+            months.add("Mar");
+            months.add("Apr");
+            months.add("May");
+            months.add("Jun");
+            months.add("Jul");
+            months.add("Aug");
+            months.add("Sep");
+            months.add("Oct");
+            months.add("Nov");
+            months.add("Dec");
+            day = Integer.valueOf(date.substring(8, 10));
+            month = date.substring(4, 7);
+            Log.d("DATE", date);
+            year = Integer.valueOf(date.substring(30, 34));
+        }
+
+        public EpochConverter(long epochSeconds) {
+            this.epochSeconds = epochSeconds;
+            date = new Date(epochSeconds).toString();
+            calculate();
+        }
+
+        public int getDay() {
+            return day;
+        }
+
+        public String getMonth() {
+            return month;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public int getMonthAsInt() {
+            return months.indexOf(month) + 1;
+        }
+    }
+
 }
