@@ -29,7 +29,7 @@ public class RegistrationFragment extends Fragment {
     RegistrationAdapter registrationAdapter;
     Boolean isScrolling=false;
 
-    ArrayList<Registration> display_List=new ArrayList<>();
+    ArrayList<Profile> display_List=new ArrayList<>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -81,8 +81,9 @@ public class RegistrationFragment extends Fragment {
         manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Registration user=new Registration();
-        user.setName("Shreyas");
+        Profile user=new Profile();
+        user.setFirstName("Shreyas");
+        user.setLastName("Garud");
         user.setEmail("shreyas.garud08@gmail.com");
 
         for (int i = 0; i < 15; i++) {
