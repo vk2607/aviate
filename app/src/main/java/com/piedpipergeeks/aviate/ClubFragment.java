@@ -1,11 +1,13 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 //import android.support.v4.app.Fragment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
@@ -33,6 +35,8 @@ public class ClubFragment extends Fragment {
     ClubAdapter clubadapter;
     Boolean isScrolling = false;
     ArrayList<Club> display_list = new ArrayList<>();
+    FloatingActionButton button;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,7 +86,14 @@ public class ClubFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_club, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.club_recycler_view);
-//        recyclerView.setAdapter(clubadapter);
+        button = (FloatingActionButton) v.findViewById(R.id.club_create_club);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CreateClubActivity.class));
+            }
+        });
 
         manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
