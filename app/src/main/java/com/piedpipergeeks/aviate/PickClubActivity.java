@@ -13,7 +13,7 @@ public class PickClubActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     PickClubAdapter pickClubAdapter;
 
-    ArrayList<Club_1> display_list = new ArrayList<>();
+    ArrayList<Club> display_list = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +23,10 @@ public class PickClubActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Club_1 club1 = new Club_1();
-        club1.setClubname("deAsra");
+        Club club = new Club();
+        club.setName("deAsra");
         for (int i = 0; i < 15; i++) {
-            display_list.add(club1);
+            display_list.add(club);
         }
 
         pickClubAdapter = new PickClubAdapter(display_list, this);

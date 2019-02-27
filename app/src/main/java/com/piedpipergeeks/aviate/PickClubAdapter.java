@@ -16,12 +16,12 @@ import java.util.ArrayList;
 
 public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolder> {
 
-    ArrayList<Club_1> club1s;
+    ArrayList<Club> clubs;
     Context context;
     int pos;
 
-    public PickClubAdapter(ArrayList<Club_1> users, Context context){
-        this.club1s =users;
+    public PickClubAdapter(ArrayList<Club> clubs, Context context){
+        this.clubs =clubs;
         this.context=context;
     }
 
@@ -33,9 +33,9 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
 
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        Club_1 club1 = club1s.get(position);
+        Club club = clubs.get(position);
         pos = position;
-        vHolder.clubname.setText(club1.getClubname());
+        vHolder.clubname.setText(club.getName());
         vHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,14 +57,14 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
     }
     private void openClub(PickClubAdapter.VHolder vHolder) {
         Toast.makeText(context, String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-        Club_1 club1 = club1s.get(vHolder.getAdapterPosition());
+        Club club = clubs.get(vHolder.getAdapterPosition());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return club1s.size();
+        return clubs.size();
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
