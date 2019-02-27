@@ -119,8 +119,10 @@ public class DiscoverFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.discover_recycler_view);
         progressBar = (ProgressBar) v.findViewById(R.id.discover_progress_bar);
         manager = new LinearLayoutManager(getActivity());
+//        manager.setOrientation(LinearLayoutManager.VERTICAL);
 
         progressBar.setVisibility(View.GONE);
+
 
         Profile user = new Profile();
         user.setFirstName("Adwait");

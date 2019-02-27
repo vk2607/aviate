@@ -3,16 +3,13 @@ package com.piedpipergeeks.aviate;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-//import android.support.v4.app.Fragment;
 import android.app.Fragment;
-import android.support.annotation.NonNull;
+//import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -20,12 +17,19 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChatsFragment.OnFragmentInteractionListener} interface
+ * {@link RegistrationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ChatsFragment#newInstance} factory method to
+ * Use the {@link RegistrationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatsFragment extends Fragment {
+public class RegistrationFragment extends Fragment {
+    View v;
+    RecyclerView recyclerView;
+    LinearLayoutManager manager;
+    RegistrationAdapter registrationAdapter;
+    Boolean isScrolling=false;
+
+    ArrayList<Registration> display_List=new ArrayList<>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,14 +40,8 @@ public class ChatsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    RecyclerView recyclerView;
-    LinearLayoutManager manager1;
-    ChatsAdapter chatsAdapter;
-    Boolean isScrolling = false;
-    ArrayList<Groups> display_list = new ArrayList<>();
-    View v;
 
-    public ChatsFragment() {
+    public RegistrationFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +51,11 @@ public class ChatsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatsFragment.
+     * @return A new instance of fragment RegistrationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatsFragment newInstance(String param1, String param2) {
-        ChatsFragment fragment = new ChatsFragment();
+    public static RegistrationFragment newInstance(String param1, String param2) {
+        RegistrationFragment fragment = new RegistrationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,28 +76,22 @@ public class ChatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_chats, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.chats_recycler_view);
-        manager1 = new LinearLayoutManager(getActivity());
-        Groups group = new Groups();
-        group.setName("deAsra");
+        v=inflater.inflate(R.layout.fragment_registration, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.registration_recycler_view);
+        manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        Registration user=new Registration();
+        user.setName("Shreyas");
+        user.setEmail("shreyas.garud08@gmail.com");
+
         for (int i = 0; i < 15; i++) {
-            display_list.add(group);
+            display_List.add(user);
         }
-        chatsAdapter = new ChatsAdapter(getActivity(), display_list);
 
-        recyclerView.setAdapter(chatsAdapter);
-        recyclerView.setLayoutManager(manager1);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    isScrolling = true;
-                }
-            }
-        });
+        registrationAdapter = new RegistrationAdapter(display_List, getActivity());
+        recyclerView.setAdapter(registrationAdapter);
+        recyclerView.setLayoutManager(manager);
         return v;
     }
 
