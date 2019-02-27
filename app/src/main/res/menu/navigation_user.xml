@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_user_clubs"
+        android:icon="@drawable/round_chat_black_18dp"
+        android:title="Clubs" />
+
+    <item
+        android:id="@+id/navigation_user_calender"
+        android:icon="@drawable/sharp_account_circle_black_18dp"
+        android:title="Calender" />
+
+</menu>
