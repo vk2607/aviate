@@ -39,8 +39,8 @@ public class ChatsFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager manager1;
     ChatsAdapter chatsAdapter;
-    Boolean isScrolling=false;
-    ArrayList<Groups> display_list=new ArrayList<>();
+    Boolean isScrolling = false;
+    ArrayList<Groups> display_list = new ArrayList<>();
     View v;
 
     public ChatsFragment() {
@@ -56,7 +56,6 @@ public class ChatsFragment extends Fragment {
      * @return A new instance of fragment ChatsFragment.
      */
     // TODO: Rename and change types and number of parameters
-
     public static ChatsFragment newInstance(String param1, String param2) {
         ChatsFragment fragment = new ChatsFragment();
         Bundle args = new Bundle();
@@ -79,15 +78,15 @@ public class ChatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v=inflater.inflate(R.layout.fragment_chats, container, false);
-        recyclerView=(RecyclerView)v.findViewById(R.id.chats_recycler_view);
-        manager1=new LinearLayoutManager(getActivity());
-        Groups group=new Groups();
+        v = inflater.inflate(R.layout.fragment_chats, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.chats_recycler_view);
+        manager1 = new LinearLayoutManager(getActivity());
+        Groups group = new Groups();
         group.setName("deAsra");
         for (int i = 0; i < 15; i++) {
             display_list.add(group);
         }
-        chatsAdapter = new ChatsAdapter(getActivity(),display_list);
+        chatsAdapter = new ChatsAdapter(getActivity(), display_list);
 
         recyclerView.setAdapter(chatsAdapter);
         recyclerView.setLayoutManager(manager1);
