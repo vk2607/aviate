@@ -26,7 +26,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<CalendarEventsAd
     public CalendarEventsAdapter (ArrayList<Event> events, Context context) {
         this.events = events;
         this.context = context;
-        Toast.makeText(context, "Adapter object created", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Adapter object created", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -35,7 +35,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<CalendarEventsAd
     public VHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_calendar_events, viewGroup, false);
-        Toast.makeText(context, "View holder created", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "View holder created", Toast.LENGTH_SHORT).show();
         return new VHolder(view);
     }
 
