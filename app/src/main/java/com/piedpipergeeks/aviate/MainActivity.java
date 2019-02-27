@@ -2,27 +2,36 @@ package com.piedpipergeeks.aviate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class MainActivity extends AppCompatActivity {
 
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    FirebaseFirestore fsClient;
     String userType = "user";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(MainActivity.this, PickClubActivity.class));
+//        startActivity(new Intent(MainActivity.this, PickClubActivity.class));
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -36,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
         mAuth = FirebaseAuth.getInstance();
+
+        fsClient = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        fsClient.setFirestoreSettings(settings);
+
+        defaultLogin();
         DefaultLogin();
 
     }
@@ -93,5 +110,46 @@ public class MainActivity extends AppCompatActivity {
             startActivity(homeScreenIntent);
             finish();
         }
+    }
+
+    public void defaultLogin() {
+        currentUser = mAuth.getCurrentUser();
+        String userId;
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            userId = currentUser.getUid();
+        } else {
+            userId = "null";
+        }
+        fsClient.collection("Users")
+                .document(userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
+                            DocumentSnapshot snapshot = task.getResult();
+                            try {
+                                if (snapshot.get("userType").equals("user")) {
+//                                function call is checked
+//                                startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+//                                finish();
+                                } else {
+//                                startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+//                                finish();
+                                }
+                            } catch (Exception e) {
+                                Log.d("QUERY", e.toString());
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
+                        Log.d("QUERY", e.toString());
+                    }
+                });
     }
 }
