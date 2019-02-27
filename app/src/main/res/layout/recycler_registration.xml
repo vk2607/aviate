@@ -19,49 +19,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/profile_pic_registration"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
-
             <TextView
                 android:id="@+id/user_name_registration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="Shreyas Garud"
                 android:textColor="@color/black"
                 android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/profile_pic_registration"
-                app:layout_constraintTop_toTopOf="@+id/profile_pic_registration" />
+                tools:layout_editor_absoluteX="88dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <TextView
                 android:id="@+id/user_email_registration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="6dp"
                 android:text="shreyas.garud08@gmail.com"
-                app:layout_constraintStart_toEndOf="@+id/profile_pic_registration"
-                app:layout_constraintTop_toBottomOf="@+id/user_name_registration" />
+                app:layout_constraintTop_toBottomOf="@+id/user_name_registration"
+                tools:layout_editor_absoluteX="88dp" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/add_user_button_registration"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:clickable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/profile_pic_registration"
-                app:srcCompat="@android:drawable/ic_menu_add" />
+                app:srcCompat="@android:drawable/ic_menu_add"
+                tools:layout_editor_absoluteY="16dp" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

@@ -19,6 +19,10 @@ public class PickClubActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_club);
 
+        Bundle bundle = getIntent().getExtras();
+        String firstname = bundle.getString("firstname");
+        String userId = bundle.getString("userId");
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_club_name);
         manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -30,7 +34,7 @@ public class PickClubActivity extends AppCompatActivity {
         }
 
         pickClubAdapter = new PickClubAdapter(display_list, this);
-
+        pickClubAdapter.setData(firstname, userId);
         recyclerView.setAdapter(pickClubAdapter);
         recyclerView.setLayoutManager(manager);
 
