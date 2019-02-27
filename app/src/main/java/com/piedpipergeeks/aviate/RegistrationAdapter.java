@@ -53,6 +53,7 @@ public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapt
         Intent intent=new Intent(context,PickClubActivity.class);
         intent.putExtra("firstname",user.getFirstName());
         intent.putExtra("userId",user.getUserId());
+        intent.putExtra("lastname",user.getLastName());
         context.startActivity(intent);
     }
 

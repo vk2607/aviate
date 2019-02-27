@@ -3,13 +3,22 @@ package com.piedpipergeeks.aviate;
 import java.util.ArrayList;
 
 public class Club {
-    private String info, name, president, secretary;
+    private String info, name, president, secretary,clubId;
     private ArrayList<String> admins, members, guests;
 
     public Club() {
         admins = new ArrayList<>();
         members = new ArrayList<>();
         guests = new ArrayList<>();
+    }
+
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
     }
 
     public String getName() {
