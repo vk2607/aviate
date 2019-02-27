@@ -123,6 +123,7 @@ public class DiscoverFragment extends Fragment {
 
         progressBar.setVisibility(View.GONE);
 
+
         Profile user = new Profile();
         user.setFirstName("Adwait");
         user.setLastName("Bhope");
