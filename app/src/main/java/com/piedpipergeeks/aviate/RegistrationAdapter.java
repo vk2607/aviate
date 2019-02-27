@@ -1,6 +1,7 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,7 +50,10 @@ public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapt
 
     private void selectClub(VHolder vHolder) {
         Profile user = users.get(vHolder.getAdapterPosition());
-
+        Intent intent=new Intent(context,PickClubActivity.class);
+        intent.putExtra("firstname",user.getFirstName());
+        intent.putExtra("userId",user.getUserId());
+        context.startActivity(intent);
     }
 
     @Override
