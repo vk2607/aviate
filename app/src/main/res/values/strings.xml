@@ -13,4 +13,5 @@
     <string name="title_activity_registerde_asra">RegisterdeAsraActivity</string>
     <string name="title_activity_home_screen_user">HomeScreenUserActivity</string>
     <string name="title_activity_club_details">ClubDetails</string>
+    <string name="title_activity_events_list">EventsList</string>
 </resources>
