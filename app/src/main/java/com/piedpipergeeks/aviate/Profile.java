@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Profile {
 
-    private String userId;
+    private String userId, userType;
     private String firstName, lastName, phoneNumber, aadharNumber, email;
     private ArrayList<String> haves, wants;
     private Map<String, String> dob;
@@ -22,6 +22,14 @@ public class Profile {
         dob.put("month", month);
         dob.put("year", year);
         this.dob = dob;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public void setUserId(String userId) {
