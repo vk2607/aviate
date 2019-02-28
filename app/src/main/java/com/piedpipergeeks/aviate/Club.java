@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Club {
-    private String info, name, president, secretary,clubId;
+    private String info, name, president, secretary, clubId;
     private ArrayList<String> admins, members, guests;
 
     public Club() {
@@ -82,6 +82,7 @@ public class Club {
     public Map<String, Object> getMap() {
         Map<String, Object> map = new HashMap<>();
 
+        map.put("clubId", clubId);
         map.put("name", name);
         map.put("info", info);
         map.put("president", president);

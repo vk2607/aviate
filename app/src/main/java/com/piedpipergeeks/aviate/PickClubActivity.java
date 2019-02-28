@@ -30,13 +30,14 @@ public class PickClubActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_club);
 
         Bundle bundle = getIntent().getExtras();
-        String firstname = bundle.getString("firstname");
-        String lastname = bundle.getString("lastname");
-        String userId = bundle.getString("userId");
+        final String firstname = bundle.getString("firstname");
+        final String lastname = bundle.getString("lastname");
+        final String userId = bundle.getString("userId");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_club_name);
         manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setAdapter(null);
 
 //        Club club = new Club();
 //////        club.setName("deAsra");
@@ -46,6 +47,7 @@ public class PickClubActivity extends AppCompatActivity {
 //            display_list.add(club);
 //        }
 
+        fsClient = FirebaseFirestore.getInstance();
         fsClient.collection("Clubs")
                 .whereArrayContains("admins", FirebaseAuth.getInstance().getUid())
                 .get()
@@ -56,15 +58,15 @@ public class PickClubActivity extends AppCompatActivity {
                             for (DocumentSnapshot snapshot : task.getResult()) {
                                 Club club = snapshot.toObject(Club.class);
                                 display_list.add(club);
+                                pickClubAdapter = new PickClubAdapter(display_list, PickClubActivity.this);
+                                pickClubAdapter.setData(firstname, lastname, userId);
+                                recyclerView.setAdapter(pickClubAdapter);
+                                recyclerView.setLayoutManager(manager);
                             }
                         }
                     }
                 });
 
-        pickClubAdapter = new PickClubAdapter(display_list, this);
-        pickClubAdapter.setData(firstname, lastname, userId);
-        recyclerView.setAdapter(pickClubAdapter);
-        recyclerView.setLayoutManager(manager);
 
     }
 }

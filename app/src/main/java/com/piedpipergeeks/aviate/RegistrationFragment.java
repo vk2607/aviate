@@ -5,11 +5,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 //import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -27,9 +35,9 @@ public class RegistrationFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager manager;
     RegistrationAdapter registrationAdapter;
-    Boolean isScrolling=false;
+    FirebaseFirestore fsClient;
 
-    ArrayList<Profile> display_List=new ArrayList<>();
+    ArrayList<Profile> display_List = new ArrayList<>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -76,23 +84,34 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v=inflater.inflate(R.layout.fragment_registration, container, false);
+        v = inflater.inflate(R.layout.fragment_registration, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.registration_recycler_view);
+
         manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Profile user=new Profile();
-        user.setFirstName("Shreyas");
-        user.setLastName("Garud");
-        user.setEmail("shreyas.garud08@gmail.com");
-
-        for (int i = 0; i < 15; i++) {
-            display_List.add(user);
-        }
-
-        registrationAdapter = new RegistrationAdapter(display_List, getActivity());
-        recyclerView.setAdapter(registrationAdapter);
+        recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(manager);
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                Profile user = snapshot.toObject(Profile.class);
+                                display_List.add(user);
+                                registrationAdapter = new RegistrationAdapter(display_List, getActivity());
+                                recyclerView.setAdapter(registrationAdapter);
+                            }
+
+                        }
+                    }
+                });
+
+
         return v;
     }
 

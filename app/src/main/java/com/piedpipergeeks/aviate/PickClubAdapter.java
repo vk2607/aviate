@@ -15,6 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolder> {
@@ -22,17 +27,18 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
     ArrayList<Club> clubs;
     Context context;
     int pos;
-    String firstname,lastname, userId;
+    String firstname, lastname, userId;
     Bundle bundle;
+    FirebaseFirestore fsClient;
 
     public PickClubAdapter(ArrayList<Club> clubs, Context context) {
         this.clubs = clubs;
         this.context = context;
     }
 
-    public void setData(String firstname,String lastname, String userId) {
+    public void setData(String firstname, String lastname, String userId) {
         this.firstname = firstname;
-        this.lastname=lastname;
+        this.lastname = lastname;
         this.userId = userId;
     }
 
@@ -53,11 +59,11 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
                 new AlertDialog.Builder(context)
                         .setIcon(null)
 //                        .setTitle("Add to "+ club.getName())
-                        .setMessage("Are you sure you want to add " + firstname + " "+lastname+" in " + club.getName() + "?")
+                        .setMessage("Add " + firstname + " " + lastname + " to " + club.getName() + "?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                addToClub(userId,club.getClubId());
+                                addToClub(vHolder, userId, club.getClubId());
                             }
                         })
                         .setNegativeButton(android.R.string.no, null)
@@ -66,15 +72,23 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
         });
     }
 
-    private void addToClub(String userId, String clubId) {
-        Toast.makeText(context,"Added in the club Successfully....",Toast.LENGTH_SHORT).show();
-    }
-
-    private void openClub(PickClubAdapter.VHolder vHolder) {
-        Toast.makeText(context, String.valueOf(vHolder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+    private void addToClub(VHolder vHolder, String userId, String clubId) {
         Club club = clubs.get(vHolder.getAdapterPosition());
 
+        Toast.makeText(context, club.getName(), Toast.LENGTH_SHORT);
 
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(club.getClubId())
+                .update("members", FieldValue.arrayUnion(userId))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
