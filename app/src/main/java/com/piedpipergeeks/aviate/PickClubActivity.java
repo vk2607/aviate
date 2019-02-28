@@ -21,20 +21,23 @@ public class PickClubActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String firstname = bundle.getString("firstname");
+        String lastname=bundle.getString("lastname");
         String userId = bundle.getString("userId");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_club_name);
         manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Club club = new Club();
-        club.setName("deAsra");
+//        Club club = new Club();
+////        club.setName("deAsra");
         for (int i = 0; i < 15; i++) {
+            Club club = new Club();
+            club.setName("deAsra"+i);
             display_list.add(club);
         }
 
         pickClubAdapter = new PickClubAdapter(display_list, this);
-        pickClubAdapter.setData(firstname, userId);
+        pickClubAdapter.setData(firstname,lastname, userId);
         recyclerView.setAdapter(pickClubAdapter);
         recyclerView.setLayoutManager(manager);
 

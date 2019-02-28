@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,10 +34,19 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     private FirebaseFirestore fsClient;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, mobilenumberEditText, otpEditText;
     private Button otpButton, signUpButton;
-    private String rVerificationId, email, firstname, lastname, mobilenumber;
+    private String rVerificationId, email, firstname, lastname, mobilenumber,userId;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
     private int btnId = 0;
     private boolean phoneVerified = false;
+
+    SharedPreferences sharedPreferences;
+    private static final String MyPreferences="MyPrefs";
+    private static final String UserIdKey="UserId";
+    private static final String EmailKey="Email";
+    private static final String UserTypeKey="UserType";
+    private static final String FirstNameKey="FirstName";
+    private static final String LastNameKey="LastName";
+    private static final String PhoneNumberKey="PhoneNumber";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +146,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(RegisterEntrepreneurActivity.this, "Click on the verification link and sign in", Toast.LENGTH_SHORT).show();
+                                            storeDataLocally();
                                             uploadUserData();
                                             Intent intent = new Intent(RegisterEntrepreneurActivity.this, LoginActivity.class);
                                             startActivity(intent);
@@ -162,8 +174,30 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         });
     }
 
+    private void storeDataLocally() {
+        sharedPreferences=getSharedPreferences(MyPreferences, Context.MODE_PRIVATE);
+        String UserIdValue=regAuth.getUid().toString();
+        String EmailValue=emailEditText.getText().toString();
+        String UserTypeValue="user";
+        String LastNameValue=lastNameEditText.getText().toString();
+        String PhoneNumberValue=mobilenumberEditText.getText().toString();
+        String FirstNameValue=firstNameEditText.getText().toString();
+
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString(FirstNameKey,FirstNameValue);
+        editor.putString(LastNameKey,LastNameValue);
+        editor.putString(UserIdKey,UserIdValue);
+        editor.putString(EmailKey,EmailValue);
+        editor.putString(UserTypeKey,UserTypeValue);
+        editor.putString(PhoneNumberKey,PhoneNumberValue);
+        editor.commit();
+
+
+
+    }
+
     private void uploadUserData() {
-        String userId = regAuth.getUid();
+         userId = regAuth.getUid();
         Boolean emailVerified = regAuth.getCurrentUser().isEmailVerified();
 
         Map<String, Object> userData = new HashMap<>();
