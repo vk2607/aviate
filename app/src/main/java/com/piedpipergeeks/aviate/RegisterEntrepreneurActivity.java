@@ -34,19 +34,19 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     private FirebaseFirestore fsClient;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, mobilenumberEditText, otpEditText;
     private Button otpButton, signUpButton;
-    private String rVerificationId, email, firstname, lastname, mobilenumber,userId;
+    private String rVerificationId, email, firstname, lastname, mobilenumber, userId;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
     private int btnId = 0;
     private boolean phoneVerified = false;
 
     SharedPreferences sharedPreferences;
-    private static final String MyPreferences="MyPrefs";
-    private static final String UserIdKey="UserId";
-    private static final String EmailKey="Email";
-    private static final String UserTypeKey="UserType";
-    private static final String FirstNameKey="FirstName";
-    private static final String LastNameKey="LastName";
-    private static final String PhoneNumberKey="PhoneNumber";
+    private static final String MyPreferences = "MyPrefs";
+    private static final String UserIdKey = "UserId";
+    private static final String EmailKey = "Email";
+    private static final String UserTypeKey = "UserType";
+    private static final String FirstNameKey = "FirstName";
+    private static final String LastNameKey = "LastName";
+    private static final String PhoneNumberKey = "PhoneNumber";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,29 +175,27 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     }
 
     private void storeDataLocally() {
-        sharedPreferences=getSharedPreferences(MyPreferences, Context.MODE_PRIVATE);
-        String UserIdValue=regAuth.getUid().toString();
-        String EmailValue=emailEditText.getText().toString();
-        String UserTypeValue="user";
-        String LastNameValue=lastNameEditText.getText().toString();
-        String PhoneNumberValue=mobilenumberEditText.getText().toString();
-        String FirstNameValue=firstNameEditText.getText().toString();
+        sharedPreferences = getSharedPreferences(MyPreferences, Context.MODE_PRIVATE);
+        String UserIdValue = regAuth.getUid().toString();
+        String EmailValue = emailEditText.getText().toString();
+        String UserTypeValue = "user";
+        String LastNameValue = lastNameEditText.getText().toString();
+        String PhoneNumberValue = mobilenumberEditText.getText().toString();
+        String FirstNameValue = firstNameEditText.getText().toString();
 
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString(FirstNameKey,FirstNameValue);
-        editor.putString(LastNameKey,LastNameValue);
-        editor.putString(UserIdKey,UserIdValue);
-        editor.putString(EmailKey,EmailValue);
-        editor.putString(UserTypeKey,UserTypeValue);
-        editor.putString(PhoneNumberKey,PhoneNumberValue);
-        editor.commit();
-
-
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(FirstNameKey, FirstNameValue);
+        editor.putString(LastNameKey, LastNameValue);
+        editor.putString(UserIdKey, UserIdValue);
+        editor.putString(EmailKey, EmailValue);
+        editor.putString(UserTypeKey, UserTypeValue);
+        editor.putString(PhoneNumberKey, PhoneNumberValue);
+        editor.apply();
 
     }
 
     private void uploadUserData() {
-         userId = regAuth.getUid();
+        userId = regAuth.getUid();
         Boolean emailVerified = regAuth.getCurrentUser().isEmailVerified();
 
         Map<String, Object> userData = new HashMap<>();

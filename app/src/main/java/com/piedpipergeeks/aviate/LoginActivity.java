@@ -96,7 +96,11 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
                                 if (lAuth.getCurrentUser().isEmailVerified()) {
-                                    Toast.makeText(LoginActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
+
+                                    toHomeScreen();
+
+                                    //use shared pref to optimize the following call to set email verified to true
+
                                     fsClient.collection("Users")
                                             .document(lAuth.getCurrentUser().getUid())
                                             .update("emailVerified", true)
@@ -106,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                                 }
                                             });
-
-                                    toHomeScreen();
 
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first", Toast.LENGTH_SHORT).show();
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LoginActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
                                 DocumentSnapshot snapshot = task.getResult();
                                 try {
                                     if (snapshot.get("userType").equals("user")) {
@@ -174,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(LoginActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
                             Log.d("QUERY", e.toString());
                         }
                     });

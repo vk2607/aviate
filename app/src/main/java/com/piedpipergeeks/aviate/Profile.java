@@ -1,5 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +13,30 @@ public class Profile {
     private String firstName, lastName, phoneNumber, aadharNumber, email;
     private ArrayList<String> haves, wants;
     private Map<String, String> dob;
+
+//    public static String USER_ID, USER_TYPE, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER;
+//    private static SharedPreferences pref;
+
+//    public static void saveDataLocally(Context context, Profile user) {
+//        initPreferences(context);
+//
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putString("userId", user.getUserId());
+//        editor.putString("userType", user.getUserType());
+//        editor.putString("firstName", user.getFirstName());
+//        editor.putString("lastName", user.getLastName());
+//        editor.putString("email", user.getEmail());
+//        editor.putString("phoneNumber", user.getPhoneNumber());
+//        editor.apply();
+//    }
+//
+//    private static void initPreferences(Context context) {
+//        pref = context.getSharedPreferences("myPref", Context.MODE_PRIVATE);
+//    }
+//
+//    public String USER_ID() {
+//        pref.
+//    }
 
     public Profile() {
         haves = new ArrayList<>();
@@ -98,11 +125,6 @@ public class Profile {
 
     public String getUserId() {
         return userId;
-    }
-
-
-    public void saveDataLocally() {
-        //TO DO USING SHARED PREFERENCES
     }
 
     public void getMap() {
