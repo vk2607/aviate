@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.ls.LSException;
 
@@ -19,9 +20,10 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private Context mContext;
     private List<Messages> mMessageList;
+
     public MessageListAdapter(Context context, List<Messages> messagesList) {
-        mContext=context;
-        messagesList=messagesList;
+        mContext = context;
+        mMessageList = messagesList;
 
     }
 
@@ -29,12 +31,14 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view;
-
+        viewType = VIEW_TYPE_MESSAGE_RECEIVED;
         if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+            Toast.makeText(mContext, "oncreateviewholder called", Toast.LENGTH_SHORT).show();
             view = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_message_sent, viewGroup, false);
             return new SentMessageHolder(view);
         } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+            Toast.makeText(mContext, "oncreateviewholder called", Toast.LENGTH_SHORT).show();
             view = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_message_received, viewGroup, false);
             return new ReceivedMessageHolder(view);
@@ -49,10 +53,11 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) holder).bind(message);
+                 ((SentMessageHolder) holder).bind(message);
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 ((ReceivedMessageHolder) holder).bind(message);
+                break;
         }
     }
 
@@ -60,6 +65,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mMessageList.size();
     }
+
     public int getItemViewType(int position) {
         Messages message = (Messages) mMessageList.get(position);
 
@@ -95,6 +101,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
         }
     }
+
     private class SentMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText;
 

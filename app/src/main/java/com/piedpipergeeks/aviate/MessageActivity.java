@@ -14,6 +14,7 @@ import android.widget.Toolbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
@@ -23,26 +24,39 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
     private RecyclerView mMessageRecycler;
-    private List<Messages> mMessageList;
+    private ArrayList<Messages> mMessageList = new ArrayList<>();
     private MessageListAdapter mMessageAdapter;
     private ImageButton imageButton;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-//        Toolbar toolbar=findViewById(R.id.too)
-        imageButton=(ImageButton)findViewById(R.id.send_messages_button);
-        mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
-        mMessageAdapter=new MessageListAdapter(this,mMessageList);
-        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
-//        Messages message=new Messages();
-//        Profile users=new Profile();
-//        users.setFirstName("Vinod");
-//        message.setMessage("HELLO");
-//        message.setSender(users);
-//        for(int i=0;i<10;i++)
-//        mMessageList.add(message);
+//      Toolbar toolbar=findViewById(R.id.too)
+        imageButton = (ImageButton) findViewById(R.id.send_messages_button);
 
-//        mMessageAdapter=new MessageListAdapter(this,mMessageList);
+        Messages message = new Messages();
+        Messages message2 = new Messages();
+        Profile users = new Profile();
+
+        users.setFirstName("Vinod");
+        message.setMessage("HELLO");
+        message.setSender(users);
+        mMessageList.add(message);
+
+        users.setFirstName("Vinod");
+        message2.setMessage("HIIIIIIIIII");
+        message2.setSender(users);
+        mMessageList.add(message2);
+
+
+        mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
+        mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mMessageAdapter = new MessageListAdapter(this, mMessageList);
+        mMessageRecycler.setAdapter(mMessageAdapter);
+
+
+//        mMessageAdapter = new MessageListAdapter(this, mMessageList);
+
 
     }
 }
