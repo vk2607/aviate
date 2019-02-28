@@ -45,13 +45,14 @@ public class CreateClubActivity extends AppCompatActivity {
         String clubName = ((EditText) findViewById(R.id.create_club_name)).getText().toString();
         String clubInfo = ((EditText) findViewById(R.id.create_club_agenda)).getText().toString();
 
-        club.setName(clubName);
-        club.setInfo(clubInfo);
-        club.addAdmin(auth.getUid());
-
         String clubId = fsClient.collection("Clubs")
                 .document()
                 .getId();
+
+        club.setName(clubName);
+        club.setInfo(clubInfo);
+        club.addAdmin(auth.getUid());
+        club.setClubId(clubId);
 
         Log.d("DOC ID", clubId);
 
