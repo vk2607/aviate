@@ -74,17 +74,13 @@ public class CreateClubActivity extends AppCompatActivity {
                     }
                 });
 
+
 //
-//        String clubId = fsClient.collection("Clubs")
-//                .document()
-//                .getId()
-//                .toString();
-//
-//        firebaseDatabase.getReference("Clubs")
-//                .child(clubId)
-//                .child("messageID")
-//                .child("Chats")
-//                .setValue("HEllo");
+        firebaseDatabase.getReference("Clubs")
+                .child(clubId)
+                .child("messageID")
+                .child("Chats")
+                .setValue("HEllo");
 
 
     }
