@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PickClubActivity"></activity>
-        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".PickClubActivity" />
+        <activity android:name=".MessageActivity" />
         <activity
             android:name=".HomeScreenUserActivity"
             android:label="@string/app_name" />
@@ -38,6 +38,8 @@
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/app_name" />
+        <activity android:name=".CreateClubActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -40,9 +40,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.VHolde
         pos = position;
 
         vHolder.name.setText(user.getFirstName() + " " + user.getLastName());
-        vHolder.business.setText(user.getBusinessName() + ", " + user.getBusinessCategory());
-        vHolder.businessDescription.setText(user.getBusinessDescription());
-        vHolder.bio.setText(user.getBio());
+//        vHolder.business.setText(user.getBusinessName() + ", " + user.getBusinessCategory());
+//        vHolder.businessDescription.setText(user.getBusinessDescription());
+//        vHolder.bio.setText(user.getBio());
         vHolder.haves.setText(user.getHaves().toString());
         vHolder.wants.setText(user.getWants().toString());
         vHolder.viewProfile.setOnClickListener(new View.OnClickListener() {
