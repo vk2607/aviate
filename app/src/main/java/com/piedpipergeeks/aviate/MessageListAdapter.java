@@ -48,7 +48,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             return new ReceivedMessageHolder(view);
         }
-
         return null;
     }
 

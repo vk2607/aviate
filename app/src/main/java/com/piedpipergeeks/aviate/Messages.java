@@ -1,16 +1,16 @@
 package com.piedpipergeeks.aviate;
 
 public class Messages {
-    String message;
-    Profile sender;
-    int dd,mm,yy;
+    private String text;
+    private Profile sender;
+    private int dd,mm,yy;
 
     public String getMessage() {
-        return message;
+        return text;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.text = message;
     }
 
     public Profile getSender() {
