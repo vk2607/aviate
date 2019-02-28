@@ -3,14 +3,19 @@ package com.piedpipergeeks.aviate;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 class Event {
     private Timestamp timestamp;
-    private String agenda, momLink, clubName;
+    private String agenda, momLink, clubName,eventType;
     private ArrayList<String> needUsers;
     private Map<String, Object> needs;
+
+    public String getEventType() {
+        return eventType;
+    }
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -34,6 +39,10 @@ class Event {
 
     public String getClubName() {
         return clubName;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public void setTimestamp(Timestamp timestamp) {
