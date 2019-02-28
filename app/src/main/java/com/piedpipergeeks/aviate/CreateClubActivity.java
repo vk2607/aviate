@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.cert.Certificate;
@@ -21,14 +23,16 @@ import java.util.Map;
 
 public class CreateClubActivity extends AppCompatActivity {
 
+    FirebaseAuth auth;
     FirebaseFirestore fsClient;
-    Map<String, Object> club = new HashMap<>();
+    Club club = new Club();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_club);
 
+        auth = FirebaseAuth.getInstance();
         fsClient = FirebaseFirestore.getInstance();
     }
 
@@ -37,12 +41,13 @@ public class CreateClubActivity extends AppCompatActivity {
         String clubName = ((EditText) findViewById(R.id.create_club_name)).getText().toString();
         String clubInfo = ((EditText) findViewById(R.id.create_club_agenda)).getText().toString();
 
-        club.put("name", clubName);
-        club.put("info", clubInfo);
+        club.setName(clubName);
+        club.setInfo(clubInfo);
+        club.addAdmin(auth.getUid());
 
         fsClient.collection("Clubs")
                 .document()
-                .set(club)
+                .set(club.getMap())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

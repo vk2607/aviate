@@ -17,6 +17,14 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 
@@ -36,6 +44,9 @@ public class ClubFragment extends Fragment {
     Boolean isScrolling = false;
     ArrayList<Club> display_list = new ArrayList<>();
     FloatingActionButton button;
+
+    FirebaseAuth auth;
+    FirebaseFirestore fsClient;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,7 +88,6 @@ public class ClubFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-       // Toast.makeText(getActivity(), "Fragment called", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -98,25 +108,47 @@ public class ClubFragment extends Fragment {
         manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        Club user = new Club();
-        user.setName("deAsra Club");
-        user.setInfo("deAsra Club");
-        user.setPresident("Shreyas Garud");
-        user.setSecretary("Prashant Bhandari");
-        user.addAdmin("Adwait Bhope");
-        user.addGuest("Vinod Kamat");
-
-        for (int i = 0; i < 13; i++) {
-            display_list.add(user);
-        }
-
-//        recyclerView.noti
-//        recyclerView.setLayoutManager(manager);
         clubadapter = new ClubAdapter(display_list, getActivity());
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(clubadapter);
-//        clubadapter.updateData(display_list);
-//        clubadapter.notifyDataSetChanged();
+
+        auth = FirebaseAuth.getInstance();
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .whereArrayContains("admins", auth.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                Club club = snapshot.toObject(Club.class);
+                                display_list.add(club);
+                            }
+                            clubadapter.updateData(display_list);
+                            clubadapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+//        Club user = new Club();
+//        user.setName("deAsra Club");
+//        user.setInfo("deAsra Club");
+//        user.setPresident("Shreyas Garud");
+//        user.setSecretary("Prashant Bhandari");
+//        user.addAdmin("Adwait Bhope");
+//        user.addGuest("Vinod Kamat");
+//
+//        for (int i = 0; i < 13; i++) {
+//            display_list.add(user);
+//        }
+
         return v;
     }
 

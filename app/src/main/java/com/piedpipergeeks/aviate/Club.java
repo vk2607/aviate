@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Club {
     private String info, name, president, secretary;
@@ -66,5 +68,19 @@ public class Club {
 
     public void addGuest(String guestName) {
         guests.add(guestName);
+    }
+
+    public Map<String, Object> getMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("name", name);
+        map.put("info", info);
+        map.put("president", president);
+        map.put("secretary", secretary);
+        map.put("admins", admins);
+        map.put("members", members);
+        map.put("guests", guests);
+
+        return map;
     }
 }
