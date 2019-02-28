@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ClubDetails"
+            android:label="@string/title_activity_club_details"
+            android:theme="@style/AppTheme"></activity>
         <activity android:name=".PickClubActivity" />
         <activity android:name=".MessageActivity" />
         <activity
