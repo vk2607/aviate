@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.cert.Certificate;
@@ -25,6 +26,7 @@ public class CreateClubActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseFirestore fsClient;
+    FirebaseDatabase firebaseDatabase;
     Club club = new Club();
 
     @Override
@@ -34,6 +36,7 @@ public class CreateClubActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         fsClient = FirebaseFirestore.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
     }
 
     public void createClub(View view) {
@@ -63,6 +66,10 @@ public class CreateClubActivity extends AppCompatActivity {
 
                     }
                 });
+        String clubId=fsClient.collection("Clubs").document().getId().toString();
+        firebaseDatabase.getReference("Clubs").child(clubId).child("messageID").child("Chats").setValue("HEllo");
+
+
     }
 
 }
