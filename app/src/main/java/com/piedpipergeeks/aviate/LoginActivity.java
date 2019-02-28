@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button signInButton;
     private FirebaseUser currentUser;
-    private String userType = "user";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +49,11 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         fsClient.setFirestoreSettings(settings);
 
-        Intialiaze();
-        SignIn();
-    }
-
-    protected void Intialiaze() {
         emailEditText = (EditText) findViewById(R.id.email_login_edittext);
         passwordEditText = (EditText) findViewById(R.id.password_login_edittext);
         signInButton = (Button) findViewById(R.id.signin_login_button);
+
+        signIn();
     }
 
     private void showHelp() {
@@ -79,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this, "Function called", Toast.LENGTH_SHORT).show();
     }
 
-    protected void SignIn() {
+    protected void signIn() {
         signInButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -99,17 +97,49 @@ public class LoginActivity extends AppCompatActivity {
 
                                     toHomeScreen();
 
-                                    //use shared pref to optimize the following call to set email verified to true
+                                    final SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                    if (pref.contains("emailVerified")) {
+                                        if (! Boolean.valueOf(pref.getString("emailVerified", ""))) {
+                                            fsClient.collection("Users")
+                                                    .document(lAuth.getCurrentUser().getUid())
+                                                    .update("emailVerified", true)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
 
-                                    fsClient.collection("Users")
-                                            .document(lAuth.getCurrentUser().getUid())
-                                            .update("emailVerified", true)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
+                                                        }
+                                                    });
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString("emailVerified", String.valueOf(true));
+                                            editor.apply();
+                                        }
+                                    }
+                                    else {
 
-                                                }
-                                            });
+                                        fsClient.collection("Users")
+                                                .document(lAuth.getUid())
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot snapshot = task.getResult();
+                                                            Profile user = snapshot.toObject(Profile.class);
+
+                                                            SharedPreferences.Editor editor = pref.edit();
+                                                            editor.putString("userId", user.getUserId());
+                                                            editor.putString("userType", user.getUserType());
+                                                            editor.putString("firstName", user.getFirstName());
+                                                            editor.putString("lastName", user.getLastName());
+                                                            editor.putString("email", user.getEmail());
+                                                            editor.putString("emailVerified", String.valueOf(user.isEmailVerified()));
+                                                            editor.putString("phoneNumber", user.getPhoneNumber());
+                                                            editor.apply();
+                                                        }
+                                                    }
+                                                });
+
+                                    }
 
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first", Toast.LENGTH_SHORT).show();

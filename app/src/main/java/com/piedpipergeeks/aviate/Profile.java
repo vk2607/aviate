@@ -11,6 +11,7 @@ public class Profile {
 
     private String userId, userType;
     private String firstName, lastName, phoneNumber, aadharNumber, email;
+    private Boolean emailVerified;
     private ArrayList<String> haves, wants;
     private Map<String, String> dob;
 
@@ -38,6 +39,7 @@ public class Profile {
 //        pref.
 //    }
 
+
     public Profile() {
         haves = new ArrayList<>();
         wants = new ArrayList<>();
@@ -49,6 +51,14 @@ public class Profile {
         dob.put("month", month);
         dob.put("year", year);
         this.dob = dob;
+    }
+
+    public Boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 
     public String getUserType() {

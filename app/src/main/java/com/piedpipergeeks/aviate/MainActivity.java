@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
 
     ProgressBar progressBar;
-    String userType = "user";
 
     SharedPreferences preferences;
     private static final String MyPREFERENCES = "MyPrefs";
@@ -123,19 +122,9 @@ public class MainActivity extends AppCompatActivity {
 //                .setValue(message);
 
 
-
         sharedPreferencesLogin();
 
-//        defaultLogin();
-////        DefaultLogin();
-
     }
-
-
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -168,29 +157,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
     }
 
-    public void DefaultLogin() {
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null && currentUser.isEmailVerified()) {
-            Intent homeScreenIntent;
-            if (userType.equals("user")) {
-//                Toast.makeText(this, "Default is user", Toast.LENGTH_SHORT).show();
-                homeScreenIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
-            } else {
-                homeScreenIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
-            }
-            startActivity(homeScreenIntent);
-            finish();
-        }
-    }
-
     private void sharedPreferencesLogin() {
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if (sharedPreferences.contains("UserId")) {
-            Log.d("SHARED PREF", "SHARED PREFERENCES CONTAINS USER ID");
-            if (sharedPreferences.getString("UserType", "").equals("user")) {
+        if (sharedPreferences.contains(USER_TYPE)) {
+            Log.d("SHARED PREF", "SHARED PREFERENCES CONTAINS USER");
+            if (sharedPreferences.getString(USER_TYPE, "").equals("user")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
-            } else if (sharedPreferences.getString("UserType", "").equals("admin")) {
+            } else if (sharedPreferences.getString(USER_TYPE, "").equals("admin")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
             }
         } else {
@@ -246,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-//                                Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
                                 DocumentSnapshot snapshot = task.getResult();
                                 try {
                                     if (snapshot.get("userType").equals("user")) {
@@ -267,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
                             Log.d("QUERY", e.toString());
                         }
                     });
