@@ -127,10 +127,10 @@ public class DiscoverFragment extends Fragment {
         Profile user = new Profile();
         user.setFirstName("Adwait");
         user.setLastName("Bhope");
-        user.setBusinessName("Alchem Services");
-        user.setBusinessCategory("Electronics");
-        user.setBusinessDescription("Alchem Services is an authorized service center for Canon EOS DSLRs");
-        user.setBio("I am an enthusiastic entrepreneur who likes to grow by collaborating with other electronics manufacturers");
+//        user.setBusinessName("Alchem Services");
+//        user.setBusinessCategory("Electronics");
+//        user.setBusinessDescription("Alchem Services is an authorized service center for Canon EOS DSLRs");
+//        user.setBio("I am an enthusiastic entrepreneur who likes to grow by collaborating with other electronics manufacturers");
         user.addHaves("Servicing");
         user.addHaves("Part replacement");
         user.addWants("Eletronic products");

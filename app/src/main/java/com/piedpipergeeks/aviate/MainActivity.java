@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     FirebaseFirestore fsClient;
+    ProgressBar progressBar;
     String userType = "user";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         fsClient.setFirestoreSettings(settings);
 
+        progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
         defaultLogin();
-        DefaultLogin();
+//        DefaultLogin();
 
     }
 
@@ -128,11 +133,13 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     if (snapshot.get("userType").equals("user")) {
 //                                function call is checked
-//                                startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
-//                                finish();
-                                    } else {
-//                                startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
-//                                finish();
+//                                        progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+                                        finish();
+                                    } else if (snapshot.get("userType").equals("admin")) {
+//                                        progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+                                        finish();
                                     }
                                 } catch (Exception e) {
                                     Log.d("QUERY", e.toString());
@@ -147,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("QUERY", e.toString());
                         }
                     });
+        }
+        if (currentUser == null) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

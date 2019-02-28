@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -131,16 +134,54 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void toHomeScreen() {
-        Intent homeScreenIntent;
-        if (userType.equals("user")) {
-            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenUserActivity.class);
-        } else {
-            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenActivity.class);
-        }
-        startActivity(homeScreenIntent);
-        finish();
+//    protected void toHomeScreen() {
+//        Intent homeScreenIntent;
+//        if (userType.equals("user")) {
+//            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenUserActivity.class);
+//        } else {
+//            homeScreenIntent = new Intent(LoginActivity.this, HomeScreenActivity.class);
+//        }
+//        startActivity(homeScreenIntent);
+//        finish();
+//    }
 
+    public void toHomeScreen() {
+        currentUser = lAuth.getCurrentUser();
+        String userId;
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            userId = currentUser.getUid();
+            fsClient.collection("Users")
+                    .document(userId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
+                                DocumentSnapshot snapshot = task.getResult();
+                                try {
+                                    if (snapshot.get("userType").equals("user")) {
+                                        startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
+                                        finish();
+                                    } else if (snapshot.get("userType").equals("admin")) {
+                                        startActivity(new Intent(LoginActivity.this, HomeScreenActivity.class));
+                                        finish();
+                                    }
+                                } catch (Exception e) {
+                                    Log.d("QUERY", e.toString());
+                                    startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
+                                    }
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(LoginActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
+                            Log.d("QUERY", e.toString());
+                        }
+                    });
+        }
     }
 
 
