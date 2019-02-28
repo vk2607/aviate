@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +30,13 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore fsClient;
     ProgressBar progressBar;
     String userType = "user";
+    public static final String MyPREFERENCES = "MyPrefs";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 //        startActivity(new Intent(MainActivity.this, PickClubActivity.class));
 
@@ -57,103 +62,122 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
-        defaultLogin();
-//        DefaultLogin();
+        SharedPreferencesLogin();
+
+//        defaultLogin();
+////        DefaultLogin();
 
     }
 
+    private void SharedPreferencesLogin() {
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if (sharedPreferences.contains("UserId")) {
+            if (sharedPreferences.getString("UserId", "").equals("user")) {
+                Toast.makeText(this, "Default is user", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+            } else if (sharedPreferences.getString("UserId", "").equals("admin")) {
+                Toast.makeText(this, "Default is admin", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+            }
+
+        }
+    }
 //    @Override
 //    public void onFragmentInteraction(Uri uri) {
 //
 //    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public boolean onOptionsItemSelected (MenuItem item){
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
-
-    public void toSignInActivity(View view) {
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-    }
-
-    public void toSignUpeEntrepreneurActivity(View view) {
-        startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
-    }
-
-    public void DefaultLogin() {
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null && currentUser.isEmailVerified()) {
-            Intent homeScreenIntent;
-            if (userType.equals("user")) {
-                Toast.makeText(this, "Default is user", Toast.LENGTH_SHORT).show();
-                homeScreenIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
-            } else {
-                homeScreenIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {
+                return true;
             }
-            startActivity(homeScreenIntent);
-            finish();
-        }
-    }
 
-    public void defaultLogin() {
-        currentUser = mAuth.getCurrentUser();
-        String userId;
-        if (currentUser != null && currentUser.isEmailVerified()) {
-            userId = currentUser.getUid();
-            fsClient.collection("Users")
-                    .document(userId)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
-                                DocumentSnapshot snapshot = task.getResult();
-                                try {
-                                    if (snapshot.get("userType").equals("user")) {
+            return super.onOptionsItemSelected(item);
+        }
+
+
+        public void toSignInActivity (View view){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+
+        public void toSignUpeEntrepreneurActivity (View view){
+            startActivity(new Intent(MainActivity.this, RegisterEntrepreneurActivity.class));
+        }
+
+        public void DefaultLogin () {
+            currentUser = mAuth.getCurrentUser();
+            if (currentUser != null && currentUser.isEmailVerified()) {
+                Intent homeScreenIntent;
+                if (userType.equals("user")) {
+                    Toast.makeText(this, "Default is user", Toast.LENGTH_SHORT).show();
+                    homeScreenIntent = new Intent(MainActivity.this, HomeScreenUserActivity.class);
+                } else {
+                    homeScreenIntent = new Intent(MainActivity.this, HomeScreenActivity.class);
+                }
+                startActivity(homeScreenIntent);
+                finish();
+            }
+        }
+
+
+        public void defaultLogin () {
+            currentUser = mAuth.getCurrentUser();
+            String userId;
+
+            if (currentUser != null && currentUser.isEmailVerified()) {
+                userId = currentUser.getUid();
+
+                fsClient.collection("Users")
+                        .document(userId)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(MainActivity.this, "Query successful", Toast.LENGTH_SHORT).show();
+                                    DocumentSnapshot snapshot = task.getResult();
+                                    try {
+                                        if (snapshot.get("userType").equals("user")) {
 //                                function call is checked
 //                                        progressBar.setVisibility(View.GONE);
-                                        startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
-                                        finish();
-                                    } else if (snapshot.get("userType").equals("admin")) {
+                                            startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+                                            finish();
+                                        } else if (snapshot.get("userType").equals("admin")) {
 //                                        progressBar.setVisibility(View.GONE);
-                                        startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
-                                        finish();
+                                            startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+                                            finish();
+                                        }
+                                    } catch (Exception e) {
+                                        Log.d("QUERY", e.toString());
                                     }
-                                } catch (Exception e) {
-                                    Log.d("QUERY", e.toString());
                                 }
                             }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
-                            Log.d("QUERY", e.toString());
-                        }
-                    });
-        }
-        if (currentUser == null) {
-            progressBar.setVisibility(View.GONE);
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this, "Query failed, check logs", Toast.LENGTH_SHORT).show();
+                                Log.d("QUERY", e.toString());
+                            }
+                        });
+            }
+            if (currentUser == null) {
+                progressBar.setVisibility(View.GONE);
+            }
         }
     }
-}

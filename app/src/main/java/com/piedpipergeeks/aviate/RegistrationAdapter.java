@@ -17,16 +17,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class RegistrationAdapter extends RecyclerView.Adapter<RegistrationAdapter.VHolder> {
-    ArrayList<Profile> users;
-    Context context;
-    int pos;
 
-    public RegistrationAdapter(ArrayList<Profile> users, Context context) {
+public class RegistrationAdapter extends  RecyclerView.Adapter<RegistrationAdapter.VHolder>{
+        ArrayList<Profile>users;
+        Context context;
+        int pos;
+    public RegistrationAdapter (ArrayList<Profile> users, Context context) {
         this.users = users;
         this.context = context;
     }
-
     @NonNull
     @Override
     public RegistrationAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -37,9 +36,9 @@ public class RegistrationAdapter extends RecyclerView.Adapter<RegistrationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        Profile user = users.get(position);
-        pos = position;
-        vHolder.name.setText(user.getFirstName() + " " + user.getLastName());
+        Profile user=users.get(position);
+        pos=position;
+        vHolder.name.setText(user.getFirstName()+ " "+user.getLastName());
         vHolder.email.setText(user.getEmail());
         vHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +50,10 @@ public class RegistrationAdapter extends RecyclerView.Adapter<RegistrationAdapte
 
     private void selectClub(VHolder vHolder) {
         Profile user = users.get(vHolder.getAdapterPosition());
-        Intent intent = new Intent(context, PickClubActivity.class);
-        intent.putExtra("firstname", user.getFirstName());
-        intent.putExtra("userId", user.getUserId());
+        Intent intent=new Intent(context,PickClubActivity.class);
+        intent.putExtra("firstname",user.getFirstName());
+        intent.putExtra("userId",user.getUserId());
+        intent.putExtra("lastname",user.getLastName());
         context.startActivity(intent);
     }
 
@@ -64,13 +64,12 @@ public class RegistrationAdapter extends RecyclerView.Adapter<RegistrationAdapte
 
     public class VHolder extends RecyclerView.ViewHolder {
 
-        TextView name, email;
+        TextView name,email;
         FloatingActionButton addUser;
-
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.user_name_registration);
-            email = (TextView) itemView.findViewById(R.id.user_email_registration);
+            email=(TextView)itemView.findViewById(R.id.user_email_registration);
             addUser = (FloatingActionButton) itemView.findViewById(R.id.add_user_button_registration);
         }
     }

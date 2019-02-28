@@ -15,12 +15,16 @@ import java.util.List;
 
 public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1> {
     private Context mcontext;
-    private List<Groups> mgroups;
+    private List<Club> mgroups;
     int pos;
 
-    public ChatsAdapter(Context context, List<Groups> groups) {
+    public ChatsAdapter(Context context, List<Club> groups) {
         this.mcontext = context;
         this.mgroups = groups;
+    }
+
+    public void updateData(ArrayList<Club> data) {
+        this.mgroups = data;
     }
 
     @NonNull
@@ -33,15 +37,15 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1>
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder1 viewHolder1, int position) {
-        final Groups groups = mgroups.get(position);
+        final Club groups = mgroups.get(position);
         pos = position;
 
         viewHolder1.groupName.setText(groups.getName());
         viewHolder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(mcontext,MessageActivity.class);
-                intent.putExtra("clubname",groups.getName());
+                Intent intent = new Intent(mcontext, MessageActivity.class);
+                intent.putExtra("clubname", groups.getName());
                 mcontext.startActivity(intent);
             }
         });

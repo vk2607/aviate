@@ -22,7 +22,7 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
     ArrayList<Club> clubs;
     Context context;
     int pos;
-    String firstname, userId;
+    String firstname,lastname, userId;
     Bundle bundle;
 
     public PickClubAdapter(ArrayList<Club> clubs, Context context) {
@@ -30,8 +30,9 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
         this.context = context;
     }
 
-    public void setData(String firstname, String userId) {
+    public void setData(String firstname,String lastname, String userId) {
         this.firstname = firstname;
+        this.lastname=lastname;
         this.userId = userId;
     }
 
@@ -52,17 +53,21 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
                 new AlertDialog.Builder(context)
                         .setIcon(null)
 //                        .setTitle("Add to "+ club.getName())
-                        .setMessage("Are you sure you want to add " + firstname + "to " + club.getName() + "?")
+                        .setMessage("Are you sure you want to add " + firstname + " "+lastname+" in " + club.getName() + "?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                addToClub(userId,club.getClubId());
                             }
                         })
                         .setNegativeButton(android.R.string.no, null)
                         .show();
             }
         });
+    }
+
+    private void addToClub(String userId, String clubId) {
+        Toast.makeText(context,"Added in the club Successfully....",Toast.LENGTH_SHORT).show();
     }
 
     private void openClub(PickClubAdapter.VHolder vHolder) {
