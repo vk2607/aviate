@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class CreateClubActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         fsClient = FirebaseFirestore.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
     public void createClub(View view) {
@@ -48,8 +49,14 @@ public class CreateClubActivity extends AppCompatActivity {
         club.setInfo(clubInfo);
         club.addAdmin(auth.getUid());
 
-        fsClient.collection("Clubs")
+        String clubId = fsClient.collection("Clubs")
                 .document()
+                .getId();
+
+        Log.d("DOC ID", clubId);
+
+        fsClient.collection("Clubs")
+                .document(clubId)
                 .set(club.getMap())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -66,8 +73,18 @@ public class CreateClubActivity extends AppCompatActivity {
 
                     }
                 });
-        String clubId=fsClient.collection("Clubs").document().getId().toString();
-        firebaseDatabase.getReference("Clubs").child(clubId).child("messageID").child("Chats").setValue("HEllo");
+
+//
+//        String clubId = fsClient.collection("Clubs")
+//                .document()
+//                .getId()
+//                .toString();
+//
+//        firebaseDatabase.getReference("Clubs")
+//                .child(clubId)
+//                .child("messageID")
+//                .child("Chats")
+//                .setValue("HEllo");
 
 
     }
