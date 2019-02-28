@@ -1,8 +1,10 @@
 package com.piedpipergeeks.aviate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,24 +39,20 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
         Log.d("BIND", "BIND FUNCTION CALLED");
-        Club club = users.get(position);
-//        pos = position;
+        final Club club = users.get(position);
         vHolder.name.setText(club.getName());
-//        vHolder.clubCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openClub(vHolder);
-//            }
-//        });
+        vHolder.clubCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("clubname", club.getName());
+                context.startActivity(intent);
+            }
+        });
     }
 
     public void updateData(ArrayList<Club> display_list) {
         this.users = display_list;
-    }
-
-    private void openClub(VHolder vHolder) {
-        Club club = users.get(vHolder.getAdapterPosition());
-
     }
 
     @Override
@@ -65,12 +63,12 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
 
     public class VHolder extends RecyclerView.ViewHolder {
         TextView name;
-//        CardView clubCard;
+        CardView clubCard;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.club_name);
-//            clubCard = (CardView) itemView.findViewById(R.id.club_card);
+            clubCard = (CardView) itemView.findViewById(R.id.club_card);
         }
     }
 }

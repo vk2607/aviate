@@ -110,9 +110,9 @@ public class CalendarFragment extends Fragment {
                                 int y = time.getYear();
 
                                 if (d == day && m.equals(months[month]) && y == year) {
-                                    Log.d("LIST", "ADDED EVENT TO LIST");
+//                                    Log.d("LIST", "ADDED EVENT TO LIST");
                                     events.add(event);
-                                    Log.d("ADDING EVENT", String.valueOf(events.size()));
+//                                    Log.d("ADDING EVENT", String.valueOf(events.size()));
                                 }
 
                             }

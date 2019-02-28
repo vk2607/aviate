@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
+    String clubId;
+
     private RecyclerView mMessageRecycler;
     private ArrayList<Messages> mMessageList = new ArrayList<>();
     private MessageListAdapter mMessageAdapter;
@@ -34,6 +37,10 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 //      Toolbar toolbar=findViewById(R.id.too)
+
+        Intent intent = getIntent();
+        clubId = intent.getStringExtra("clubId");
+
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
 
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
@@ -64,7 +71,7 @@ public class MessageActivity extends AppCompatActivity {
 
         mMessageAdapter.addMessage(message);
         mMessageAdapter.addMessage(message2);
-        for(int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             mMessageAdapter.addMessage(message);
         }
 

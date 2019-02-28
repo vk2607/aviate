@@ -8,11 +8,13 @@ import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -94,6 +96,28 @@ public class RegistrationFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
 
         fsClient = FirebaseFirestore.getInstance();
+//
+//        fsClient.collection("Users")
+//                .whereEqualTo("firstName", "adwait")
+//                .whereEqualTo("firstName", "Adwait")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                Log.d("QUERY", snapshot.getData().toString());
+//                            }
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d("QUERY FAIL", e.toString());
+//                    }
+//                });
+
         fsClient.collection("Users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
