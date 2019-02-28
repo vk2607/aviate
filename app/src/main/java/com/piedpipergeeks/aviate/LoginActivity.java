@@ -76,10 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void resendVerificationEmail(View view) {
-
         Toast.makeText(LoginActivity.this, "Function called", Toast.LENGTH_SHORT).show();
-
-
     }
 
     protected void SignIn() {
