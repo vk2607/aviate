@@ -33,7 +33,7 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
-    String clubId;
+    String clubId, clubName;
     ArrayList<Messages> chats;
 
     private RecyclerView mMessageRecycler;
@@ -52,6 +52,9 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         clubId = (String) intent.getStringExtra("clubId");
         Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
+        clubName = intent.getStringExtra("clubName");
+
+        getSupportActionBar().setTitle(clubName);
 
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
         messageTextView = (TextView) findViewById(R.id.edittext_chatbox);
