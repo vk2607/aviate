@@ -9,13 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder> {
-    ArrayList<Profile> members;
+    //    ArrayList<Profile> members;
+    ArrayList<Map> members;
     Context context;
     int pos;
 
-    public MembersAdapter(ArrayList<Profile> members, Context context) {
+    public MembersAdapter(ArrayList<Map> members, Context context) {
         this.members = members;
         this.context = context;
     }
@@ -30,9 +32,24 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
-        Profile member = members.get(position);
-        pos = position;
-        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
+//        Profile member = members.get(position);
+        Map<String, Object> member = members.get(position);
+//        pos = position;
+        vHolder.name.setText(String.valueOf(member.get("userName")));
+
+        if (member.get("userType").equals("admin")) {
+            vHolder.position.setText("Admin");
+        } else if (member.get("userType").equals("guest")) {
+            vHolder.position.setText("Guest");
+        } else if (member.get("userType").equals("president")) {
+            vHolder.position.setText("President");
+        } else if (member.get("userType").equals("secretary")) {
+            vHolder.position.setText("Secretary");
+        } else {
+            vHolder.position.setText("");
+        }
+
+//        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
     }
 
     @Override
@@ -41,11 +58,12 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView name, position;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.member_name_text);
+            position = (TextView) itemView.findViewById((R.id.member_position_text));
         }
     }
 }

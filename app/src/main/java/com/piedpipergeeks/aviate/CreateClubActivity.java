@@ -1,7 +1,9 @@
 package com.piedpipergeeks.aviate;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ public class CreateClubActivity extends AppCompatActivity {
     FirebaseFirestore fsClient;
     FirebaseDatabase firebaseDatabase;
     Club club = new Club();
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,11 @@ public class CreateClubActivity extends AppCompatActivity {
                 .document()
                 .getId();
 
+        pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
         club.setName(clubName);
         club.setInfo(clubInfo);
-        club.addAdmin(auth.getUid());
+        club.addAdmin(auth.getUid(), pref.getString("firstName", "") + " " + pref.getString("lastName", ""));
         club.setClubId(clubId);
 
         Log.d("DOC ID", clubId);
