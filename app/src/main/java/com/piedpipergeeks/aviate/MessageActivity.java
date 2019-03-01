@@ -98,7 +98,18 @@ public class MessageActivity extends AppCompatActivity {
                 SendMessages();
             }
         });
-        UpdateMessages();
+        firebaseDatabase.getReference("Clubs").child(clubId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UpdateMessages();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         mMessageAdapter.notifyDataSetChanged();
 
