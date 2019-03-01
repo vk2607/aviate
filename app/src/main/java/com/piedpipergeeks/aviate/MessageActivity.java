@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,14 +52,22 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-//      Toolbar toolbar=findViewById(R.id.too)
 
         Intent intent = getIntent();
         clubId = (String) intent.getStringExtra("clubId");
 //        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
 
-        getSupportActionBar().setTitle(clubName);
+//        getSupportActionBar().setTitle(clubName);
+
+//        Toolbar actionBar = findViewById(R.id.message_toolbar);
+//        actionBar.setTitle(clubName);
+//        actionBar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
         messageTextView = (TextView) findViewById(R.id.edittext_chatbox);
@@ -83,6 +93,29 @@ public class MessageActivity extends AppCompatActivity {
         mMessageAdapter.notifyDataSetChanged();
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.action_club_info:
+                Intent intent = new Intent(MessageActivity.this, ClubDetails.class);
+                intent.putExtra("clubName", clubName);
+                intent.putExtra("clubId", clubId);
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void UpdateMessages() {

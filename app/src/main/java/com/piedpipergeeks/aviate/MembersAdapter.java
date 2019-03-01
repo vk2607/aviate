@@ -1,4 +1,5 @@
 package com.piedpipergeeks.aviate;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +14,12 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     ArrayList<Profile> members;
     Context context;
     int pos;
-    public MembersAdapter (ArrayList<Profile> members, Context context) {
+
+    public MembersAdapter(ArrayList<Profile> members, Context context) {
         this.members = members;
         this.context = context;
     }
+
     @NonNull
     @Override
     public VHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -27,8 +30,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
 
     @Override
     public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
-    Profile member=members.get(position);
-    pos=position;
+        Profile member = members.get(position);
+        pos = position;
         vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
     }
 
@@ -36,11 +39,13 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     public int getItemCount() {
         return members.size();
     }
-    public class VHolder extends RecyclerView.ViewHolder{
-    TextView name;
+
+    public class VHolder extends RecyclerView.ViewHolder {
+        TextView name;
+
         public VHolder(@NonNull View itemView) {
             super(itemView);
-            name=(TextView)itemView.findViewById(R.id.member_name_text);
+            name = (TextView) itemView.findViewById(R.id.member_name_text);
         }
     }
 }
