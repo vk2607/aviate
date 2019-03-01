@@ -95,26 +95,84 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (lAuth.getCurrentUser().isEmailVerified()) {
 
-                                    toHomeScreen();
-
                                     final SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                                    if (pref.contains("emailVerified")) {
-                                        if (! Boolean.valueOf(pref.getString("emailVerified", ""))) {
-                                            fsClient.collection("Users")
-                                                    .document(lAuth.getCurrentUser().getUid())
-                                                    .update("emailVerified", true)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
 
+                                    if (pref.contains("userId")) {
+
+                                        if (pref.getString("userId", "").equals(lAuth.getUid())) {
+
+                                            if (pref.getString("emailVerified", "").equals("true")) {
+                                                //create new process to
+                                                //set email verified to true in firestore
+
+                                                fsClient.collection("Users")
+                                                        .document(lAuth.getCurrentUser().getUid())
+                                                        .update("emailVerified", true)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                            }
+                                                        });
+
+                                            } else {
+
+                                                //update emailVerified to true in shared pref
+                                                //update emailVerified to true in firestore
+
+                                                SharedPreferences.Editor editor = pref.edit();
+                                                editor.putString("emailVerified", "true");
+                                                editor.apply();
+
+                                                fsClient.collection("Users")
+                                                        .document(lAuth.getCurrentUser().getUid())
+                                                        .update("emailVerified", true)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                            }
+                                                        });
+
+                                            }
+
+                                        } else {
+                                            //means shared pref user does not match user that is trying to sign in
+                                            //create new process to get user details from firestore
+                                            //and store them in shared pref
+
+                                            fsClient.collection("Users")
+                                                    .document(lAuth.getUid())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot snapshot = task.getResult();
+                                                                Profile user = snapshot.toObject(Profile.class);
+
+                                                                SharedPreferences.Editor editor = pref.edit();
+                                                                editor.putString("userId", user.getUserId());
+                                                                editor.putString("userType", user.getUserType());
+                                                                editor.putString("firstName", user.getFirstName());
+                                                                editor.putString("lastName", user.getLastName());
+                                                                editor.putString("email", user.getEmail());
+                                                                editor.putString("emailVerified", String.valueOf(user.isEmailVerified()));
+                                                                editor.putString("phoneNumber", user.getPhoneNumber());
+                                                                editor.apply();
+                                                            }
                                                         }
                                                     });
-                                            SharedPreferences.Editor editor = pref.edit();
-                                            editor.putString("emailVerified", String.valueOf(true));
-                                            editor.apply();
+
                                         }
+
+
                                     }
+
                                     else {
+                                        //shared pref contains no data
+                                        //get data from firestore and update it
+                                        //in shared pref
 
                                         fsClient.collection("Users")
                                                 .document(lAuth.getUid())
@@ -141,6 +199,10 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
 
+                                    //finally go to homescreen
+                                    toHomeScreen();
+
+
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first", Toast.LENGTH_SHORT).show();
                                     showHelp();
@@ -161,6 +223,31 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getUserAndUpdateSharedPreferences(final String uid) {
+        fsClient.collection("Users")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            Profile user = snapshot.toObject(Profile.class);
+
+                            SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("userId", uid);
+                            editor.putString("userType", user.getUserType());
+                            editor.putString("firstName", user.getFirstName());
+                            editor.putString("lastName", user.getLastName());
+                            editor.putString("email", user.getEmail());
+                            editor.putString("phoneNumber", user.getPhoneNumber());
+                            editor.apply();
+                        }
+                    }
+                });
     }
 
 //    protected void toHomeScreen() {
@@ -199,7 +286,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     Log.d("QUERY", e.toString());
                                     startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
-                                    }
+                                }
                             }
                         }
                     })
