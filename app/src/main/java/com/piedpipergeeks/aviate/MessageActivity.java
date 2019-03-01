@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +44,7 @@ public class MessageActivity extends AppCompatActivity {
     private ImageButton imageButton;
     private FirebaseDatabase firebaseDatabase;
     private TextView messageTextView;
+    private SharedPreferences sharedPreferences;
     private FirebaseAuth firebaseAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class MessageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         clubId = (String) intent.getStringExtra("clubId");
-        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
 
         getSupportActionBar().setTitle(clubName);
@@ -62,6 +65,7 @@ public class MessageActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        sharedPreferences=getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
         mMessageRecycler.setLayoutManager(manager);
@@ -83,7 +87,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void UpdateMessages() {
         chats = new ArrayList<>();
-        firebaseDatabase.getReference("Clubs").child("e1JFScf7g2qFFfcjnOP4").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("Clubs").child(clubId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chats.clear();
@@ -112,14 +116,14 @@ public class MessageActivity extends AppCompatActivity {
             Profile user = new Profile();
 //        Profile user2 = new Profile();
 
-            user.setFirstName("Vinod");
+            user.setFirstName(sharedPreferences.getString("firstName",""));
             user.setUserId(FirebaseAuth.getInstance().getUid());
             message.setMessage(text);
             message.setSender(user);
             mMessageAdapter.addMessage(message);
             messageTextView.setText("");
-            String messageUniqueKey = firebaseDatabase.getReference("Clubs").child("e1JFScf7g2qFFfcjnOP4").push().getKey();
-            firebaseDatabase.getReference("Clubs").child("e1JFScf7g2qFFfcjnOP4").child(messageUniqueKey).setValue(message);
+            String messageUniqueKey = firebaseDatabase.getReference("Clubs").child(clubId).push().getKey();
+            firebaseDatabase.getReference("Clubs").child(clubId).child(messageUniqueKey).setValue(message);
 //        message.setMessage("HELLO");
 //        message.setSender(user1);
 //
