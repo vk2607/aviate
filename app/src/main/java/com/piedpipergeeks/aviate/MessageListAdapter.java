@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.ls.LSException;
@@ -99,8 +104,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText("11pm");
-            nameText.setText(message.getSender().getFirstName());
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = dateFormat.format(message.getDate()).substring(0, 5);
+            timeText.setText(time);
+            nameText.setText(message.getSender().getFirstName() + " " + message.getSender().getLastName());
 
 
         }
@@ -120,7 +127,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText("11:05 pm");
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            timeText.setText(dateFormat.format(message.getDate()).substring(0, 5));
         }
     }
 
