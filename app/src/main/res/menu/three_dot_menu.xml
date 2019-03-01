@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_president"
+        android:title="Set as President"/>
+    <item
+        android:id="@+id/menu_secretary"
+        android:title="Set as Secretary" />
+    <item
+        android:id="@+id/menu_remove"
+        android:title="Remove from club" />
+
+</menu>
