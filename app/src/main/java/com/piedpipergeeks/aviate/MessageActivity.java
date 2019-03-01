@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,7 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import java.util.Calendar;
+import java.util.Date;
 
+
+
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +46,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
     String clubId, clubName;
+
     ArrayList<Messages> chats;
 
     private RecyclerView mMessageRecycler;
@@ -46,18 +57,27 @@ public class MessageActivity extends AppCompatActivity {
     private TextView messageTextView;
     private SharedPreferences sharedPreferences;
     private FirebaseAuth firebaseAuth;
+    private String time;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-//      Toolbar toolbar=findViewById(R.id.too)
 
         Intent intent = getIntent();
         clubId = (String) intent.getStringExtra("clubId");
 //        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
 
-        getSupportActionBar().setTitle(clubName);
+//        getSupportActionBar().setTitle(clubName);
+
+//        Toolbar actionBar = findViewById(R.id.message_toolbar);
+//        actionBar.setTitle(clubName);
+//        actionBar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
         messageTextView = (TextView) findViewById(R.id.edittext_chatbox);
@@ -83,6 +103,29 @@ public class MessageActivity extends AppCompatActivity {
         mMessageAdapter.notifyDataSetChanged();
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.action_club_info:
+                Intent intent = new Intent(MessageActivity.this, ClubDetails.class);
+                intent.putExtra("clubName", clubName);
+                intent.putExtra("clubId", clubId);
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void UpdateMessages() {
@@ -114,12 +157,22 @@ public class MessageActivity extends AppCompatActivity {
         String text = messageTextView.getText().toString();
         if (!text.isEmpty()) {
             Profile user = new Profile();
+            Calendar cal = Calendar.getInstance();
+
+            Date date=cal.getTime();
+
+//            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//
+//            time=dateFormat.format(date).substring(0,5);
+
 //        Profile user2 = new Profile();
 
             user.setFirstName(sharedPreferences.getString("firstName",""));
+            user.setLastName(sharedPreferences.getString("lastName",""));
             user.setUserId(FirebaseAuth.getInstance().getUid());
             message.setMessage(text);
             message.setSender(user);
+            message.setDate(date);
             mMessageAdapter.addMessage(message);
             messageTextView.setText("");
             String messageUniqueKey = firebaseDatabase.getReference("Clubs").child(clubId).push().getKey();

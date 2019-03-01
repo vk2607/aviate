@@ -17,6 +17,9 @@ public class ClubDetails extends AppCompatActivity {
     LinearLayoutManager manager;
     MembersAdapter membersAdapter;
     Boolean isScrolling = false;
+
+    String clubId, clubName;
+
     ArrayList<Profile> display_list = new ArrayList<>();
 
     @Override
@@ -26,7 +29,10 @@ public class ClubDetails extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        clubId = getIntent().getStringExtra("clubId");
+        clubName = getIntent().getStringExtra("clubName");
+
+//        FloatingActionButton fab = findViewById(R.id.fab);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_member_list);
         manager = new LinearLayoutManager(this);
         Profile member = new Profile();
@@ -40,13 +46,13 @@ public class ClubDetails extends AppCompatActivity {
         recyclerView.setAdapter(membersAdapter);
         recyclerView.setLayoutManager(manager);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
 

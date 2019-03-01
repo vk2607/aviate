@@ -24,7 +24,8 @@
             android:label="Select club"
             android:parentActivityName=".HomeScreenActivity"/>
 
-        <activity android:name=".MessageActivity" />
+        <activity android:name=".MessageActivity"
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".HomeScreenUserActivity"
