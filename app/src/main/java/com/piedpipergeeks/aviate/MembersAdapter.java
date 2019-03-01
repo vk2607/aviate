@@ -15,14 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder> {
-    ArrayList<Profile> members;
+    //    ArrayList<Profile> members;
+    ArrayList<Map> members;
     Context context;
     int pos;
     String firstname, lastname, userId, clubId;
 
-    public MembersAdapter(ArrayList<Profile> members, Context context) {
+    public MembersAdapter(ArrayList<Map> members, Context context) {
         this.members = members;
         this.context = context;
     }
@@ -40,10 +42,26 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        final Profile member = members.get(position);
-        pos = position;
-        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
+
+public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
+//         final Profile member = members.get(position);
+        Map<String, Object> member = members.get(position);
+//         pos = position;
+   
+        vHolder.name.setText(String.valueOf(member.get("userName")));
+        
+        if (member.get("userType").equals("admin")) {
+            vHolder.position.setText("Admin");
+        } else if (member.get("userType").equals("guest")) {
+            vHolder.position.setText("Guest");
+        } else if (member.get("userType").equals("president")) {
+            vHolder.position.setText("President");
+        } else if (member.get("userType").equals("secretary")) {
+            vHolder.position.setText("Secretary");
+        } else {
+            vHolder.position.setText("");
+        }
+  
         vHolder.threeDOt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,11 +76,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                             case R.id.menu_secretary:
                                 new AlertDialog.Builder(context)
                                         .setIcon(null)
-                                        .setMessage("Set " + member.getFirstName() + " " +member.getLastName() + " as Secretary ?")
+                                        .setMessage("Set " + String.valueOf(member.get("userName")) + " as Secretary?")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                AddSecretary(vHolder,member.getUserId(), clubId);
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -71,11 +89,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                             case R.id.menu_president:
                                 new AlertDialog.Builder(context)
                                         .setIcon(null)
-                                        .setMessage("Set " + member.getFirstName() + " " +member.getLastName() + " as President ?")
+                                        .setMessage("Set " + String.valueOf(member.get("userName")) + " as President?")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                AddSecretary(vHolder,member.getUserId(), clubId);
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -84,11 +102,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                             case R.id.menu_remove:
                                 new AlertDialog.Builder(context)
                                         .setIcon(null)
-                                        .setMessage("Remove " + member.getFirstName() + " " +member.getLastName() + " from group ? ")
+                                        .setMessage("Remove " + String.valueOf(member.get("userName")) + " from group? ")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                AddSecretary(vHolder,member.getUserId(), clubId);
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -104,6 +122,27 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
 
     private void AddSecretary(VHolder vHolder, String userId, String clubId) {
 
+// =======
+//     public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
+// //        Profile member = members.get(position);
+//         Map<String, Object> member = members.get(position);
+// //        pos = position;
+//         vHolder.name.setText(String.valueOf(member.get("userName")));
+
+//         if (member.get("userType").equals("admin")) {
+//             vHolder.position.setText("Admin");
+//         } else if (member.get("userType").equals("guest")) {
+//             vHolder.position.setText("Guest");
+//         } else if (member.get("userType").equals("president")) {
+//             vHolder.position.setText("President");
+//         } else if (member.get("userType").equals("secretary")) {
+//             vHolder.position.setText("Secretary");
+//         } else {
+//             vHolder.position.setText("");
+//         }
+
+// //        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
+// >>>>>>> master
     }
 
     @Override
@@ -112,12 +151,13 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
-        TextView name,threeDOt;
+        TextView name,threeDOt, position;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.member_name_text);
             threeDOt=(TextView)itemView.findViewById(R.id.threeDot);
+            position = (TextView) itemView.findViewById((R.id.member_position_text));
         }
 
     }

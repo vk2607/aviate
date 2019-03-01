@@ -4,7 +4,7 @@
 
     <!--<item-->
         <!--android:id="@+id/navigation_discover"-->
-        <!--android:icon="@drawable/baseline_supervisor_account_black_18dp"-->
+        <!--android:icon="@drawable/club_icon"-->
         <!--android:title="@string/title_notifications" />-->
 
     <!--<item-->
@@ -21,12 +21,12 @@
 
     <item
         android:id="@+id/navigation_chats"
-        android:icon="@drawable/round_chat_black_18dp"
+        android:icon="@drawable/club_icon"
         android:title="Clubs" />
 
     <item
         android:id="@+id/navigation_my_profile"
-        android:icon="@drawable/sharp_account_circle_black_18dp"
+        android:icon="@drawable/ic_registration"
         android:title="Registrations" />
 
 </menu>
