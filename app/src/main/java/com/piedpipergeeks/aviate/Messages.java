@@ -1,9 +1,20 @@
 package com.piedpipergeeks.aviate;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Messages {
     private String text;
     private Profile sender;
-    private int dd,mm,yy;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getMessage() {
         return text;
@@ -21,27 +32,5 @@ public class Messages {
         this.sender = sender;
     }
 
-    public int getDd() {
-        return dd;
-    }
 
-    public void setDd(int dd) {
-        this.dd = dd;
-    }
-
-    public int getMm() {
-        return mm;
-    }
-
-    public void setMm(int mm) {
-        this.mm = mm;
-    }
-
-    public int getYy() {
-        return yy;
-    }
-
-    public void setYy(int yy) {
-        this.yy = yy;
-    }
 }
