@@ -16,6 +16,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -106,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d("SHARED PREF", "SHARED PREFERENCES CONTAINS USER");
             if (sharedPreferences.getString(USER_TYPE, "").equals("user")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+                finish();
             } else if (sharedPreferences.getString(USER_TYPE, "").equals("admin")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+                finish();
             }
         } else {
             defaultLogin();
@@ -190,4 +197,7 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
     }
+
+
+
 }
