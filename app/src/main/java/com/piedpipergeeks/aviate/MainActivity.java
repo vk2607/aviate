@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         fsClient.setFirestoreSettings(settings);
-
+        database=FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 

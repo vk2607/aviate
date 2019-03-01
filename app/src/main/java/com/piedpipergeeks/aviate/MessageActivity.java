@@ -88,12 +88,15 @@ public class MessageActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
+        manager.setReverseLayout(false);
         mMessageRecycler.setLayoutManager(manager);
 
         mMessageAdapter = new MessageListAdapter(this, mMessageList);
+        mMessageAdapter.IntialiseDatabase();
         mMessageRecycler.setAdapter(mMessageAdapter);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,9 +104,9 @@ public class MessageActivity extends AppCompatActivity {
                 SendMessages();
             }
         });
-        UpdateMessages();
+       UpdateMessages();
 
-        mMessageAdapter.notifyDataSetChanged();
+//        mMessageAdapter.notifyDataSetChanged();
 
 
     }
@@ -132,14 +135,14 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void UpdateMessages() {
-        chats = new ArrayList<>();
+//        chats = new ArrayList<>();
         firebaseDatabase.getReference("Clubs")
                 .child(clubId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        chats.clear();
-                        mMessageAdapter.notifyDataSetChanged();
+//                        chats.clear();
+//                        mMessageAdapter.notifyDataSetChanged();
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             Messages chat = dataSnapshot1.getValue(Messages.class);
 

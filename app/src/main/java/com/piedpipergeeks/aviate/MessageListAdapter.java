@@ -17,9 +17,11 @@ import java.text.SimpleDateFormat;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.ls.LSException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -27,6 +29,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private Context mContext;
     private List<Messages> mMessageList;
+    private FirebaseDatabase firebaseDatabase;
+    private ArrayList<Messages> chats;
+    public void IntialiseDatabase(){
+        firebaseDatabase=FirebaseDatabase.getInstance();
+    }
+    public void UpdateMessages(){
+
+    }
 
     public MessageListAdapter(Context context, List<Messages> messagesList) {
         mContext = context;
