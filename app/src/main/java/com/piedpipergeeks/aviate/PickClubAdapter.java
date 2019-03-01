@@ -20,7 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolder> {
 
@@ -77,15 +80,22 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
 
         Toast.makeText(context, club.getName(), Toast.LENGTH_SHORT);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("members", FieldValue.arrayUnion(userId));
+        data.put("memberNames." + userId, firstname + " " + lastname);
+
         fsClient = FirebaseFirestore.getInstance();
         fsClient.collection("Clubs")
                 .document(club.getClubId())
-                .update("members", FieldValue.arrayUnion(userId))
+                .update(data)
+//                .update("memberNames." + userId, "");
+//                .update("members", FieldValue.arrayUnion(userId))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
+                            context.startActivity(new Intent(context, HomeScreenActivity.class));
                         }
                     }
                 });

@@ -19,9 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+
 import java.util.Calendar;
 import java.util.Date;
-
 
 
 import com.google.firebase.Timestamp;
@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.DateFormat;
 
 import java.text.SimpleDateFormat;
@@ -85,7 +86,7 @@ public class MessageActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        sharedPreferences=getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
         mMessageRecycler.setLayoutManager(manager);
@@ -116,7 +117,7 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_club_info:
                 Intent intent = new Intent(MessageActivity.this, ClubDetails.class);
                 intent.putExtra("clubName", clubName);
@@ -130,25 +131,27 @@ public class MessageActivity extends AppCompatActivity {
 
     private void UpdateMessages() {
         chats = new ArrayList<>();
-        firebaseDatabase.getReference("Clubs").child(clubId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                chats.clear();
-                mMessageAdapter.notifyDataSetChanged();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Messages chat = dataSnapshot1.getValue(Messages.class);
+        firebaseDatabase.getReference("Clubs")
+                .child(clubId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        chats.clear();
+                        mMessageAdapter.notifyDataSetChanged();
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            Messages chat = dataSnapshot1.getValue(Messages.class);
 
-                    mMessageAdapter.addMessage(chat);
-                    mMessageAdapter.notifyDataSetChanged();
+                            mMessageAdapter.addMessage(chat);
+                            mMessageAdapter.notifyDataSetChanged();
 
-                }
-            }
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
     public void SendMessages() {
@@ -159,7 +162,7 @@ public class MessageActivity extends AppCompatActivity {
             Profile user = new Profile();
             Calendar cal = Calendar.getInstance();
 
-            Date date=cal.getTime();
+            Date date = cal.getTime();
 
 //            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 //
@@ -167,8 +170,8 @@ public class MessageActivity extends AppCompatActivity {
 
 //        Profile user2 = new Profile();
 
-            user.setFirstName(sharedPreferences.getString("firstName",""));
-            user.setLastName(sharedPreferences.getString("lastName",""));
+            user.setFirstName(sharedPreferences.getString("firstName", ""));
+            user.setLastName(sharedPreferences.getString("lastName", ""));
             user.setUserId(FirebaseAuth.getInstance().getUid());
             message.setMessage(text);
             message.setSender(user);

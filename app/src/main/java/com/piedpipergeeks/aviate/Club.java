@@ -6,14 +6,28 @@ import java.util.Map;
 
 public class Club {
     private String info, name, president, secretary, clubId;
+    private String presidentName, secretaryName;
     private ArrayList<String> admins, members, guests;
+    private Map<String, Object> adminNames, memberNames, guestNames;
 
     public Club() {
         admins = new ArrayList<>();
+        adminNames = new HashMap<>();
+
         members = new ArrayList<>();
+        memberNames = new HashMap<>();
+
         guests = new ArrayList<>();
+        guestNames = new HashMap<>();
     }
 
+    public String getPresidentName() {
+        return presidentName;
+    }
+
+    public String getSecretaryName() {
+        return secretaryName;
+    }
 
     public String getClubId() {
         return clubId;
@@ -43,24 +57,39 @@ public class Club {
         return admins;
     }
 
-    public void addAdmin(String adminName) {
-        admins.add(adminName);
+    public void addAdmin(String adminId, String adminName) {
+        admins.add(adminId);
+        adminNames.put(adminId, adminName);
+    }
+
+    public Map<String, Object> getAdminNames() {
+        return adminNames;
+    }
+
+    public Map<String, Object> getGuestNames() {
+        return guestNames;
+    }
+
+    public Map<String, Object> getMemberNames() {
+        return memberNames;
     }
 
     public String getPresident() {
         return president;
     }
 
-    public void setPresident(String president) {
-        this.president = president;
+    public void setPresident(String presidentId, String presidentName) {
+        this.president = presidentId;
+        this.presidentName = presidentName;
     }
 
     public String getSecretary() {
         return secretary;
     }
 
-    public void setSecretary(String secretary) {
-        this.secretary = secretary;
+    public void setSecretary(String secretaryId, String secretaryName) {
+        this.secretary = secretaryId;
+        this.secretaryName = secretaryName;
     }
 
     public ArrayList<String> getMembers() {
@@ -88,8 +117,11 @@ public class Club {
         map.put("president", president);
         map.put("secretary", secretary);
         map.put("admins", admins);
+        map.put("adminNames", adminNames);
         map.put("members", members);
+        map.put("memberName", memberNames);
         map.put("guests", guests);
+        map.put("guestNames", guestNames);
 
         return map;
     }
