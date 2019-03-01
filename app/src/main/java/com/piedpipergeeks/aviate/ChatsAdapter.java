@@ -45,7 +45,8 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1>
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mcontext, MessageActivity.class);
-                intent.putExtra("clubid", groups.getClubId());
+                intent.putExtra("clubId", groups.getClubId());
+                intent.putExtra("clubName", groups.getName());
                 mcontext.startActivity(intent);
             }
         });

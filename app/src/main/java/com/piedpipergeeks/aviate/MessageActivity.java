@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
-    String clubId;
+    String clubId, clubName;
 
     private RecyclerView mMessageRecycler;
     private ArrayList<Messages> mMessageList = new ArrayList<>();
@@ -37,6 +38,7 @@ public class MessageActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private TextView messageTextView;
     private FirebaseAuth firebaseAuth;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
@@ -44,12 +46,15 @@ public class MessageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         clubId = intent.getStringExtra("clubId");
+        clubName = intent.getStringExtra("clubName");
+
+        getSupportActionBar().setTitle(clubName);
 
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
-        messageTextView=(TextView)findViewById(R.id.edittext_chatbox);
+        messageTextView = (TextView) findViewById(R.id.edittext_chatbox);
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
-        firebaseAuth=FirebaseAuth.getInstance();
-        firebaseUser=firebaseAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
         mMessageRecycler.setLayoutManager(manager);
@@ -67,11 +72,12 @@ public class MessageActivity extends AppCompatActivity {
 
 
     }
-    public void SendMessages(){
+
+    public void SendMessages() {
         Messages message = new Messages();
 //        Messages message2 = new Messages();
-        String text=messageTextView.getText().toString();
-        if(!text.isEmpty()) {
+        String text = messageTextView.getText().toString();
+        if (!text.isEmpty()) {
             Profile user = new Profile();
 //        Profile user2 = new Profile();
 
