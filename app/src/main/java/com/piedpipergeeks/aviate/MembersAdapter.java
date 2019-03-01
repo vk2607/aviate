@@ -1,12 +1,18 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,10 +22,15 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     ArrayList<Map> members;
     Context context;
     int pos;
+    String firstname, lastname, userId, clubId;
 
     public MembersAdapter(ArrayList<Map> members, Context context) {
         this.members = members;
         this.context = context;
+    }
+
+    public void setClubId (String clubId) {
+        this.clubId = clubId;
     }
 
     @NonNull
@@ -31,12 +42,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
-//        Profile member = members.get(position);
-        Map<String, Object> member = members.get(position);
-//        pos = position;
-        vHolder.name.setText(String.valueOf(member.get("userName")));
 
+public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
+//         final Profile member = members.get(position);
+        Map<String, Object> member = members.get(position);
+//         pos = position;
+   
+        vHolder.name.setText(String.valueOf(member.get("userName")));
+        
         if (member.get("userType").equals("admin")) {
             vHolder.position.setText("Admin");
         } else if (member.get("userType").equals("guest")) {
@@ -48,8 +61,88 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
         } else {
             vHolder.position.setText("");
         }
+  
+        vHolder.threeDOt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu=new PopupMenu(context,v);
+                MenuInflater menuInflater=popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.three_dot_menu,popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_secretary:
+                                new AlertDialog.Builder(context)
+                                        .setIcon(null)
+                                        .setMessage("Set " + String.valueOf(member.get("userName")) + " as Secretary?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+                                break;
+                            case R.id.menu_president:
+                                new AlertDialog.Builder(context)
+                                        .setIcon(null)
+                                        .setMessage("Set " + String.valueOf(member.get("userName")) + " as President?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+                                break;
+                            case R.id.menu_remove:
+                                new AlertDialog.Builder(context)
+                                        .setIcon(null)
+                                        .setMessage("Remove " + String.valueOf(member.get("userName")) + " from group? ")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                AddSecretary(vHolder,String.valueOf(member.get("userId")), clubId);
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .show();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+            }
+        });
+    }
 
-//        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
+    private void AddSecretary(VHolder vHolder, String userId, String clubId) {
+
+// =======
+//     public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
+// //        Profile member = members.get(position);
+//         Map<String, Object> member = members.get(position);
+// //        pos = position;
+//         vHolder.name.setText(String.valueOf(member.get("userName")));
+
+//         if (member.get("userType").equals("admin")) {
+//             vHolder.position.setText("Admin");
+//         } else if (member.get("userType").equals("guest")) {
+//             vHolder.position.setText("Guest");
+//         } else if (member.get("userType").equals("president")) {
+//             vHolder.position.setText("President");
+//         } else if (member.get("userType").equals("secretary")) {
+//             vHolder.position.setText("Secretary");
+//         } else {
+//             vHolder.position.setText("");
+//         }
+
+// //        vHolder.name.setText(member.getFirstName() + " " + member.getLastName());
+// >>>>>>> master
     }
 
     @Override
@@ -58,12 +151,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
-        TextView name, position;
+        TextView name,threeDOt, position;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.member_name_text);
+            threeDOt=(TextView)itemView.findViewById(R.id.threeDot);
             position = (TextView) itemView.findViewById((R.id.member_position_text));
         }
+
     }
 }

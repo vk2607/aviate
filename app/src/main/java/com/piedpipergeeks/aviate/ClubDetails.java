@@ -46,7 +46,6 @@ public class ClubDetails extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_member_list);
 
         manager = new LinearLayoutManager(this);
-
         recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(manager);
 
@@ -135,6 +134,7 @@ public class ClubDetails extends AppCompatActivity {
                             }
 
                             membersAdapter = new MembersAdapter(display_list_2, ClubDetails.this);
+                            membersAdapter.setClubId(clubId);
                             recyclerView.setAdapter(membersAdapter);
 
                         }
