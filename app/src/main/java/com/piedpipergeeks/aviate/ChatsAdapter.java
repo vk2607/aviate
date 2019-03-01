@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,6 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1>
     public void onBindViewHolder(@NonNull ViewHolder1 viewHolder1, int position) {
         final Club groups = mgroups.get(position);
         pos = position;
-
         viewHolder1.groupName.setText(groups.getName());
         viewHolder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
