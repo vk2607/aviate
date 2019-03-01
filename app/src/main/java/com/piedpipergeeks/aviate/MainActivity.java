@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
-//        database = FirebaseDatabase.getInstance();
-//
+        database = FirebaseDatabase.getInstance();
+
 //        database.getReference("deAsra")
 //                .addChildEventListener(new ChildEventListener() {
 //                    @Override
@@ -109,15 +109,15 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
 //
-//        String uniqueKey = database.getReference("deAsra")
+//        String uniqueKey = database.getReference("Clubs")
 //                .push()
 //                .getKey();
 //
 //        Map<String, Object> message = new HashMap<>();
 //        message.put("text", "Hello how are you?");
 //        message.put("senderId", "afhdksgfisd");
-//
-//        database.getReference("deAsra")
+
+//        database.getReference("Clubs")
 //                .child(uniqueKey)
 //                .setValue(message);
 
