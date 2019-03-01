@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/navigation_user_clubs"
-        android:icon="@drawable/round_chat_black_18dp"
+        android:icon="@drawable/club_icon"
         android:title="Clubs" />
 
     <item
         android:id="@+id/navigation_user_calendar"
-        android:icon="@drawable/sharp_account_circle_black_18dp"
+        android:icon="@drawable/ic_calender"
         android:title="Calendar" />
 
 </menu>
