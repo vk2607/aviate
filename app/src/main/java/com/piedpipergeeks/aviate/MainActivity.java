@@ -53,20 +53,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-//        startActivity(new Intent(MainActivity.this, PickClubActivity.class));
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         mAuth = FirebaseAuth.getInstance();
 
         fsClient = FirebaseFirestore.getInstance();
@@ -77,50 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
-
-//        database = FirebaseDatabase.getInstance();
-//
-//        database.getReference("deAsra")
-//                .addChildEventListener(new ChildEventListener() {
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        String child = dataSnapshot.toString();
-////                        Toast.makeText(MainActivity.this, child, Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//
-//        String uniqueKey = database.getReference("deAsra")
-//                .push()
-//                .getKey();
-//
-//        Map<String, Object> message = new HashMap<>();
-//        message.put("text", "Hello how are you?");
-//        message.put("senderId", "afhdksgfisd");
-//
-//        database.getReference("deAsra")
-//                .child(uniqueKey)
-//                .setValue(message);
-
 
         sharedPreferencesLogin();
 
