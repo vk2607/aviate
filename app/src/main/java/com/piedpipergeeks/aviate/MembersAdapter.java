@@ -19,9 +19,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder> {
@@ -95,7 +97,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                addSecretary(vHolder, String.valueOf(member.get("userId")), clubId);
+                                                setSecretary(vHolder, String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -108,7 +110,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                addSecretary(vHolder, String.valueOf(member.get("userId")), clubId);
+                                                setPresident(vHolder, String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -121,7 +123,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                addSecretary(vHolder, String.valueOf(member.get("userId")), clubId);
+                                                removeFromClub(vHolder, String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -135,9 +137,29 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
         });
     }
 
-    private void addSecretary(VHolder vHolder, String userId, String clubId) {
+    private void removeFromClub(VHolder vHolder, String userId, String clubId) {
 
+        Map<String, Object> update = new HashMap<>();
+        update.put("members", FieldValue.arrayRemove(userId));
+        update.put("memberNames." + userId, FieldValue.delete());
 
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .update(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(context, "Removed user from club", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void setPresident(VHolder vHolder, String userId, String clubId) {
+
+    }
+
+    private void setSecretary(VHolder vHolder, String userId, String clubId) {
     }
 
     @Override
