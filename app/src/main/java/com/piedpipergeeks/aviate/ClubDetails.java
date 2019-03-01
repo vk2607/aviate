@@ -42,7 +42,7 @@ public class ClubDetails extends AppCompatActivity {
             display_list.add(member);
         }
         membersAdapter = new MembersAdapter(display_list, this);
-
+        membersAdapter.setClubId(clubId);
         recyclerView.setAdapter(membersAdapter);
         recyclerView.setLayoutManager(manager);
 
