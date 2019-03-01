@@ -45,7 +45,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("clubname", club.getName());
+                intent.putExtra("clubId", club.getClubId());
                 context.startActivity(intent);
             }
         });
