@@ -77,11 +77,8 @@ public class CreateClubActivity extends AppCompatActivity {
 
 
 //
-        firebaseDatabase.getReference("Clubs")
-                .child(clubId)
-                .child("messageID")
-                .child("Chats")
-                .setValue("HEllo");
+              firebaseDatabase.getReference("Clubs")
+                .child(clubId).setValue(clubName);
 
 
     }
