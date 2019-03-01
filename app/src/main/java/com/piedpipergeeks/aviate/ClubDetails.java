@@ -32,6 +32,7 @@ public class ClubDetails extends AppCompatActivity {
         Profile member = new Profile();
         member.setFirstName("Shreyas");
         member.setLastName("Garud");
+        //Delete this line
         for (int i = 0; i < 15; i++) {
             display_list.add(member);
         }
