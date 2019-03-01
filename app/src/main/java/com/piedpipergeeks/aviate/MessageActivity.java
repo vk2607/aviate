@@ -104,10 +104,9 @@ public class MessageActivity extends AppCompatActivity {
                 SendMessages();
             }
         });
-       UpdateMessages();
+        UpdateMessages();
 
-//        mMessageAdapter.notifyDataSetChanged();
-
+        mMessageAdapter.notifyDataSetChanged();
 
     }
 
@@ -136,20 +135,42 @@ public class MessageActivity extends AppCompatActivity {
 
     private void UpdateMessages() {
 //        chats = new ArrayList<>();
+//        firebaseDatabase.getReference("Clubs")
+//                .child(clubId)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+////                        chats.clear();
+//                        mMessageAdapter.notifyDataSetChanged();
+//                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                            Messages chat = dataSnapshot1.getValue(Messages.class);
+//
+//                            mMessageAdapter.addMessage(chat);
+//                            mMessageAdapter.notifyDataSetChanged();
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+
+        final List<Messages> messages = new ArrayList<>();
         firebaseDatabase.getReference("Clubs")
                 .child(clubId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        chats.clear();
-//                        mMessageAdapter.notifyDataSetChanged();
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            Messages chat = dataSnapshot1.getValue(Messages.class);
-
-                            mMessageAdapter.addMessage(chat);
-                            mMessageAdapter.notifyDataSetChanged();
-
+                        messages.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Messages message = snapshot.getValue(Messages.class);
+                            messages.add(message);
                         }
+                        mMessageAdapter.setMessages(messages);
+                        mMessageAdapter.notifyDataSetChanged();
+                        mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() -1);
                     }
 
                     @Override
@@ -157,6 +178,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     }
                 });
+
     }
 
     public void SendMessages() {
@@ -182,6 +204,9 @@ public class MessageActivity extends AppCompatActivity {
             message.setSender(user);
             message.setDate(date);
             mMessageAdapter.addMessage(message);
+            mMessageAdapter.notifyDataSetChanged();
+            mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() -1);
+
             messageTextView.setText("");
             String messageUniqueKey = firebaseDatabase.getReference("Clubs").child(clubId).push().getKey();
             firebaseDatabase.getReference("Clubs").child(clubId).child(messageUniqueKey).setValue(message);
@@ -200,7 +225,6 @@ public class MessageActivity extends AppCompatActivity {
 //            mMessageAdapter.addMessage(message);
 //        }
 
-            mMessageAdapter.notifyDataSetChanged();
 //            messageTextView.setText(clubId);
         }
 

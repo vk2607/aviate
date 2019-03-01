@@ -48,6 +48,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mMessageList.add(message);
     }
 
+    public void setMessages(List<Messages> messages) {
+        this.mMessageList = messages;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
