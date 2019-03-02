@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button signInButton;
     private FirebaseUser currentUser;
+    private TextView resetPassword;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,17 @@ public class LoginActivity extends AppCompatActivity {
         signInButton = (Button) findViewById(R.id.signin_login_button);
 
         signIn();
+        passwordReset();
+    }
+
+    private void passwordReset() {
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this,ResetPassword.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void showHelp() {

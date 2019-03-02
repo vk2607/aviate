@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +64,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     }
 
     protected void Intialise() {
+        EditText editText=new EditText(this);
         firstNameEditText = (EditText) findViewById(R.id.firstName_registerEntrepreneur_edittext);
         lastNameEditText = (EditText) findViewById(R.id.lastName_registerEntrepreneur_edittext);
         emailEditText = (EditText) findViewById(R.id.email_registerEntrepreneur_edittext);
