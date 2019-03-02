@@ -36,7 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -75,6 +77,7 @@ public class MessageActivity extends AppCompatActivity {
     private FirebaseFirestore fsClient;
     private String time;
     private SharedPreferences pref;
+    private Boolean isChatMuted;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,7 @@ public class MessageActivity extends AppCompatActivity {
         clubId = (String) intent.getStringExtra("clubId");
 //        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
+        isChatMuted = Boolean.valueOf(intent.getStringExtra("isChatMuted"));
 
         if (clubId != null) {
 
@@ -91,11 +95,13 @@ public class MessageActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("clubId", clubId);
             editor.putString("clubName", clubName);
+            editor.putString("isChatMuted", String.valueOf(isChatMuted));
             editor.apply();
         } else {
             pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
             clubId = pref.getString("clubId", null);
             clubName = pref.getString("clubName", null);
+            isChatMuted = Boolean.valueOf(pref.getString("isChatMuted", null));
         }
 
 //        getSupportActionBar().setTitle(clubName);
@@ -115,6 +121,8 @@ public class MessageActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+
+        setOnDataChangeListener();
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
@@ -136,6 +144,20 @@ public class MessageActivity extends AppCompatActivity {
         mMessageAdapter.notifyDataSetChanged();
         getUpcomingEvent();
 
+    }
+
+    private void setOnDataChangeListener() {
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        updateUI();
+                    }
+                });
+    }
+
+    private void updateUI() {
     }
 
     private void getUpcomingEvent() {

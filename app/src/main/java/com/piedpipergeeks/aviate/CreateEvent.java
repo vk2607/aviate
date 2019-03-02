@@ -1,7 +1,9 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -57,19 +59,28 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
         setEventTime();
         Intialise();
         createEvent();
-        sendInvitationEmail();
 
     }
 
     private void sendInvitationEmail() {
-        //open dialog "Send invitation email to all members?"
 
+        final String emailAddresses = "prashantbhandari1999@gmail.com";
 
-
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com, prashantbhandari1999@gmail.com", null));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to event");
-        startActivity(Intent.createChooser(intent, null));
-
+        new AlertDialog.Builder(this)
+                .setIcon(null)
+                .setTitle("Invite members")
+                .setMessage("Send event invitation to all club members?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to event");
+//                        intent.putExtra(Intent.EXTRA_)
+                        startActivity(Intent.createChooser(intent, null));
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
 
     }
 
@@ -94,7 +105,7 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-
+                                    sendInvitationEmail();
                                 }
                             }
                         });

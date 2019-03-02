@@ -68,8 +68,6 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         {
             case R.id.nav_sendfeedback:
                 Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com", null));
-//                intent.setType("text/plain");
-//                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"aviateapp@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
                 startActivity(Intent.createChooser(intent,null));
 
