@@ -9,7 +9,7 @@ import java.util.Map;
 
 class Event {
     private Timestamp timestamp;
-    private String agenda, momLink, clubName,eventType;
+    private String agenda, momLink, clubName, eventType;
     private ArrayList<String> needUsers;
     private Map<String, Object> needs;
 

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -154,7 +155,8 @@ public class MessageActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot snapshot : task.getResult()) {
-                                showUpcomingEvent(snapshot);
+                                Event event = snapshot.toObject(Event.class);
+                                showUpcomingEvent(event);
                             }
 
                         }
@@ -162,16 +164,28 @@ public class MessageActivity extends AppCompatActivity {
                 });
     }
 
-    private void showUpcomingEvent(DocumentSnapshot snapshot) {
+    private void showUpcomingEvent(final Event event) {
 
         findViewById(R.id.pinned_event_layout).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.pinned_event_type)).setText("Upcoming event: " + String.valueOf(snapshot.get("eventType")));
+        ((TextView) findViewById(R.id.pinned_event_type)).setText("Upcoming event: " + String.valueOf(event.getEventType()));
 
-        Date date = new Date(((Timestamp) snapshot.get("timestamp")).getSeconds() * 1000);
-        String timeOfEvent = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
-        String dateOfEvent = DateFormat.getDateInstance().format(date);
+        Date date = new Date(((Timestamp) event.getTimestamp()).getSeconds() * 1000);
+        final String timeOfEvent = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+        final String dateOfEvent = DateFormat.getDateInstance().format(date);
 
         ((TextView) findViewById(R.id.pinned_event_time)).setText(dateOfEvent + " at " + timeOfEvent);
+
+        ((CardView) findViewById(R.id.pinned_event_layout)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventDialog dialog = new EventDialog();
+//                dialog.setDetails(String.valueOf(snapshot.get("eventType")), dateOfEvent + " at " + timeOfEvent);
+                dialog.show(getFragmentManager(), "event dialog");
+                dialog.setDetails(event);
+            }
+        });
+
+
 
     }
 
