@@ -62,7 +62,7 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayoutManager manager;
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
-    String clubId, clubName;
+    String clubId, clubName, clubInfo;
 
     ArrayList<Messages> chats;
 
@@ -78,9 +78,9 @@ public class MessageActivity extends AppCompatActivity {
     private String time;
     private SharedPreferences pref;
     private boolean isChatMuted;
-    private Menu menu;
-    private String muteChat="Mute Chat";
-    private String unmuteChat="Unmute Chat";
+    private Menu pinMenu;
+    private String muteChat = "Mute Chat";
+    private String unmuteChat = "Unmute Chat";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,8 +88,8 @@ public class MessageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         clubId = (String) intent.getStringExtra("clubId");
-//        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
+        clubInfo = intent.getStringExtra("clubInfo");
         isChatMuted = Boolean.valueOf(intent.getStringExtra("isChatMuted"));
 
         if (clubId != null) {
@@ -99,24 +99,16 @@ public class MessageActivity extends AppCompatActivity {
             editor.putString("clubId", clubId);
             editor.putString("clubName", clubName);
             editor.putString("isChatMuted", String.valueOf(isChatMuted));
+            editor.putString("clubInfo", clubInfo);
             editor.apply();
         } else {
             pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
             clubId = pref.getString("clubId", null);
             clubName = pref.getString("clubName", null);
             isChatMuted = Boolean.valueOf(pref.getString("isChatMuted", null));
+            clubInfo = pref.getString("clubInfo", null);
         }
-        if (isChatMuted) {
-            findViewById(R.id.layout_chatbox).setVisibility(View.GONE);
-            findViewById(R.id.layout_no_chatbox).setVisibility(View.VISIBLE);
-            MenuItem chat_item=menu.findItem(R.id.action_mute_chat);
-            chat_item.setTitle(unmuteChat);
-        } else {
-            findViewById(R.id.layout_chatbox).setVisibility(View.VISIBLE);
-            findViewById(R.id.layout_no_chatbox).setVisibility(View.GONE);
-            MenuItem chat_item=menu.findItem(R.id.action_mute_chat);
-            chat_item.setTitle(muteChat);
-        }
+
 
 //        getSupportActionBar().setTitle(clubName);
 
@@ -129,12 +121,14 @@ public class MessageActivity extends AppCompatActivity {
 //            }
 //        });
 
+
         imageButton = (ImageButton) findViewById(R.id.send_messages_button);
         messageTextView = (TextView) findViewById(R.id.edittext_chatbox);
         mMessageRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        fsClient = FirebaseFirestore.getInstance();
 
         setOnDataChangeListener();
 
@@ -158,6 +152,40 @@ public class MessageActivity extends AppCompatActivity {
         mMessageAdapter.notifyDataSetChanged();
         getUpcomingEvent();
 
+        invalidateOptionsMenu();
+
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+//        Toast.makeText(this, "Callback received", Toast.LENGTH_SHORT).show();
+
+        MenuItem chat_item = pinMenu.findItem(R.id.action_mute_chat);
+
+        if (sharedPreferences.getString("userType", "user").equals("user")) {
+            chat_item.setVisible(false);
+
+            if (isChatMuted) {
+//                Toast.makeText(this, "Chat muted", Toast.LENGTH_SHORT).show();
+                findViewById(R.id.layout_chatbox).setVisibility(View.GONE);
+                findViewById(R.id.layout_no_chatbox).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.layout_chatbox).setVisibility(View.VISIBLE);
+                findViewById(R.id.layout_no_chatbox).setVisibility(View.GONE);
+            }
+
+        } else {
+            if (isChatMuted) {
+
+                chat_item.setTitle(unmuteChat);
+            } else {
+                chat_item.setTitle(muteChat);
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void setOnDataChangeListener() {
@@ -166,19 +194,43 @@ public class MessageActivity extends AppCompatActivity {
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        updateUI();
+                        Club club = documentSnapshot.toObject(Club.class);
+                        Toast.makeText(MessageActivity.this, String.valueOf(club.getIsChatMuted()), Toast.LENGTH_SHORT).show();
+                        isChatMuted = club.getIsChatMuted();
+                        invalidateOptionsMenu();
+
+//                        MenuItem chat_item = pinMenu.findItem(R.id.action_mute_chat);
+
+//                        if (sharedPreferences.getString("userType", "user").equals("user")) {
+//                            chat_item.setVisible(false);
+//
+//                            if (isChatMuted) {
+//                                Toast.makeText(MessageActivity.this, "Chat muted", Toast.LENGTH_SHORT).show();
+//                                findViewById(R.id.layout_chatbox).setVisibility(View.GONE);
+//                                findViewById(R.id.layout_no_chatbox).setVisibility(View.VISIBLE);
+//                            } else {
+//                                findViewById(R.id.layout_chatbox).setVisibility(View.VISIBLE);
+//                                findViewById(R.id.layout_no_chatbox).setVisibility(View.GONE);
+//                            }
+//
+//                        } else {
+//                            if (isChatMuted) {
+//                                chat_item.setTitle(unmuteChat);
+//                            } else {
+//                                chat_item.setTitle(muteChat);
+//                            }
+//                        }
+
+
                     }
                 });
-    }
-
-    private void updateUI() {
     }
 
     private void getUpcomingEvent() {
 
         Timestamp currentTime = new Timestamp(new Date().getTime() / 1000, 0);
 
-        fsClient = FirebaseFirestore.getInstance();
+//        fsClient = FirebaseFirestore.getInstance();
         fsClient.collection("Clubs")
                 .document(clubId)
                 .collection("Events")
@@ -222,7 +274,6 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 //    @Override
@@ -242,6 +293,7 @@ public class MessageActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        pinMenu = menu;
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -254,18 +306,59 @@ public class MessageActivity extends AppCompatActivity {
                 Intent intent = new Intent(MessageActivity.this, ClubDetails.class);
                 intent.putExtra("clubName", clubName);
                 intent.putExtra("clubId", clubId);
+                intent.putExtra("clubInfo", clubInfo);
 
                 Event event = new Event();
                 event.setEventType("Webinar");
                 Date date = new Date();
                 event.setTimestamp(new Timestamp(date.getTime() / 1000, 0));
-
-//                EventDialog dialog = new EventDialog();
-//                dialog.show(getFragmentManager(), "event dialog");
-//                dialog.setDetails(event);
-
                 startActivity(intent);
                 break;
+
+            case R.id.action_mute_chat:
+                fsClient = FirebaseFirestore.getInstance();
+
+                fsClient.collection("Clubs")
+                        .document(clubId)
+                        .update("isChatMuted", !isChatMuted)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+//                                    isChatMuted = !isChatMuted;
+//                                    invalidateOptionsMenu();
+                                }
+                            }
+                        });
+                break;
+//                if (isChatMuted) {
+//                    fsClient.collection("Clubs")
+//                            .document(clubId)
+//                            .update("isChatMuted", false)
+//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        isChatMuted = ! isChatMuted;
+//                                        invalidateOptionsMenu();
+//                                    }
+//                                }
+//                            });
+//
+//                } else {
+//                    fsClient.collection("Clubs")
+//                            .document(clubId)
+//                            .update("isChatMuted", true)
+//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        isChatMuted = !isChatMuted;
+//                                        invalidateOptionsMenu();
+//                                    }
+//                                }
+//                            });
+//                }
         }
 
         return super.onOptionsItemSelected(item);

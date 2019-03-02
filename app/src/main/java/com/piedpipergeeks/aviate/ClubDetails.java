@@ -42,7 +42,7 @@ public class ClubDetails extends AppCompatActivity {
     FirebaseFirestore fsClient;
     Button createEventButton, eventsButton;
 
-    String clubId, clubName;
+    String clubId, clubName, clubInfo;
 
     ArrayList<Profile> display_list = new ArrayList<>();
     ArrayList<Map> display_list_2 = new ArrayList<>();
@@ -52,8 +52,11 @@ public class ClubDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_details);
 
-        clubId = getIntent().getStringExtra("clubId");
-        clubName = getIntent().getStringExtra("clubName");
+        Intent intent = getIntent();
+
+        clubId = intent.getStringExtra("clubId");
+        clubName = intent.getStringExtra("clubName");
+        clubInfo = intent.getStringExtra("clubInfo");
 
 //        getActionBar().setDisplayHomeAsUpEnabled(true);
 

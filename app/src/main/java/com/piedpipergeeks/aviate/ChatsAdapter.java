@@ -47,7 +47,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder1>
                 Intent intent = new Intent(mcontext, MessageActivity.class);
                 intent.putExtra("clubId", groups.getClubId());
                 intent.putExtra("clubName", groups.getName());
-                intent.putExtra("isChatMuted", groups.isChatMuted());
+                intent.putExtra("isChatMuted", groups.getIsChatMuted());
                 mcontext.startActivity(intent);
             }
         });

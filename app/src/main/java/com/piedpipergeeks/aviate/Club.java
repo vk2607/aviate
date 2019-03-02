@@ -9,7 +9,7 @@ public class Club {
     private String presidentName, secretaryName;
     private ArrayList<String> admins, members, guests;
     private Map<String, Object> adminNames, memberNames, guestNames;
-    private Boolean isChatMuted = false;
+    private Boolean isChatMuted;
 
     public Club() {
         admins = new ArrayList<>();
@@ -20,6 +20,9 @@ public class Club {
 
         guests = new ArrayList<>();
         guestNames = new HashMap<>();
+
+//        isChatMuted = false;
+
     }
 
     public String getPresidentName() {
@@ -30,11 +33,11 @@ public class Club {
         return secretaryName;
     }
 
-    public Boolean isChatMuted() {
+    public Boolean getIsChatMuted() {
         return isChatMuted;
     }
 
-    public void setChatMuted(Boolean chatMuted) {
+    public void setIsChatMuted(Boolean chatMuted) {
         this.isChatMuted = chatMuted;
     }
 
