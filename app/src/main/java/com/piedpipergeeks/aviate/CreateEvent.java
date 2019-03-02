@@ -15,7 +15,7 @@ import java.util.Calendar;
 
 public class CreateEvent extends AppCompatActivity{
 
-    private TextView setDateTextView;
+    private TextView setDateTextView,setTimeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,9 @@ public class CreateEvent extends AppCompatActivity{
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(arrayAdapter);
         setDateTextView=(TextView)findViewById(R.id.setdate_textview);
+        setTimeTextView=(TextView)findViewById(R.id.settimetextview) ;
         setEventDate();
+        setEventTime();
 
     }
 
@@ -36,6 +38,15 @@ public class CreateEvent extends AppCompatActivity{
             public void onClick(View view) {
                 SetDateDialog setDateDialog=new SetDateDialog();
                 setDateDialog.show(getFragmentManager(),"SetDateDialog");
+            }
+        });
+    }
+    private void setEventTime(){
+        setTimeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SetTimeDialog setDateDialog=new SetTimeDialog();
+                setDateDialog.show(getFragmentManager(),"SetTimeDialog");
             }
         });
     }
