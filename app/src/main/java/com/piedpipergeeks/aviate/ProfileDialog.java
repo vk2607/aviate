@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class ProfileDialog extends DialogFragment {
 
+    private Profile profile;
     private View view;
     private TextView emailtxt,locationtxt,categorytxt;
     private String name;
@@ -28,10 +29,18 @@ public class ProfileDialog extends DialogFragment {
         builder.setView(view)
                 .setTitle(name);
 
+//        Problem occurs
+//        emailtxt.setText(profile.getEmail());
+//        locationtxt.setText(profile.getCityName());
+//        categorytxt.setText(profile.getBusinessCategory());
+
         return builder.create();
     }
-    public void setDetails(Map profile){
-        name=(String)profile.get("userName");
-
+    public void setDetails(Map map){
+        name=(String)map.get("userName");
     }
+    public void setDetails(Profile profile){
+        this.profile=profile;
+    }
+
 }
