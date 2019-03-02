@@ -218,6 +218,16 @@ public class MessageActivity extends AppCompatActivity {
                 Intent intent = new Intent(MessageActivity.this, ClubDetails.class);
                 intent.putExtra("clubName", clubName);
                 intent.putExtra("clubId", clubId);
+
+                Event event = new Event();
+                event.setEventType("Webinar");
+                Date date = new Date();
+                event.setTimestamp(new Timestamp(date.getTime() / 1000, 0));
+
+//                EventDialog dialog = new EventDialog();
+//                dialog.show(getFragmentManager(), "event dialog");
+//                dialog.setDetails(event);
+
                 startActivity(intent);
                 break;
         }

@@ -1,6 +1,8 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -50,23 +52,30 @@ public class ClubDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_details);
 
+        clubId = getIntent().getStringExtra("clubId");
+        clubName = getIntent().getStringExtra("clubName");
+
 //        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        createEventButton=(Button)findViewById(R.id.create_event_button);
-        createEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(ClubDetails.this,CreateEvent.class);
-                startActivity(intent
-                );
-            }
-        });
+        createEventButton = (Button) findViewById(R.id.create_event_button);
 
-        clubId = getIntent().getStringExtra("clubId");
-        clubName = getIntent().getStringExtra("clubName");
+        SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String userType = pref.getString("userType", "");
+        if (userType.equals("admin")) {
+            createEventButton.setVisibility(View.VISIBLE);
+            createEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ClubDetails.this, CreateEvent.class);
+                    intent.putExtra("clubId", clubId);
+                    startActivity(intent);
+                }
+            });
+        }
+
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_member_list);
