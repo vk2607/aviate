@@ -18,13 +18,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 public class CreateEvent extends AppCompatActivity {
 
-    private TextView setDateTextView, setTimeTextView;
+    private TextView setDateTextView,setTimeTextView;
+    private Calendar calendar;
+    private Date date;
     private Button createEvent;
     private FirebaseFirestore fsClient;
     private String clubId;
@@ -46,8 +50,10 @@ public class CreateEvent extends AppCompatActivity {
 
         fsClient = FirebaseFirestore.getInstance();
 
+        calendar=Calendar.getInstance();
         setEventDate();
         setEventTime();
+        Intialise();
         createEvent();
 
     }
@@ -100,6 +106,16 @@ public class CreateEvent extends AppCompatActivity {
                 setDateDialog.show(getFragmentManager(), "SetTimeDialog");
             }
         });
+    }
+    private void Intialise(){
+        String dates,times;
+        date= calendar.getTime();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+        dates=simpleDateFormat.format(date);
+        setDateTextView.setText(dates);
+        SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("HH:mm:ss");
+        times=simpleDateFormat1.format(date).substring(0,5);
+        setTimeTextView.setText(times);
     }
 
 
