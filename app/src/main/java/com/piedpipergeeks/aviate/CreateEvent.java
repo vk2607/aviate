@@ -3,6 +3,7 @@ package com.piedpipergeeks.aviate;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import java.util.Date;
 
 public class CreateEvent extends AppCompatActivity {
 
-    private TextView setDateTextView,setTimeTextView;
+    private TextView setDateTextView, setTimeTextView;
     private Calendar calendar;
     private Date date;
     private Button createEvent;
@@ -50,11 +51,24 @@ public class CreateEvent extends AppCompatActivity {
 
         fsClient = FirebaseFirestore.getInstance();
 
-        calendar=Calendar.getInstance();
+        calendar = Calendar.getInstance();
         setEventDate();
         setEventTime();
         Intialise();
         createEvent();
+        sendInvitationEmail();
+
+    }
+
+    private void sendInvitationEmail() {
+        //open dialog "Send invitation email to all members?"
+
+
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com, prashantbhandari1999@gmail.com", null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to event");
+        startActivity(Intent.createChooser(intent, null));
+
 
     }
 
@@ -69,7 +83,6 @@ public class CreateEvent extends AppCompatActivity {
                 String eventId = fsClient.collection("Clubs")
                         .document()
                         .getId();
-
 
                 fsClient.collection("Clubs")
                         .document(clubId)
@@ -107,14 +120,15 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
     }
-    private void Intialise(){
-        String dates,times;
-        date= calendar.getTime();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-        dates=simpleDateFormat.format(date);
+
+    private void Intialise() {
+        String dates, times;
+        date = calendar.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dates = simpleDateFormat.format(date);
         setDateTextView.setText(dates);
-        SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("HH:mm:ss");
-        times=simpleDateFormat1.format(date).substring(0,5);
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm:ss");
+        times = simpleDateFormat1.format(date).substring(0, 5);
         setTimeTextView.setText(times);
     }
 

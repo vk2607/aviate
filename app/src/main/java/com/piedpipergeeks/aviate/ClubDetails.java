@@ -40,7 +40,7 @@ public class ClubDetails extends AppCompatActivity {
     MembersAdapter membersAdapter;
     Boolean isScrolling = false;
     FirebaseFirestore fsClient;
-    Button createEventButton;
+    Button createEventButton, eventsButton;
 
     String clubId, clubName;
 
@@ -75,6 +75,16 @@ public class ClubDetails extends AppCompatActivity {
                 }
             });
         }
+
+        eventsButton = (Button) findViewById(R.id.events_button);
+        eventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClubDetails.this, EventsList.class);
+                intent.putExtra("clubId", clubId);
+                startActivity(intent);
+            }
+        });
 
 
 //        FloatingActionButton fab = findViewById(R.id.fab);

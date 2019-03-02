@@ -72,6 +72,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
 //                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"aviateapp@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
                 startActivity(Intent.createChooser(intent,null));
+
                 break;
         }
 //        mDrawerLayout.closeDrawer(GravityCompat.START);
