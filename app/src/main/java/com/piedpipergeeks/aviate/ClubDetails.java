@@ -60,7 +60,8 @@ public class ClubDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(ClubDetails.this,CreateEvent.class);
-                startActivity(intent);
+                startActivity(intent
+                );
             }
         });
 
