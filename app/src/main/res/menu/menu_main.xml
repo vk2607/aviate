@@ -9,4 +9,11 @@
         android:title="Club info"
         android:visible="true"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_mute_chat"
+        android:checkable="false"
+        android:orderInCategory="100"
+        android:title="Mute Chat"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>

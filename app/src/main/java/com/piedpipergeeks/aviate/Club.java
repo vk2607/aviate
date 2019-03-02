@@ -9,6 +9,7 @@ public class Club {
     private String presidentName, secretaryName;
     private ArrayList<String> admins, members, guests;
     private Map<String, Object> adminNames, memberNames, guestNames;
+    private Boolean isChatMuted = false;
 
     public Club() {
         admins = new ArrayList<>();
@@ -27,6 +28,14 @@ public class Club {
 
     public String getSecretaryName() {
         return secretaryName;
+    }
+
+    public Boolean isChatMuted() {
+        return isChatMuted;
+    }
+
+    public void setChatMuted(Boolean chatMuted) {
+        this.isChatMuted = chatMuted;
     }
 
     public String getClubId() {
@@ -114,6 +123,7 @@ public class Club {
         map.put("clubId", clubId);
         map.put("name", name);
         map.put("info", info);
+        map.put("isChatMuted", isChatMuted);
         map.put("president", president);
         map.put("secretary", secretary);
         map.put("admins", admins);

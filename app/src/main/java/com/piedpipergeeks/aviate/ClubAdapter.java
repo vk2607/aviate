@@ -38,7 +38,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final VHolder vHolder, int position) {
-        Log.d("BIND", "BIND FUNCTION CALLED");
+//        Log.d("BIND", "BIND FUNCTION CALLED");
         final Club club = users.get(position);
         vHolder.name.setText(club.getName());
         vHolder.clubCard.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +47,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("clubId", club.getClubId());
                 intent.putExtra("clubName", club.getName());
+                intent.putExtra("isChatedMuted", false);
                 context.startActivity(intent);
             }
         });
