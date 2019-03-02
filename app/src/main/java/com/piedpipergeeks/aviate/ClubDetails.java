@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +38,7 @@ public class ClubDetails extends AppCompatActivity {
     MembersAdapter membersAdapter;
     Boolean isScrolling = false;
     FirebaseFirestore fsClient;
+    Button createEventButton;
 
     String clubId, clubName;
 
@@ -53,6 +55,14 @@ public class ClubDetails extends AppCompatActivity {
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+        createEventButton=(Button)findViewById(R.id.create_event_button);
+        createEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ClubDetails.this,CreateEvent.class);
+                startActivity(intent);
+            }
+        });
 
         clubId = getIntent().getStringExtra("clubId");
         clubName = getIntent().getStringExtra("clubName");
