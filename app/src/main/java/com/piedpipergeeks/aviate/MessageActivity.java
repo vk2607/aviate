@@ -75,6 +75,10 @@ public class MessageActivity extends AppCompatActivity {
     private FirebaseFirestore fsClient;
     private String time;
     private SharedPreferences pref;
+    private boolean isChatMuted;
+    private Menu menu;
+    private String muteChat="Mute Chat";
+    private String unmuteChat="Unmute Chat";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +100,17 @@ public class MessageActivity extends AppCompatActivity {
             pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
             clubId = pref.getString("clubId", null);
             clubName = pref.getString("clubName", null);
+        }
+        if (isChatMuted) {
+            findViewById(R.id.layout_chatbox).setVisibility(View.GONE);
+            findViewById(R.id.layout_no_chatbox).setVisibility(View.VISIBLE);
+            MenuItem chat_item=menu.findItem(R.id.action_mute_chat);
+            chat_item.setTitle(unmuteChat);
+        } else {
+            findViewById(R.id.layout_chatbox).setVisibility(View.VISIBLE);
+            findViewById(R.id.layout_no_chatbox).setVisibility(View.GONE);
+            MenuItem chat_item=menu.findItem(R.id.action_mute_chat);
+            chat_item.setTitle(muteChat);
         }
 
 //        getSupportActionBar().setTitle(clubName);
@@ -184,7 +199,6 @@ public class MessageActivity extends AppCompatActivity {
                 dialog.setDetails(event);
             }
         });
-
 
 
     }
