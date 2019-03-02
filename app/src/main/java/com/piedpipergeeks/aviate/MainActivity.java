@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore fsClient;
     FirebaseDatabase database;
 
-    ProgressBar progressBar;
+//    ProgressBar progressBar;
 
     SharedPreferences preferences;
     private static final String MyPREFERENCES = "MyPrefs";
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         fsClient.setFirestoreSettings(settings);
         database=FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
-        progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
+//        progressBar.setVisibility(View.VISIBLE);
 
         sharedPreferencesLogin();
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
         if (currentUser == null) {
-            progressBar.setVisibility(View.GONE);
+//            progressBar.setVisibility(View.GONE);
         }
     }
 

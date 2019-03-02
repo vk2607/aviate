@@ -9,39 +9,25 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/round_event_black_18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />.
+
         <TextView
             android:id="@+id/event_dialog_timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/event_dialog_mom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="View MOM"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/event_dialog_link"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"
-            android:text="Link not added yet"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_dialog_timestamp" />
 
     </android.support.constraint.ConstraintLayout>
 

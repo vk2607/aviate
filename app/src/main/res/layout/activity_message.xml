@@ -46,9 +46,11 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:visibility="gone"
         android:clickable="true"
         android:focusable="true"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -61,11 +63,21 @@
                 android:id="@+id/pinned_event_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:text="Upcoming event: Webinar"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="24dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/round_event_note_black_18dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,14 +85,15 @@
                 android:id="@+id/pinned_event_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:text="Sat, 2nd March at 5:30pm"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pinned_event_type" />
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toBottomOf="@+id/pinned_event_type"
+                app:layout_constraintVertical_bias="0.0" />
 
         </android.support.constraint.ConstraintLayout>
 
