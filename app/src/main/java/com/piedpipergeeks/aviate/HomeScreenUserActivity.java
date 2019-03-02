@@ -73,6 +73,9 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
                 startActivity(Intent.createChooser(intent,null));
                 break;
+            case R.id.nav_settings:
+                Intent settings=new Intent(HomeScreenUserActivity.this,Settings.class);
+                startActivity(settings);
         }
 //        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

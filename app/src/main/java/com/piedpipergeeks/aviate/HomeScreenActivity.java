@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 //import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class HomeScreenActivity extends AppCompatActivity implements ClubFragment.OnFragmentInteractionListener, RegistrationFragment.OnFragmentInteractionListener,ChatsFragment.OnFragmentInteractionListener {
+public class HomeScreenActivity extends AppCompatActivity implements ClubFragment.OnFragmentInteractionListener, RegistrationFragment.OnFragmentInteractionListener,ChatsFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
 
 
     private TextView mTextMessage;
@@ -79,6 +81,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_area, new ClubFragment());
         fragmentTransaction.commit();
+        setNavigationViewListner();
     }
 
     @Override
@@ -105,5 +108,27 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
     public void onBackPressed() {
         super.onBackPressed();
         moveTaskToBack(true);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId())
+        {
+            case R.id.nav_sendfeedback:
+                Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com", null));
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"aviateapp@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
+                startActivity(Intent.createChooser(intent,null));
+                break;
+            case R.id.nav_settings:
+                Intent settings=new Intent(HomeScreenActivity.this,Settings.class);
+                startActivity(settings);
+        }
+        return true;
+    }
+    private void setNavigationViewListner() {
+        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 }
