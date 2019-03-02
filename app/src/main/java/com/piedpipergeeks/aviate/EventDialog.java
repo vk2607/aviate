@@ -39,12 +39,12 @@ public class EventDialog extends DialogFragment {
         eventTime.setText(time);
 
         if (timeInFuture) {
-            ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.event_dialog_link)).setVisibility(View.INVISIBLE);
+//            ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.VISIBLE);
+//            ((TextView) view.findViewById(R.id.event_dialog_link)).setVisibility(View.INVISIBLE);
 
         } else {
-            ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.GONE);
-            ((TextView) view.findViewById(R.id.event_dialog_link)).setVisibility(View.VISIBLE);
+//            ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.GONE);
+//            ((TextView) view.findViewById(R.id.event_dialog_link)).setVisibility(View.VISIBLE);
 
         }
 

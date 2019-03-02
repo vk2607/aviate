@@ -15,7 +15,7 @@
     <string name="title_activity_club_details">ClubDetails</string>
     <string name="title_activity_events_list">EventsList</string>
     <string-array name="event_arrays">
-        <item>Webinar</item>
-        <item>Meet</item>
+    <item>Webinar</item>
+    <item>Meeting</item>
     </string-array>
 </resources>
