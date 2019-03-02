@@ -106,6 +106,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                                 rResendToken = token;
                                 otpEditText.setEnabled(true);
                                 otpButton.setText("Verify Otp");
+                                otpEditText.setVisibility(View.VISIBLE);
                             }
 
                         });
@@ -246,6 +247,7 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                     otpEditText.setEnabled(false);
                     otpEditText.setVisibility(View.INVISIBLE);
                     otpButton.setText("OTP verified");
+                    otpEditText.setVisibility(View.GONE);
 
                     FirebaseUser user = task.getResult().getUser();
                 } else {

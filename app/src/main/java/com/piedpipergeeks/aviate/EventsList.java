@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -30,8 +31,8 @@ public class EventsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
 
-        Bundle bundle = getIntent().getExtras();
-        final String clubId = bundle.getString("clubId");
+        Intent intent = getIntent();
+        final String clubId = intent.getStringExtra("clubId");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_events_list);
         manager = new LinearLayoutManager(this);
@@ -40,8 +41,11 @@ public class EventsList extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
 
         fsClient = FirebaseFirestore.getInstance();
-        fsClient.collection("Events")
-                .whereEqualTo("clubId", clubId)
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .collection("Events")
+//                .whereEqualTo("clubId", clubId)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

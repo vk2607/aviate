@@ -8,28 +8,50 @@
 
     <EditText
         android:id="@+id/email_login_edittext"
-        android:layout_width="213dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="180dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/verify_email_textview" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/round_lock_black_18dp"
+        app:layout_constraintEnd_toStartOf="@+id/password_login_edittext"
+        app:layout_constraintTop_toTopOf="@+id/password_login_edittext" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/round_email_black_18dp"
+        app:layout_constraintEnd_toStartOf="@+id/email_login_edittext"
+        app:layout_constraintTop_toTopOf="@+id/email_login_edittext" />
 
     <EditText
         android:id="@+id/password_login_edittext"
-        android:layout_width="213dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_login_edittext" />
@@ -41,6 +63,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/buttonshape"
+        android:textColor="@color/white"
         android:text="SIGN IN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CreateEvent" />
+        <activity android:name=".Settings"></activity>
         <activity android:name=".EventsList" />
         <activity
             android:name=".ClubDetails"
@@ -56,6 +57,7 @@
             android:name=".CreateClubActivity"
             android:label="Create new club"
             android:parentActivityName=".HomeScreenActivity" />
+        <activity android:name=".EventDetailsActivity"></activity>
     </application>
 
 </manifest>

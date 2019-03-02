@@ -1,14 +1,18 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,9 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 
-public class CreateEvent extends AppCompatActivity {
+public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetDateDialogListener, SetTimeDialog.SetTimeDialogListener {
 
-    private TextView setDateTextView,setTimeTextView;
+    private TextView setDateTextView, setTimeTextView;
     private Calendar calendar;
     private Date date;
     private Button createEvent;
@@ -50,11 +54,33 @@ public class CreateEvent extends AppCompatActivity {
 
         fsClient = FirebaseFirestore.getInstance();
 
-        calendar=Calendar.getInstance();
+        calendar = Calendar.getInstance();
         setEventDate();
         setEventTime();
         Intialise();
         createEvent();
+
+    }
+
+    private void sendInvitationEmail() {
+
+        final String emailAddresses = "prashantbhandari1999@gmail.com";
+
+        new AlertDialog.Builder(this)
+                .setIcon(null)
+                .setTitle("Invite members")
+                .setMessage("Send event invitation to all club members?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to event");
+//                        intent.putExtra(Intent.EXTRA_)
+                        startActivity(Intent.createChooser(intent, null));
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
 
     }
 
@@ -70,7 +96,6 @@ public class CreateEvent extends AppCompatActivity {
                         .document()
                         .getId();
 
-
                 fsClient.collection("Clubs")
                         .document(clubId)
                         .collection("Events")
@@ -80,7 +105,7 @@ public class CreateEvent extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-
+                                    sendInvitationEmail();
                                 }
                             }
                         });
@@ -94,6 +119,7 @@ public class CreateEvent extends AppCompatActivity {
             public void onClick(View view) {
                 SetDateDialog setDateDialog = new SetDateDialog();
                 setDateDialog.show(getFragmentManager(), "SetDateDialog");
+
             }
         });
     }
@@ -107,16 +133,27 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
     }
-    private void Intialise(){
-        String dates,times;
-        date= calendar.getTime();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-        dates=simpleDateFormat.format(date);
+
+    private void Intialise() {
+        String dates, times;
+        date = calendar.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dates = simpleDateFormat.format(date);
         setDateTextView.setText(dates);
-        SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("HH:mm:ss");
-        times=simpleDateFormat1.format(date).substring(0,5);
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm:ss");
+        times = simpleDateFormat1.format(date).substring(0, 5);
         setTimeTextView.setText(times);
+
     }
 
 
+    @Override
+    public void onDateSelected(int date, int month, int year) {
+        setDateTextView.setText(String.valueOf(date) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+    }
+
+    @Override
+    public void onTimeSelected(int hour, int min) {
+        setTimeTextView.setText(String.valueOf(hour) + ":" + String.valueOf(min));
+    }
 }
