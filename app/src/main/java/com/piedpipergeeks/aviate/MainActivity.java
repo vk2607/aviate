@@ -16,6 +16,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,7 +65,8 @@ startActivity(new Intent(MainActivity.this,CreateEvent.class));
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         fsClient.setFirestoreSettings(settings);
-
+        database=FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.auto_login_progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -68,27 +74,27 @@ startActivity(new Intent(MainActivity.this,CreateEvent.class));
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void toSignInActivity(View view) {
@@ -102,12 +108,14 @@ startActivity(new Intent(MainActivity.this,CreateEvent.class));
     private void sharedPreferencesLogin() {
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if (sharedPreferences.contains(USER_TYPE)) {
+        if (sharedPreferences.contains(USER_ID)) {
             Log.d("SHARED PREF", "SHARED PREFERENCES CONTAINS USER");
             if (sharedPreferences.getString(USER_TYPE, "").equals("user")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
+                finish();
             } else if (sharedPreferences.getString(USER_TYPE, "").equals("admin")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
+                finish();
             }
         } else {
             defaultLogin();
@@ -190,4 +198,7 @@ startActivity(new Intent(MainActivity.this,CreateEvent.class));
             progressBar.setVisibility(View.GONE);
         }
     }
+
+
+
 }

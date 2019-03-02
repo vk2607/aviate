@@ -11,10 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
+
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.ls.LSException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -22,6 +29,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private Context mContext;
     private List<Messages> mMessageList;
+    private FirebaseDatabase firebaseDatabase;
+    private ArrayList<Messages> chats;
+    public void IntialiseDatabase(){
+        firebaseDatabase=FirebaseDatabase.getInstance();
+    }
+    public void UpdateMessages(){
+
+    }
 
     public MessageListAdapter(Context context, List<Messages> messagesList) {
         mContext = context;
@@ -31,6 +46,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addMessage(Messages message) {
         mMessageList.add(message);
+    }
+
+    public void setMessages(List<Messages> messages) {
+        this.mMessageList = messages;
     }
 
     @NonNull
@@ -99,8 +118,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText("11pm");
-            nameText.setText(message.getSender().getFirstName());
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = dateFormat.format(message.getDate()).substring(0, 5);
+            timeText.setText(time);
+            nameText.setText(message.getSender().getFirstName() + " " + message.getSender().getLastName());
 
 
         }
@@ -120,7 +141,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText("11:05 pm");
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            timeText.setText(dateFormat.format(message.getDate()).substring(0, 5));
         }
     }
 

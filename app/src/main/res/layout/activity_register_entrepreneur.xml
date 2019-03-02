@@ -6,32 +6,32 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".RegisterEntrepreneurActivity">
 
-<EditText
-    android:id="@+id/firstName_registerEntrepreneur_edittext"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="16dp"
-    android:ems="10"
-    android:hint="First Name"
-    android:inputType="textPersonName"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/firstName_registerEntrepreneur_edittext"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="textCapWords|textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<EditText
-    android:id="@+id/lastName_registerEntrepreneur_edittext"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="8dp"
-    android:ems="10"
-    android:hint="Last Name"
-    android:inputType="textPersonName"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.567"
-    app:layout_constraintStart_toEndOf="@+id/firstName_registerEntrepreneur_edittext"
-    app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/lastName_registerEntrepreneur_edittext"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textCapWords|textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintStart_toEndOf="@+id/firstName_registerEntrepreneur_edittext"
+        app:layout_constraintTop_toTopOf="parent" />
 
 <EditText
     android:id="@+id/email_registerEntrepreneur_edittext"

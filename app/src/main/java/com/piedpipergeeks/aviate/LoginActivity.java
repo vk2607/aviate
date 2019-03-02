@@ -12,7 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.widget.Toast;
+
+
+import android.widget.Toast;
+import android.app.AlertDialog;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -95,26 +103,82 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (lAuth.getCurrentUser().isEmailVerified()) {
 
-                                    toHomeScreen();
-
                                     final SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                                    if (pref.contains("emailVerified")) {
-                                        if (! Boolean.valueOf(pref.getString("emailVerified", ""))) {
-                                            fsClient.collection("Users")
-                                                    .document(lAuth.getCurrentUser().getUid())
-                                                    .update("emailVerified", true)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
 
+                                    if (pref.contains("userId")) {
+
+                                        if (pref.getString("userId", "").equals(lAuth.getUid())) {
+
+                                            if (pref.getString("emailVerified", "").equals("true")) {
+                                                //create new process to
+                                                //set email verified to true in firestore
+
+                                                fsClient.collection("Users")
+                                                        .document(lAuth.getCurrentUser().getUid())
+                                                        .update("emailVerified", true)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                            }
+                                                        });
+
+                                            } else {
+
+                                                //update emailVerified to true in shared pref
+                                                //update emailVerified to true in firestore
+
+                                                SharedPreferences.Editor editor = pref.edit();
+                                                editor.putString("emailVerified", "true");
+                                                editor.apply();
+
+                                                fsClient.collection("Users")
+                                                        .document(lAuth.getCurrentUser().getUid())
+                                                        .update("emailVerified", true)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                            }
+                                                        });
+
+                                            }
+
+                                        } else {
+                                            //means shared pref user does not match user that is trying to sign in
+                                            //create new process to get user details from firestore
+                                            //and store them in shared pref
+
+                                            fsClient.collection("Users")
+                                                    .document(lAuth.getUid())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot snapshot = task.getResult();
+                                                                Profile user = snapshot.toObject(Profile.class);
+
+                                                                SharedPreferences.Editor editor = pref.edit();
+                                                                editor.putString("userId", user.getUserId());
+                                                                editor.putString("userType", user.getUserType());
+                                                                editor.putString("firstName", user.getFirstName());
+                                                                editor.putString("lastName", user.getLastName());
+                                                                editor.putString("email", user.getEmail());
+                                                                editor.putString("emailVerified", String.valueOf(user.isEmailVerified()));
+                                                                editor.putString("phoneNumber", user.getPhoneNumber());
+                                                                editor.apply();
+                                                            }
                                                         }
                                                     });
-                                            SharedPreferences.Editor editor = pref.edit();
-                                            editor.putString("emailVerified", String.valueOf(true));
-                                            editor.apply();
+
                                         }
-                                    }
-                                    else {
+
+
+                                    } else {
+                                        //shared pref contains no data
+                                        //get data from firestore and update it
+                                        //in shared pref
 
                                         fsClient.collection("Users")
                                                 .document(lAuth.getUid())
@@ -141,6 +205,10 @@ public class LoginActivity extends AppCompatActivity {
 
                                     }
 
+                                    //finally go to homescreen
+                                    toHomeScreen();
+
+
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first", Toast.LENGTH_SHORT).show();
                                     showHelp();
@@ -161,6 +229,31 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getUserAndUpdateSharedPreferences(final String uid) {
+        fsClient.collection("Users")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            Profile user = snapshot.toObject(Profile.class);
+
+                            SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("userId", uid);
+                            editor.putString("userType", user.getUserType());
+                            editor.putString("firstName", user.getFirstName());
+                            editor.putString("lastName", user.getLastName());
+                            editor.putString("email", user.getEmail());
+                            editor.putString("phoneNumber", user.getPhoneNumber());
+                            editor.apply();
+                        }
+                    }
+                });
     }
 
 //    protected void toHomeScreen() {
@@ -190,16 +283,29 @@ public class LoginActivity extends AppCompatActivity {
                                 DocumentSnapshot snapshot = task.getResult();
                                 try {
                                     if (snapshot.get("userType").equals("user")) {
-                                        startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
+//                                        startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
+                                        Intent launchNextActivity;
+                                        launchNextActivity = new Intent(LoginActivity.this, HomeScreenUserActivity.class);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        startActivity(launchNextActivity);
                                         finish();
                                     } else if (snapshot.get("userType").equals("admin")) {
-                                        startActivity(new Intent(LoginActivity.this, HomeScreenActivity.class));
+//                                        startActivity(new Intent(LoginActivity.this, HomeScreenActivity.class));
+                                        Intent launchNextActivity;
+                                        launchNextActivity = new Intent(LoginActivity.this, HomeScreenActivity.class);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        startActivity(launchNextActivity);
                                         finish();
                                     }
                                 } catch (Exception e) {
                                     Log.d("QUERY", e.toString());
                                     startActivity(new Intent(LoginActivity.this, HomeScreenUserActivity.class));
-                                    }
+                                    finish();
+                                }
                             }
                         }
                     })
@@ -213,5 +319,41 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //    public void onBackPressed(){
+////        backButtonHandler();
+//        Toast.makeText(LoginActivity.this,"Button pressed",Toast.LENGTH_SHORT).show();
+//        return;
+//     }
+//    public void backButtonHandler() {
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+//                LoginActivity.this);
+//        // Setting Dialog Title
+//        alertDialog.setTitle("Leave application?");
+//        // Setting Dialog Message
+//        alertDialog.setMessage("Are you sure you want to leave the application?");
+//        // Setting Icon to Dialog
+//        alertDialog.setIcon(R.drawable.ic_launcher_foreground);
+//        // Setting Positive "Yes" Button
+//        alertDialog.setPositiveButton("YES",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//        // Setting Negative "NO" Button
+//        alertDialog.setNegativeButton("NO",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Write your code here to invoke NO event
+//                        dialog.cancel();
+//                    }
+//                });
+//        // Showing Alert Message
+//        alertDialog.show();
+//    }
+//    public void onBackPressed() {
+//////        super.onBackPressed();
+//////        Toast.makeText(LoginActivity.this,"HIE",Toast.LENGTH_SHORT).show();
+//////    }
 
 }
