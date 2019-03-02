@@ -10,10 +10,34 @@ import java.util.Map;
 public class Profile {
 
     private String userId, userType;
-    private String firstName, lastName, phoneNumber, aadharNumber, email;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String aadharNumber;
+    private String email;
+    private String businessCategory;
+    private String cityName;
     private Boolean emailVerified;
     private ArrayList<String> haves, wants;
     private Map<String, String> dob;
+
+
+    public String getBusinessCategory() {
+        return businessCategory;
+    }
+
+    public void setBusinessCategory(String businessCategory) {
+        this.businessCategory = businessCategory;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
 
 //    public static String USER_ID, USER_TYPE, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER;
 //    private static SharedPreferences pref;

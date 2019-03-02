@@ -167,6 +167,8 @@ public class LoginActivity extends AppCompatActivity {
                                                                 editor.putString("email", user.getEmail());
                                                                 editor.putString("emailVerified", String.valueOf(user.isEmailVerified()));
                                                                 editor.putString("phoneNumber", user.getPhoneNumber());
+                                                                editor.putString("businessCategory",user.getBusinessCategory());
+                                                                editor.putString("cityName",user.getCityName());
                                                                 editor.apply();
                                                             }
                                                         }
@@ -198,6 +200,8 @@ public class LoginActivity extends AppCompatActivity {
                                                             editor.putString("email", user.getEmail());
                                                             editor.putString("emailVerified", String.valueOf(user.isEmailVerified()));
                                                             editor.putString("phoneNumber", user.getPhoneNumber());
+                                                            editor.putString("businessCategory",user.getBusinessCategory());
+                                                            editor.putString("cityName",user.getCityName());
                                                             editor.apply();
                                                         }
                                                     }
@@ -250,6 +254,8 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("lastName", user.getLastName());
                             editor.putString("email", user.getEmail());
                             editor.putString("phoneNumber", user.getPhoneNumber());
+                            editor.putString("businessCategory",user.getBusinessCategory());
+                            editor.putString("cityName",user.getCityName());
                             editor.apply();
                         }
                     }
