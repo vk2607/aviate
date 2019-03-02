@@ -11,11 +11,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CreateEvent extends AppCompatActivity{
 
     private TextView setDateTextView,setTimeTextView;
+    private Calendar calendar;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +31,10 @@ public class CreateEvent extends AppCompatActivity{
         s.setAdapter(arrayAdapter);
         setDateTextView=(TextView)findViewById(R.id.setdate_textview);
         setTimeTextView=(TextView)findViewById(R.id.settimetextview) ;
+        calendar=Calendar.getInstance();
         setEventDate();
         setEventTime();
+        Intialise();
 
     }
 
@@ -41,14 +47,24 @@ public class CreateEvent extends AppCompatActivity{
             }
         });
     }
-    private void setEventTime(){
+    private void setEventTime() {
         setTimeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SetTimeDialog setDateDialog=new SetTimeDialog();
-                setDateDialog.show(getFragmentManager(),"SetTimeDialog");
+                SetTimeDialog setDateDialog = new SetTimeDialog();
+                setDateDialog.show(getFragmentManager(), "SetTimeDialog");
             }
         });
+    }
+    private void Intialise(){
+        String dates,times;
+        date= calendar.getTime();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+        dates=simpleDateFormat.format(date);
+        setDateTextView.setText(dates);
+        SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("HH:mm:ss");
+        times=simpleDateFormat1.format(date).substring(0,5);
+        setTimeTextView.setText(times);
     }
 
 
