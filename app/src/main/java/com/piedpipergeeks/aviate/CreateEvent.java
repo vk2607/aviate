@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
 
-public class CreateEvent extends AppCompatActivity {
+public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetDateDialogListener, SetTimeDialog.SetTimeDialogListener {
 
     private TextView setDateTextView, setTimeTextView;
     private Calendar calendar;
@@ -107,6 +108,7 @@ public class CreateEvent extends AppCompatActivity {
             public void onClick(View view) {
                 SetDateDialog setDateDialog = new SetDateDialog();
                 setDateDialog.show(getFragmentManager(), "SetDateDialog");
+
             }
         });
     }
@@ -130,7 +132,17 @@ public class CreateEvent extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("HH:mm:ss");
         times = simpleDateFormat1.format(date).substring(0, 5);
         setTimeTextView.setText(times);
+
     }
 
 
+    @Override
+    public void onDateSelected(int date, int month, int year) {
+        setDateTextView.setText(String.valueOf(date) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+    }
+
+    @Override
+    public void onTimeSelected(int hour, int min) {
+        setTimeTextView.setText(String.valueOf(hour) + ":" + String.valueOf(min));
+    }
 }
