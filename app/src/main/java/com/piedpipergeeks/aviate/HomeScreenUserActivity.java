@@ -1,5 +1,6 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -8,12 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeScreenUserActivity extends AppCompatActivity implements CalendarFragment.OnFragmentInteractionListener, ChatsFragment.OnFragmentInteractionListener {
+public class HomeScreenUserActivity extends AppCompatActivity implements CalendarFragment.OnFragmentInteractionListener, ChatsFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener
+{
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -56,6 +59,27 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
         fragmentTransaction.commit();
+        setNavigationViewListner();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId())
+        {
+            case R.id.nav_sendfeedback:
+                Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com", null));
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"aviateapp@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
+                startActivity(Intent.createChooser(intent,null));
+                break;
+        }
+//        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    private void setNavigationViewListner() {
+        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 //    public void onBackPressed() {
 //        super.onBackPressed();
