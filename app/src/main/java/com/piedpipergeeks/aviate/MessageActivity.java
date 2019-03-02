@@ -25,6 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +35,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 
@@ -60,6 +68,7 @@ public class MessageActivity extends AppCompatActivity {
     private TextView messageTextView;
     private SharedPreferences sharedPreferences;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore fsClient;
     private String time;
     private SharedPreferences pref;
 
@@ -120,8 +129,47 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         UpdateMessages();
-
         mMessageAdapter.notifyDataSetChanged();
+
+        getUpcomingEvent();
+
+    }
+
+    private void getUpcomingEvent() {
+
+        Timestamp currentTime = new Timestamp(new Date().getTime() / 1000, 0);
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .collection("Events")
+                .whereGreaterThan("timestamp", currentTime)
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                showUpcomingEvent(snapshot);
+                            }
+
+                        }
+                    }
+                });
+    }
+
+    private void showUpcomingEvent(DocumentSnapshot snapshot) {
+
+        findViewById(R.id.pinned_event_layout).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.pinned_event_type)).setText("Upcoming event: " + String.valueOf(snapshot.get("eventType")));
+
+        Date date = new Date(((Timestamp) snapshot.get("timestamp")).getSeconds() * 1000);
+        String timeOfEvent = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+        String dateOfEvent = DateFormat.getDateInstance().format(date);
+
+        ((TextView) findViewById(R.id.pinned_event_time)).setText(dateOfEvent + " at " + timeOfEvent);
 
     }
 
