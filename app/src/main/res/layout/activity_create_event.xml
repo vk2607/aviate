@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_select_event" />
 
     <TextView
-        android:id="@+id/fill_date_text"
+        android:id="@+id/setdate_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -60,10 +60,10 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fill_date_text" />
+        app:layout_constraintTop_toBottomOf="@+id/setdate_textview" />
 
     <TextView
-        android:id="@+id/fill__time_text"
+        android:id="@+id/settimetextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -71,5 +71,19 @@
         android:text="12:00 am"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pick_time_text" />
+
+    <Button
+        android:id="@+id/confirm_create_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:text="Create Event"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settimetextview" />
 
 </android.support.constraint.ConstraintLayout>

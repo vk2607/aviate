@@ -32,9 +32,9 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     private FirebaseAuth regAuth;
     private PhoneAuthProvider pAuth;
     private FirebaseFirestore fsClient;
-    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, mobilenumberEditText, otpEditText;
+    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, mobilenumberEditText, otpEditText, businessCategoryEditText, cityNameEditText;
     private Button otpButton, signUpButton;
-    private String rVerificationId, email, firstname, lastname, mobilenumber, userId;
+    private String rVerificationId, email, firstname, lastname, mobilenumber, userId, businessCategory, cityName;
     private PhoneAuthProvider.ForceResendingToken rResendToken;
     private int btnId = 0;
     private boolean phoneVerified = false;
@@ -47,6 +47,8 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
     private static final String FirstNameKey = "FirstName";
     private static final String LastNameKey = "LastName";
     private static final String PhoneNumberKey = "PhoneNumber";
+    private static final String BusinessCategoryKey = "BusinessCategory";
+    private static final String CityNameKey = "CityName";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,8 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         otpEditText = (EditText) findViewById(R.id.enterOtp_registerEntrepreneur_edittext);
         otpButton = (Button) findViewById(R.id.sendOtp_registerEntrepreneur_button);
         signUpButton = (Button) findViewById(R.id.signUp_registerEntrepreneur_button);
+        cityNameEditText = (EditText) findViewById(R.id.cityName_registerEntrepreneur_edittext);
+        businessCategoryEditText = (EditText) findViewById(R.id.businessCategory_registerEntrepreneur_edittext);
         otpEditText.setEnabled(false);
     }
 
@@ -134,9 +138,11 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
                 firstname = firstNameEditText.getText().toString();
                 lastname = lastNameEditText.getText().toString();
                 mobilenumber = mobilenumberEditText.getText().toString();
+                businessCategory = businessCategoryEditText.getText().toString();
+                cityName = cityNameEditText.getText().toString();
 
 
-                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && phoneVerified) {
+                if (!password.isEmpty() && !email.isEmpty() && !firstname.isEmpty() && !lastname.isEmpty() && !mobilenumber.isEmpty() && phoneVerified && !cityName.isEmpty() && !businessCategory.isEmpty()) {
                     regAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterEntrepreneurActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -182,6 +188,8 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         String LastNameValue = lastNameEditText.getText().toString();
         String PhoneNumberValue = mobilenumberEditText.getText().toString();
         String FirstNameValue = firstNameEditText.getText().toString();
+        String BusinessCategoryValue=businessCategoryEditText.getText().toString();
+        String CityNameValue=cityNameEditText.getText().toString();
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(FirstNameKey, FirstNameValue);
@@ -190,6 +198,8 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         editor.putString(EmailKey, EmailValue);
         editor.putString(UserTypeKey, UserTypeValue);
         editor.putString(PhoneNumberKey, PhoneNumberValue);
+        editor.putString(BusinessCategoryKey,BusinessCategoryValue);
+        editor.putString(CityNameKey,CityNameValue);
         editor.apply();
 
     }
@@ -206,6 +216,9 @@ public class RegisterEntrepreneurActivity extends AppCompatActivity {
         userData.put("firstName", firstname);
         userData.put("lastName", lastname);
         userData.put("phoneNumber", mobilenumber);
+        userData.put("businessCategory",businessCategory);
+        userData.put("cityName",cityName);
+
 
         fsClient.collection("Users")
                 .document(userId)

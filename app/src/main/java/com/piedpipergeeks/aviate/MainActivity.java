@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String PHONE_NUMBER = "phoneNumber";
+    private static final String Business_Category = "businessCategory";
+    private static final String City_Name = "cityName";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(EMAIL, user.getPhoneNumber());
         editor.putString(USER_TYPE, user.getUserType());
         editor.putString(PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(Business_Category,user.getBusinessCategory());
+        editor.putString(City_Name,user.getCityName());
         editor.apply();
     }
 
