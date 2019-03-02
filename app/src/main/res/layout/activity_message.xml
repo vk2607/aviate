@@ -19,7 +19,6 @@
             <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
     <!--</android.support.design.widget.AppBarLayout>-->
-
     <!--<LinearLayout-->
         <!--android:id="@+id/pinned_event_layout"-->
         <!--android:layout_width="match_parent"-->

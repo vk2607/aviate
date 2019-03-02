@@ -31,6 +31,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     ArrayList<Map> members;
     Context context;
     int pos;
+    String firstname, lastname, userId, clubId;
+    FirebaseFirestore fsClient;
     private String firstname, lastname, userId, clubId;
     private FirebaseFirestore fsClient;
     private String clubName;

@@ -24,7 +24,6 @@ import android.widget.Toolbar;
 import java.util.Calendar;
 import java.util.Date;
 
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -42,6 +41,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
 
 import java.text.DateFormat;
 
@@ -130,7 +133,6 @@ public class MessageActivity extends AppCompatActivity {
         });
         UpdateMessages();
         mMessageAdapter.notifyDataSetChanged();
-
         getUpcomingEvent();
 
     }
