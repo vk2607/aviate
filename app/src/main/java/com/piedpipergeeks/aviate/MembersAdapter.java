@@ -1,16 +1,20 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -136,6 +140,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                 });
             }
         });
+        vHolder.memberCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileDialog profileDialog = new ProfileDialog();
+                profileDialog.show(((Activity) context).getFragmentManager(), "profile dialog");
+                profileDialog.setDetails(member);
+            }
+        });
     }
 
     private void removeFromClub(VHolder vHolder, String userId, String clubId) {
@@ -175,15 +187,14 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
 
     public class VHolder extends RecyclerView.ViewHolder {
         TextView name, threeDOt, position;
+        CardView memberCard;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.member_name_text);
             threeDOt = (TextView) itemView.findViewById(R.id.threeDot);
             position = (TextView) itemView.findViewById((R.id.member_position_text));
-
-
-
+            memberCard = (CardView) itemView.findViewById(R.id.member_card);
         }
 
     }
