@@ -10,11 +10,12 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import java.util.Calendar;
 
 public class CreateEvent extends AppCompatActivity{
 
-
+    private TextView setDateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +25,20 @@ public class CreateEvent extends AppCompatActivity{
         ArrayAdapter arrayAdapter=ArrayAdapter.createFromResource(this,R.array.event_arrays,android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(arrayAdapter);
-
-
+        setDateTextView=(TextView)findViewById(R.id.setdate_textview);
+        setEventDate();
 
     }
 
+    private void setEventDate() {
+        setDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SetDateDialog setDateDialog=new SetDateDialog();
+                setDateDialog.show(getFragmentManager(),"SetDateDialog");
+            }
+        });
+    }
 
-   }
+
+}
