@@ -61,6 +61,7 @@ public class MessageActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private FirebaseAuth firebaseAuth;
     private String time;
+    private SharedPreferences pref;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,19 @@ public class MessageActivity extends AppCompatActivity {
         clubId = (String) intent.getStringExtra("clubId");
 //        Toast.makeText(MessageActivity.this,"THis is"+clubId,Toast.LENGTH_SHORT).show();
         clubName = intent.getStringExtra("clubName");
+
+        if (clubId != null) {
+
+            pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("clubId", clubId);
+            editor.putString("clubName", clubName);
+            editor.apply();
+        } else {
+            pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
+            clubId = pref.getString("clubId", null);
+            clubName = pref.getString("clubName", null);
+        }
 
 //        getSupportActionBar().setTitle(clubName);
 
@@ -90,6 +104,7 @@ public class MessageActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
         manager.setReverseLayout(false);
@@ -109,6 +124,19 @@ public class MessageActivity extends AppCompatActivity {
         mMessageAdapter.notifyDataSetChanged();
 
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        Toast.makeText(this, "onResume method called", Toast.LENGTH_SHORT).show();
+//
+////        if (clubId == null) {
+//        pref = getSharedPreferences("MessageActivityPrefs", Context.MODE_PRIVATE);
+//        clubId = pref.getString("clubId", "");
+//        clubName = pref.getString("clubName", "");
+////        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -170,7 +198,7 @@ public class MessageActivity extends AppCompatActivity {
                         }
                         mMessageAdapter.setMessages(messages);
                         mMessageAdapter.notifyDataSetChanged();
-                        mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() -1);
+                        mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() - 1);
                     }
 
                     @Override
@@ -205,7 +233,7 @@ public class MessageActivity extends AppCompatActivity {
             message.setDate(date);
             mMessageAdapter.addMessage(message);
             mMessageAdapter.notifyDataSetChanged();
-            mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() -1);
+            mMessageRecycler.scrollToPosition(mMessageAdapter.getItemCount() - 1);
 
             messageTextView.setText("");
             String messageUniqueKey = firebaseDatabase.getReference("Clubs").child(clubId).push().getKey();

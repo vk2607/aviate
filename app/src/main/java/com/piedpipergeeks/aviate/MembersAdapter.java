@@ -31,8 +31,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     ArrayList<Map> members;
     Context context;
     int pos;
-    String firstname, lastname, userId, clubId;
-    FirebaseFirestore fsClient;
+    private String firstname, lastname, userId, clubId;
+    private FirebaseFirestore fsClient;
+    private String clubName;
 
     public MembersAdapter(ArrayList<Map> members, Context context) {
         this.members = members;
@@ -165,6 +166,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     @Override
     public int getItemCount() {
         return members.size();
+    }
+
+    public void setClubDetails(String clubId, String clubName) {
+        this.clubId = clubId;
+        this.clubName = clubName;
     }
 
     public class VHolder extends RecyclerView.ViewHolder {

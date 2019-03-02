@@ -1,15 +1,21 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +42,10 @@ public class ClubDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_details);
+
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -59,6 +69,7 @@ public class ClubDetails extends AppCompatActivity {
 //        }
 //
         fsClient = FirebaseFirestore.getInstance();
+
         fsClient.collection("Clubs")
                 .document(clubId)
                 .get()
@@ -134,7 +145,7 @@ public class ClubDetails extends AppCompatActivity {
                             }
 
                             membersAdapter = new MembersAdapter(display_list_2, ClubDetails.this);
-                            membersAdapter.setClubId(clubId);
+                            membersAdapter.setClubDetails(clubId, clubName);
                             recyclerView.setAdapter(membersAdapter);
 
                         }
@@ -151,5 +162,24 @@ public class ClubDetails extends AppCompatActivity {
 //        });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case (R.id.home):
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.putExtra("clubId", clubId);
+                upIntent.putExtra("clubName", clubName);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(upIntent)
+                            .startActivities();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
