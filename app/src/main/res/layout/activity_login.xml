@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Email"
@@ -19,7 +19,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verify_email_textview" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -75,11 +75,12 @@
         android:id="@+id/extra_text_textview"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Need help signing in?"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_login_edittext" />
 
@@ -87,6 +88,7 @@
         android:id="@+id/reset_password_textview"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
@@ -94,30 +96,8 @@
         android:onClick="resetPassword"
         android:text="Reset password"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/invisible_textview"
-        app:layout_constraintTop_toBottomOf="@+id/extra_text_textview" />
-
-    <TextView
-        android:id="@+id/verify_email_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="resendVerificationEmail"
-        android:text="Verify email"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reset_password_textview"
-        app:layout_constraintStart_toEndOf="@+id/invisible_textview"
-        tools:visibility="gone" />
-
-    <TextView
-        android:id="@+id/invisible_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@+id/verify_email_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/extra_text_textview" />
 
 </android.support.constraint.ConstraintLayout>
