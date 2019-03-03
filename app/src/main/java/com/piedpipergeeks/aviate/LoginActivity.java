@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button signInButton;
     private FirebaseUser currentUser;
+    private TextView resetPasswordTextView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,21 +59,34 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         fsClient.setFirestoreSettings(settings);
 
+
         emailEditText = (EditText) findViewById(R.id.email_login_edittext);
         passwordEditText = (EditText) findViewById(R.id.password_login_edittext);
         signInButton = (Button) findViewById(R.id.signin_login_button);
-
+        resetPasswordTextView=(TextView)findViewById(R.id.reset_password_textview);
         signIn();
+        resetPasswordLogin();
+    }
+
+    private void resetPasswordLogin() {
+        resetPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,Settings.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void showHelp() {
         TextView help = (TextView) findViewById(R.id.extra_text_textview);
         TextView reset_password = (TextView) findViewById(R.id.reset_password_textview);
-        TextView resend_email = (TextView) findViewById(R.id.verify_email_textview);
+//        TextView resend_email = (TextView) findViewById(R.id.verify_email_textview);
 
         help.setVisibility(View.VISIBLE);
         reset_password.setVisibility(View.VISIBLE);
-        resend_email.setVisibility(View.VISIBLE);
+//        resend_email.setVisibility(View.VISIBLE);
     }
 
     public void resetPassword(View view) {
@@ -90,8 +105,9 @@ public class LoginActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                 final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-                pd.setMessage("Loading...");
+                pd.setMessage("Loading");
                 pd.show();
+
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
@@ -216,20 +232,26 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first", Toast.LENGTH_SHORT).show();
                                     showHelp();
+                                    pd.hide();
                                 }
                             } else {
+
                                 Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 showHelp();
+                                pd.hide();
                             }
                         }
                     });
 
                 } else if (email.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Enter the email", Toast.LENGTH_SHORT).show();
+                    pd.hide();
                 } else if (password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Enter the password", Toast.LENGTH_SHORT).show();
+                    pd.hide();
                 } else {
                     Toast.makeText(LoginActivity.this, "Problem", Toast.LENGTH_SHORT).show();
+                    pd.hide();
                 }
             }
         });
