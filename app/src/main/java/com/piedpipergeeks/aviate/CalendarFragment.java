@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -177,9 +178,31 @@ public class CalendarFragment extends Fragment {
 
     private void getEventsForUser(int dayOfMonth, int month, int year) {
 
-        Date selectedDate_lower = new Date(year, month, dayOfMonth);
-        final Timestamp timestamp_lower = new Timestamp(selectedDate_lower);
-        final Timestamp timestamp_upper = new Timestamp((selectedDate_lower.getTime() / 1000) + 86400, 0);
+        SimpleDateFormat df = new SimpleDateFormat("dd MM yyyy");
+//        try {
+//            Log.d("TIMEEE", String.valueOf(df.parse(str)));
+//        } catch (Exception e) {
+//            Log.d("TIMEEE", "ERROR AALA");
+//        }
+
+        month++;
+
+        String str_lower = dayOfMonth + " " + month + " " + year;
+        String str_upper = dayOfMonth + " " + month + " " + year;
+
+        Date selected_date_lower = new Date();
+        Date selected_date_upper;
+        try {
+            selected_date_lower = df.parse(str_lower);
+            selected_date_upper = df.parse(str_upper);
+        } catch (Exception e) {
+
+        }
+
+        Log.d("TIMEEE", String.valueOf(selected_date_lower.getTime()));
+
+        final Timestamp timestamp_lower = new Timestamp(selected_date_lower.getTime() / 1000, 0);
+        final Timestamp timestamp_upper = new Timestamp((selected_date_lower.getTime() / 1000) + 86400, 0);
 
 
         fsClient = FirebaseFirestore.getInstance();
@@ -191,25 +214,31 @@ public class CalendarFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot snapshot : task.getResult()) {
-                                 DocumentReference reference = snapshot.getReference();
-                                 fsClient.collection("Events")
-                                         .whereGreaterThan("timestamp", timestamp_lower)
-                                         .whereLessThan("timestamp", timestamp_upper)
-                                         .get()
-                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                             @Override
-                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                 if (task.isSuccessful()) {
-                                                     for (DocumentSnapshot snapshot1 : task.getResult()) {
-                                                         events.add(snapshot1.toObject(Event.class));
-                                                     }
-                                                     Log.d("CALENDAR", events.toString());
-                                                     progressBar.setVisibility(View.GONE);
-                                                     adapter.updateEvents(events);
-                                                     adapter.notifyDataSetChanged();
-                                                 }
-                                             }
-                                         });
+                                fsClient.collection("Events")
+//                                        .whereGreaterThan("timestamp", timestamp_lower)
+                                        .whereLessThanOrEqualTo("timestamp", new Timestamp((new Date().getTime()/1000), 0))
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("TIMEEE", "TASK SUCCESSFUL");
+                                                    for (DocumentSnapshot snapshot1 : task.getResult()) {
+                                                        events.add(snapshot1.toObject(Event.class));
+                                                    }
+                                                    Log.d("TIMEEE", events.toString());
+                                                    progressBar.setVisibility(View.GONE);
+                                                    adapter.updateEvents(events);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("TIMEEE", e.toString());
+                                            }
+                                        });
                             }
 
                             adapter.updateEvents(events);

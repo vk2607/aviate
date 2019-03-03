@@ -183,6 +183,18 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setNegativeButton(android.R.string.no, null)
                                         .show();
                                 break;
+
+                            case R.id.menu_add_admin:
+                                new AlertDialog.Builder(context)
+                                        .setIcon(null)
+                                        .setMessage("Add " + String.valueOf(member.get("userName")) + " as admin? ")
+                                        .setNegativeButton(android.R.string.no, null)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                addAsAdmin(vHolder, String.valueOf(member.get("userId")), clubId);
+                                            }
+                                        });
                         }
                         return true;
                     }
@@ -197,6 +209,25 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                 profileDialog.setDetails(member);
             }
         });
+    }
+
+    private void addAsAdmin(VHolder vHolder, String userId, String clubId) {
+        Map<String, Object> update = new HashMap<>();
+        update.put("admins", FieldValue.arrayUnion(userId));
+        update.put("adminNames." + userId, members.get(vHolder.getAdapterPosition()).get("userName"));
+        update.put("members", FieldValue.arrayRemove(userId));
+        update.put("memberNames." + userId, FieldValue.delete());
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .update(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        
+                    }
+                });
     }
 
     private void removeFromClub(final VHolder vHolder, String userId, String clubId) {

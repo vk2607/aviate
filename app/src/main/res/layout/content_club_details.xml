@@ -55,7 +55,7 @@
         android:background="@drawable/buttonshape"
         android:text="CREATE EVENT"
         android:textColor="@color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/events_button"
         app:layout_constraintTop_toTopOf="@+id/events_button" />
 

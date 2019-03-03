@@ -11,15 +11,16 @@ import com.jjoe64.graphview.GridLabelRenderer;
 
 public class Analysis extends AppCompatActivity {
     LineGraphSeries<DataPoint> series;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analysis);
-        int eventattenders,groupparticipants;
-        eventattenders=15;
-        groupparticipants=20;
-        GraphView graphView=(GraphView)findViewById(R.id.graph_GraphView);
-        series=new LineGraphSeries<>();
+        int eventattenders, groupparticipants;
+        eventattenders = 15;
+        groupparticipants = 20;
+        GraphView graphView = (GraphView) findViewById(R.id.graph_GraphView);
+        series = new LineGraphSeries<>();
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMinY(0);
 
@@ -39,14 +40,15 @@ public class Analysis extends AppCompatActivity {
 //        graphView.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
 
-        for(int i=0;i<10;i++)
-        {
-            eventattenders+=1;
-            groupparticipants+=2;
-            series.appendData(new DataPoint(eventattenders,groupparticipants),true,100);
+        for (int i = 0; i < 10; i++) {
+            eventattenders += 1;
+            groupparticipants += 2;
+            series.appendData(new DataPoint(eventattenders, groupparticipants), true, 100);
         }
-        graphView.getViewport().setMaxY(groupparticipants+10);
-        graphView.getViewport().setMaxX(eventattenders+10);
+
+
+        graphView.getViewport().setMaxY(groupparticipants + 10);
+        graphView.getViewport().setMaxX(eventattenders + 10);
         graphView.addSeries(series);
 
     }

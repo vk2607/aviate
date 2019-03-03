@@ -23,7 +23,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<CalendarEventsAd
     ArrayList<Event> events;
     Context context;
 
-    public CalendarEventsAdapter (ArrayList<Event> events, Context context) {
+    public CalendarEventsAdapter(ArrayList<Event> events, Context context) {
         this.events = events;
         this.context = context;
 //        Toast.makeText(context, "Adapter object created", Toast.LENGTH_SHORT).show();
@@ -43,7 +43,7 @@ public class CalendarEventsAdapter extends RecyclerView.Adapter<CalendarEventsAd
     public void onBindViewHolder(@NonNull VHolder vHolder, int position) {
         Event event = events.get(position);
         Timestamp timestamp = event.getTimestamp();
-        Date date = new Date (timestamp.getSeconds() * 1000);
+        Date date = new Date(timestamp.getSeconds() * 1000);
 
         vHolder.date.setText(date.toString());
         vHolder.clubName.setText(event.getClubName());

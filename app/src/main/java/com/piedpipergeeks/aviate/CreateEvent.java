@@ -141,9 +141,22 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
         final Map<String, Object> event = new HashMap<>();
         event.put("eventType", "Webinar");
 
-        Date date = new Date(y, m, d, h, min, 0);
+        String str = y + " " + m + " " + d + " " + h + " " + min;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy MM dd HH mm");
 
-        Timestamp timestamp = new Timestamp(date.getTime() / 1000, 0);
+        Log.d("TIMEEE", df.toPattern());
+
+        Date date = new Date();
+        try {
+            date = df.parse(str);
+        } catch (Exception e) {
+            Log.d("TIMEEE", "PARSE ERROR");
+        }
+//        Date date = new Date(y, m, d, h, min, 0);
+
+        long time = date.getTime() / 1000;
+
+        Timestamp timestamp = new Timestamp(new Date().getTime() / 1000, 0);
         event.put("timestamp", timestamp);
 
         createEvent = (Button) findViewById(R.id.confirm_create_event);

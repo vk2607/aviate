@@ -11,4 +11,8 @@
         android:id="@+id/menu_remove"
         android:title="Remove from club" />
 
+    <item
+        android:id="@+id/menu_add_admin"
+        android:title="Set as admin" />
+
 </menu>
