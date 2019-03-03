@@ -1,7 +1,10 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -122,6 +125,20 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
             case R.id.nav_settings:
                 Intent settings=new Intent(HomeScreenActivity.this,Settings.class);
                 startActivity(settings);
+                break;
+            case R.id.nav_logout:
+                new AlertDialog.Builder(this)
+                        .setIcon(null)
+                        .setTitle("Log Out")
+                        .setMessage("Are you sure you want to log out ?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //startActivity();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
         }
         return true;
     }

@@ -13,7 +13,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".CreateEvent" />
         <activity android:name=".Settings"></activity>
-        <activity android:name=".EventsList" />
+
+        <activity android:name=".EventsList"
+             android:label="@string/title_activity_events_list"/>
+             <!--android:parentActivityName=".ClubDetails"/>-->
+
         <activity
             android:name=".ClubDetails"
             android:label="@string/title_activity_club_details"
