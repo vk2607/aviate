@@ -21,7 +21,7 @@ public class Profile {
     private ArrayList<String> haves, wants, clubMember, clubSecretary, clubAdmin, clubGuest;
     private Map<String, String> dob;
 
-    public void setClubMember(ArrayList<String> clubMember) {
+        public void setClubMember(ArrayList<String> clubMember) {
         this.clubMember = clubMember;
     }
 

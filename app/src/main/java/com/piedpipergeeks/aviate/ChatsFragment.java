@@ -126,6 +126,54 @@ public class ChatsFragment extends Fragment {
                     }
                 });
 
+        fsClient.collection("Clubs")
+                .whereEqualTo("secretary", auth.getUid())
+//                .whereArrayContains("secre", auth.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                Club club = snapshot.toObject(Club.class);
+                                display_list.add(club);
+                            }
+                            chatsAdapter.updateData(display_list);
+                            chatsAdapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+        fsClient.collection("Clubs")
+                .whereEqualTo("president", auth.getUid())
+//                .whereArrayContains("members", auth.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                Club club = snapshot.toObject(Club.class);
+                                display_list.add(club);
+                            }
+                            chatsAdapter.updateData(display_list);
+                            chatsAdapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
