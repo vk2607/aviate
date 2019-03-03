@@ -93,7 +93,7 @@ public class CalendarFragment extends Fragment {
         Timestamp currentTime = new Timestamp(new Date().getTime() / 1000, 0);
 
         fsClient.collection("Clubs")
-                .document("lorem ipsum")
+                .document("1mfJzyo0z5vML82osVq0")
                 .collection("Events")
                 .whereLessThanOrEqualTo("timestamp", currentTime)
                 .get()

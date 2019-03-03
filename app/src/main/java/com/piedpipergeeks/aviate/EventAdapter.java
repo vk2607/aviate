@@ -1,6 +1,9 @@
 package com.piedpipergeeks.aviate;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
     String clubId;
     FirebaseFirestore fsClient;
     ArrayList<String> emailList;
+    ProgressDialog pd;
     int pos;
 
     public EventAdapter(ArrayList<Event> events, Context context) {
@@ -48,7 +53,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventAdapter.VHolder vHolder, int position) {
+    public void onBindViewHolder(@NonNull final EventAdapter.VHolder vHolder, int position) {
         Event event = events.get(position);
 
         Timestamp timestamp = (Timestamp) event.getTimestamp();
@@ -58,13 +63,33 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
 
         vHolder.eventType.setText(event.getEventType());
         vHolder.eventDate.setText(dateOfEvent + " at " + timeOfEvent);
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                            if (String.valueOf(snapshot.get("secretary")).equals(FirebaseAuth.getInstance().getUid())) {
+                                setButtonProps(vHolder, true);
+                            }
+                    }
+                });
+
+
+    }
+
+    private void setButtonProps(VHolder vHolder, Boolean isSecretary) {
+
+        vHolder.sendMom.setVisibility(View.VISIBLE);
         vHolder.sendMom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendEmailForMom();
             }
         });
-
     }
 
     public void setClubId(String clubId) {
@@ -74,92 +99,99 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
 
     private void sendEmailForMom() {
         Log.d("EMAIL", "REACHED FUNCTION");
+
+        pd = new ProgressDialog(context);
+        pd.setMessage("Loading");
+        pd.show();
+
         fsClient = FirebaseFirestore.getInstance();
-//        fsClient.collection("Users")
-//                .whereArrayContains("clubMember", clubId)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//
-//                            Log.d("EMAIL", "FIRST QUERY IS SUCCESSFUL");
-//
-//                            for (DocumentSnapshot snapshot : task.getResult()) {
-//                                Log.d("EMAIL", "FIRST QUERY: " + snapshot.get("userName"));
-//                                Profile user = snapshot.toObject(Profile.class);
-//                                emailList.add(user.getEmail());
-//                            }
-//
-//                            Log.d("EMAIL", "COMPLETED FIRST QUERY");
-//
-//                            fsClient.collection("Users")
-//                                    .whereArrayContains("clubSecretary", clubId)
-//                                    .get()
-//                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                            if (task.isSuccessful()) {
-//                                                for (DocumentSnapshot snapshot : task.getResult()) {
-//                                                    Profile user = snapshot.toObject(Profile.class);
-//                                                    emailList.add(user.getEmail());
-//
-//                                                    Log.d("EMAIL", "COMPLETED SECOND QUERY");
-//
-//                                                    onEmailQueryComplete();
-//
-//                                                }
-//
-////                                                fsClient.collection("Users")
-////                                                        .whereArrayContains("clubGuest", clubId)
-////                                                        .get()
-////                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-////                                                            @Override
-////                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-////                                                                if (task.isSuccessful()) {
-////                                                                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
-////                                                                        Profile user = snapshot.toObject(Profile.class);
-////                                                                        emailList.add(user.getEmail());
-////                                                                    }
-////                                                                }
-////                                                            }
-////                                                        });
-//                                            }
-//
-//                                        }
-//                                    });
-//
-//                        }
-//                    }
-//                });
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        final ArrayList<Club> display_list = new ArrayList<>();
-
-        fsClient.collection("Clubs")
-                .whereArrayContains("members", auth.getUid())
+        fsClient.collection("Users")
+                .whereArrayContains("clubAdmin", clubId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+                            Log.d("EMAIL", "FIRST QUERY IS SUCCESSFUL");
+
                             for (DocumentSnapshot snapshot : task.getResult()) {
-                                Club club = snapshot.toObject(Club.class);
-                                display_list.add(club);
+                                Log.d("EMAIL", "FIRST QUERY: " + snapshot.get("email"));
+                                emailList.add(String.valueOf(snapshot.get("email")));
                             }
 
-                            Log.d("EMAIL", display_list.get(0).getName());
-//                            chatsAdapter.updateData(display_list);
-//                            chatsAdapter.notifyDataSetChanged();
+                            Log.d("EMAIL", "COMPLETED FIRST QUERY");
+
+                            fsClient.collection("Users")
+                                    .whereArrayContains("clubPresident", clubId)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (DocumentSnapshot snapshot : task.getResult()) {
+//                                                    Profile user = snapshot.toObject(Profile.class);
+                                                    emailList.add(String.valueOf(snapshot.get("email")));
+
+                                                    Log.d("EMAIL", "COMPLETED SECOND QUERY");
+
+
+                                                }
+
+                                                fsClient.collection("Users")
+                                                        .whereArrayContains("clubMember", clubId)
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                                                        Profile user = snapshot.toObject(Profile.class);
+                                                                        emailList.add(String.valueOf(snapshot.get("email")));
+
+                                                                    }
+                                                                    pd.hide();
+                                                                    onEmailQueryComplete();
+
+                                                                }
+                                                            }
+                                                        });
+                                            }
+
+                                        }
+                                    });
+
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
                 });
+
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        final ArrayList<Club> display_list = new ArrayList<>();
+//
+//        fsClient.collection("Clubs")
+//                .whereArrayContains("members", auth.getUid())
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (DocumentSnapshot snapshot : task.getResult()) {
+//                                Club club = snapshot.toObject(Club.class);
+//                                display_list.add(club);
+//                            }
+//
+//                            Log.d("EMAIL", display_list.get(0).getName());
+////                            chatsAdapter.updateData(display_list);
+////                            chatsAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
 
 
 
@@ -183,7 +215,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
 
     private void onEmailQueryComplete() {
 
-        Log.d("EMAIL", "REACHED ON COMPLETE FUNCTION");
+//        Log.d("EMAIL", "REACHED ON COMPLETE FUNCTION");
 
         Log.d("EMAIL", emailList.toString());
 
@@ -191,10 +223,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
         for (int i = 0; i < emailList.size(); i++) {
             if (i != 0) {
                 emailAddresses += ", " + emailList.get(i);
+            } else {
+                emailAddresses += emailList.get(i);
             }
         }
 
         Log.d("EMAIL", emailAddresses);
+
+        Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+        intent.putExtra(Intent.EXTRA_SUBJECT,"Minutes of Meeting");
+        context.startActivity(Intent.createChooser(intent,null));
 
     }
 

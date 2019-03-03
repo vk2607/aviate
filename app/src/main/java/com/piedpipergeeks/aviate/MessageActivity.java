@@ -195,7 +195,7 @@ public class MessageActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         Club club = documentSnapshot.toObject(Club.class);
-                        Toast.makeText(MessageActivity.this, String.valueOf(club.getIsChatMuted()), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MessageActivity.this, String.valueOf(club.getIsChatMuted()), Toast.LENGTH_SHORT).show();
                         isChatMuted = club.getIsChatMuted();
                         invalidateOptionsMenu();
 

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,9 +21,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +41,10 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
     private Button createEvent;
     private FirebaseFirestore fsClient;
     private String clubId;
+    private int d, m, y, h, min;
+    final ArrayList<String> emailList = new ArrayList<>();
+    String emailAddresses = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +73,53 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
 
     private void sendInvitationEmail() {
 
-        final String emailAddresses = "prashantbhandari1999@gmail.com";
+//        final String emailAddresses = "prashantbhandari1999@gmail.com";
+
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Users")
+                .whereArrayContains("clubMember", clubId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                Profile user = snapshot.toObject(Profile.class);
+                                emailList.add(String.valueOf(snapshot.get("email")));
+
+                            }
+                            onEmailQueryComplete();
+
+
+
+                        }
+                    }
+                });
+
+
+
+    }
+
+    private void onEmailQueryComplete() {
+
+//        Log.d("EMAIL", "REACHED ON COMPLETE FUNCTION");
+
+//        Log.d("EMAIL", emailList.toString());
+
+
+        for (int i = 0; i < emailList.size(); i++) {
+            if (i != 0) {
+                emailAddresses += ", " + emailList.get(i);
+            } else {
+                emailAddresses += emailList.get(i);
+            }
+        }
+
+//        Log.d("EMAIL", emailAddresses);
+//
+//        Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+//        intent.putExtra(Intent.EXTRA_SUBJECT,"Invitation to meeting");
 
         new AlertDialog.Builder(this)
                 .setIcon(null)
@@ -73,19 +128,27 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to event");
-//                        intent.putExtra(Intent.EXTRA_)
-                        startActivity(Intent.createChooser(intent, null));
+                        Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+                        intent.putExtra(Intent.EXTRA_SUBJECT,"Invitation to meeting");
+                        startActivity(Intent.createChooser(intent,null));
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
 
+
     }
+
+
 
     private void createEvent() {
         final Map<String, Object> event = new HashMap<>();
+        event.put("eventType", "Webinar");
+
+        Date date = new Date(y, m, d, h, min, 0);
+
+        Timestamp timestamp = new Timestamp(date.getTime() / 1000, 0);
+        event.put("timestamp", timestamp);
 
         createEvent = (Button) findViewById(R.id.confirm_create_event);
         createEvent.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +156,8 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
             public void onClick(View v) {
 
                 String eventId = fsClient.collection("Clubs")
+                        .document(clubId)
+                        .collection("Events")
                         .document()
                         .getId();
 
@@ -149,11 +214,17 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
 
     @Override
     public void onDateSelected(int date, int month, int year) {
+        this.d = date;
+        this.m = month;
+        this.y = year;
         setDateTextView.setText(String.valueOf(date) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+
     }
 
     @Override
     public void onTimeSelected(int hour, int min) {
+        this.h = hour;
+        this.min = min;
         setTimeTextView.setText(String.valueOf(hour) + ":" + String.valueOf(min));
     }
 }

@@ -3,6 +3,7 @@ package com.piedpipergeeks.aviate;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -87,6 +89,15 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
         fragmentTransaction.commit();
         firebaseAuth=FirebaseAuth.getInstance();
         setNavigationViewListner();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = (TextView) headerView.findViewById(R.id.usernamesettings_textview);
+
+        SharedPreferences pref = getSharedPreferences("MyPrefs", Con)
+
+        navUserName
+
     }
 
     @Override
