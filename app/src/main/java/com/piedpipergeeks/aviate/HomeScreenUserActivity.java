@@ -21,6 +21,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private TextView mTextMessage;
+    private SettingsHeader settingsHeader;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,6 +61,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
         fragmentTransaction.commit();
         setNavigationViewListner();
+
     }
 
     @Override
