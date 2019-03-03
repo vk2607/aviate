@@ -56,6 +56,7 @@ public class EventsList extends AppCompatActivity {
                                 display_list.add(event);
                             }
                             eventAdapter = new EventAdapter(display_list, EventsList.this);
+                            eventAdapter.setClubId(clubId);
                             recyclerView.setAdapter(eventAdapter);
                         }
                     }

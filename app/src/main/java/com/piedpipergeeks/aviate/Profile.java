@@ -18,9 +18,40 @@ public class Profile {
     private String businessCategory;
     private String cityName;
     private Boolean emailVerified;
-    private ArrayList<String> haves, wants;
+    private ArrayList<String> haves, wants, clubMember, clubSecretary, clubAdmin, clubGuest;
     private Map<String, String> dob;
 
+    public void setClubMember(ArrayList<String> clubMember) {
+        this.clubMember = clubMember;
+    }
+
+    public void setClubAdmin(ArrayList<String> clubAdmin) {
+        this.clubAdmin = clubAdmin;
+    }
+
+    public void setClubGuest(ArrayList<String> clubGuest) {
+        this.clubGuest = clubGuest;
+    }
+
+    public void setClubSecretary(ArrayList<String> clubSecretary) {
+        this.clubSecretary = clubSecretary;
+    }
+
+    public ArrayList<String> getClubAdmin() {
+        return clubAdmin;
+    }
+
+    public ArrayList<String> getClubGuest() {
+        return clubGuest;
+    }
+
+    public ArrayList<String> getClubMember() {
+        return clubMember;
+    }
+
+    public ArrayList<String> getClubSecretary() {
+        return clubSecretary;
+    }
 
     public String getBusinessCategory() {
         return businessCategory;

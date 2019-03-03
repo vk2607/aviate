@@ -47,7 +47,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.VHolder> {
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("clubId", club.getClubId());
                 intent.putExtra("clubName", club.getName());
-                intent.putExtra("isChatedMuted", false);
+                intent.putExtra("isChatMuted", false);
                 context.startActivity(intent);
             }
         });
