@@ -31,6 +31,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
     private FirebaseFirestore fsClient;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private FirebaseAuth firebaseAuth;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +85,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_area, new ClubFragment());
         fragmentTransaction.commit();
+        firebaseAuth=FirebaseAuth.getInstance();
         setNavigationViewListner();
     }
 
@@ -134,11 +136,17 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 //startActivity();
+                                firebaseAuth.signOut();
+                                Intent intent1=new Intent(HomeScreenActivity.this,MainActivity.class);
+                                startActivity(intent1);
+                                finish();
                             }
                         })
                         .setNegativeButton(android.R.string.no, null)
                         .show();
+                break;
         }
         return true;
     }

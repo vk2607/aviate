@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class HomeScreenUserActivity extends AppCompatActivity implements CalendarFragment.OnFragmentInteractionListener, ChatsFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener
 {
 
@@ -22,6 +25,8 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
     private FragmentTransaction fragmentTransaction;
     private TextView mTextMessage;
     private SettingsHeader settingsHeader;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,6 +44,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
                     fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
                     fragmentTransaction.commit();
                     return true;
+
             }
             return false;
         }
@@ -61,6 +67,8 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         fragmentTransaction.replace(R.id.fragment_user_area, new ChatsFragment());
         fragmentTransaction.commit();
         setNavigationViewListner();
+        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
 
     }
 
@@ -69,7 +77,7 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
         switch(menuItem.getItemId())
         {
             case R.id.nav_sendfeedback:
-                Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com", null));
+                final Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "aviateapp@gmail.com", null));
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback about service");
                 startActivity(Intent.createChooser(intent,null));
 
@@ -77,6 +85,26 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
             case R.id.nav_settings:
                 Intent settings=new Intent(HomeScreenUserActivity.this,Settings.class);
                 startActivity(settings);
+                break;
+            case R.id.nav_logout:
+                new AlertDialog.Builder(this)
+                        .setIcon(null)
+                        .setTitle("Log Out")
+                        .setMessage("Are you sure you want to log out ?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //startActivity();
+                                firebaseAuth.signOut();
+                                Intent intent1=new Intent(HomeScreenUserActivity.this,MainActivity.class);
+                                startActivity(intent1);
+                                finish();
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+                break;
         }
 //        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
