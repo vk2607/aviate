@@ -38,6 +38,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
     private String firstname, lastname, userId, clubId;
     private FirebaseFirestore fsClient;
     private String clubName;
+//    private DataSetChangeListener listener;
 
     public MembersAdapter(ArrayList<Map> members, Context context) {
         this.members = members;
@@ -102,7 +103,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                setSecretary(vHolder, String.valueOf(member.get("userId")), clubId);
+                                                setSecretary(vHolder, String.valueOf(member.get("userId")), String.valueOf(member.get("userName")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -115,7 +116,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                setPresident(vHolder, String.valueOf(member.get("userId")), clubId);
+                                                setPresident(vHolder, String.valueOf(member.get("userId")), String.valueOf(member.get("userName")), clubId);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.no, null)
@@ -150,7 +151,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
         });
     }
 
-    private void removeFromClub(VHolder vHolder, String userId, String clubId) {
+    private void removeFromClub(final VHolder vHolder, String userId, String clubId) {
 
         Map<String, Object> update = new HashMap<>();
         update.put("members", FieldValue.arrayRemove(userId));
@@ -164,15 +165,304 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "Removed user from club", Toast.LENGTH_SHORT).show();
+                        members.remove(vHolder.getAdapterPosition());
+                        notifyDataSetChanged();
                     }
                 });
+
+        fsClient.collection("Users")
+                .document(userId)
+                .update("clubMember", FieldValue.arrayRemove(clubId));
     }
 
-    private void setPresident(VHolder vHolder, String userId, String clubId) {
+//    private void setPresident(final VHolder vHolder, final String userId, final String userName, String clubId) {
+////        final Map<String, Object> update = new HashMap<>();
+////        update.put("president", userId);
+////        update.put("presidentName", userName);
+////        update.put("members", FieldValue.arrayRemove(userId));
+////        update.put("memberNames." + userId, FieldValue.delete());
+//
+//        //get club data from firestore
+//        //if president != null
+//        //then add the secretary as a member
+//        //set userId as secretary
+//
+//        fsClient = FirebaseFirestore.getInstance();
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot snapshot = task.getResult();
+//                            Club club = snapshot.toObject(Club.class);
+//                            if (club.getPresident() != null) {
+//                                club.addMember(userId, userName);
+//                            }
+//                            club.setPresident(userId, userName);
+//                            Map<String, Object> update = club.getMap();
+//                            updateClubDoc(update);
+//                            update = new HashMap<>();
+//                            update.put("members", FieldValue.arrayRemove(userId));
+//                            update.put("memberNames." + userId, FieldValue.delete());
+//                            updateClubDoc(update);
+//                        }
+//                    }
+//                });
+//
+//    }
+
+//    private void setSecretary(final VHolder vHolder, final String userId, final String userName, String clubId) {
+////        final Map<String, Object> update = new HashMap<>();
+////        update.put("president", userId);
+////        update.put("presidentName", userName);
+////        update.put("members", FieldValue.arrayRemove(userId));
+////        update.put("memberNames." + userId, FieldValue.delete());
+//
+//        //get club data from firestore
+//        //if president != null
+//        //then add the secretary as a member
+//        //set userId as secretary
+//
+//        fsClient = FirebaseFirestore.getInstance();
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot snapshot = task.getResult();
+//                            Club club = snapshot.toObject(Club.class);
+//                            if (club.getSecretary() != null) {
+//                                club.addMember(userId, userName);
+//                            }
+//                            club.setSecretary(userId, userName);
+//                            Map<String, Object> update = club.getMap();
+//                            updateClubDoc(update);
+//                            update = new HashMap<>();
+//                            update.put("members", FieldValue.arrayRemove(userId));
+//                            update.put("memberNames." + userId, FieldValue.delete());
+//                            updateClubDoc(update);
+//                        }
+//                    }
+//                });
+//
+//    }
+
+    private void setPresident(final VHolder vHolder, final String userId, final String userName, final String clubId) {
+        Map<String, Object> update = new HashMap<>();
+        update.put("president", userId);
+        update.put("presidentName", userName);
+        update.put("members", FieldValue.arrayRemove(userId));
+        update.put("memberNames." + userId, FieldValue.delete());
+
+        fsClient = FirebaseFirestore.getInstance();
+
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            Club club = snapshot.toObject(Club.class);
+
+                            String oldPresidentId = club.getPresident();
+                            String oldPresidentName = club.getPresidentName();
+
+                            if (oldPresidentId != null) {
+
+                                Map<String, Object> update = new HashMap<>();
+                                update.put("members", FieldValue.arrayUnion(oldPresidentId));
+                                update.put("memberNames." + oldPresidentId, oldPresidentName);
+
+                                fsClient.collection("Clubs")
+                                        .document(clubId)
+                                        .update(update);
+
+                                Map<String, Object> update_2 = new HashMap<>();
+                                update_2.put("clubPresident", FieldValue.arrayRemove(clubId));
+                                update_2.put("clubMember", FieldValue.arrayUnion(clubId));
+
+                                fsClient.collection("Users")
+                                        .document(oldPresidentId)
+                                        .update(update_2);
+                            }
+                        }
+                    }
+                });
+
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .update(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        Map<String, Object> update = new HashMap<>();
+                        update.put("clubMember", FieldValue.arrayRemove(clubId));
+                        update.put("clubPresident", FieldValue.arrayUnion(clubId));
+
+                        fsClient.collection("Users")
+                                .document(userId)
+                                .update(update);
+
+                        members.get(vHolder.getAdapterPosition()).put("userType", "president");
+                        notifyDataSetChanged();
+                        //notify data set changed
+                    }
+                });
+
+//        fsClient.collection("Users")
+//                .document(userId)
+//                .update("clubPresident", FieldValue.arrayUnion(clubId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("members", FieldValue.arrayUnion(userId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("memberNames." + userId, userName);
 
     }
 
-    private void setSecretary(VHolder vHolder, String userId, String clubId) {
+    private void setSecretary(final VHolder vHolder, final String userId, final String userName, final String clubId) {
+        Map<String, Object> update = new HashMap<>();
+        update.put("secretary", userId);
+        update.put("secretaryName", userName);
+        update.put("members", FieldValue.arrayRemove(userId));
+        update.put("memberNames." + userId, FieldValue.delete());
+//        update.remove("memberNames." + userId);
+
+        fsClient = FirebaseFirestore.getInstance();
+
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            Club club = snapshot.toObject(Club.class);
+
+                            String oldSecretaryId = club.getSecretary();
+                            String oldSecretaryName = club.getSecretaryName();
+
+                            if (oldSecretaryId != null) {
+
+                                Map<String, Object> update = new HashMap<>();
+                                update.put("members", FieldValue.arrayUnion(oldSecretaryId));
+                                update.put("memberNames." + oldSecretaryId, oldSecretaryName);
+
+                                fsClient.collection("Clubs")
+                                        .document(clubId)
+                                        .update(update);
+
+                                Map<String, Object> update_2 = new HashMap<>();
+                                update_2.put("clubSecretary", FieldValue.arrayRemove(clubId));
+                                update_2.put("clubMember", FieldValue.arrayUnion(clubId));
+
+                                fsClient.collection("Users")
+                                        .document(oldSecretaryId)
+                                        .update(update_2);
+                            }
+                        }
+                    }
+                });
+
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .update(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        Map<String, Object> update = new HashMap<>();
+                        update.put("clubMember", FieldValue.arrayRemove(clubId));
+                        update.put("clubSecretary", FieldValue.arrayUnion(clubId));
+
+                        fsClient.collection("Users")
+                                .document(userId)
+                                .update(update);
+
+                        members.get(vHolder.getAdapterPosition()).put("userType", "secretary");
+                        notifyDataSetChanged();
+                        //notify data set changed
+                    }
+                });
+
+//        fsClient.collection("Users")
+//                .document(userId)
+//                .update("clubPresident", FieldValue.arrayUnion(clubId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("members", FieldValue.arrayUnion(userId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("memberNames." + userId, userName);
+
+    }
+
+//    private void setSecretary(final VHolder vHolder, final String userId, final String userName, String clubId) {
+//        Map<String, Object> update = new HashMap<>();
+//        update.put("secretary", userId);
+//        update.put("secretaryName", userName);
+//        update.put("members", FieldValue.arrayRemove(userId));
+//        update.remove("memberNames." + userName);
+//
+//        fsClient = FirebaseFirestore.getInstance();
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update(update)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//
+//                        Map<String, Object> map = members.get(vHolder.getAdapterPosition());
+//                        map.put("userId", userId);
+//                        map.put("userType", "secretary");
+//                        map.put("userName", userName);
+//
+//                        members.add(vHolder.getAdapterPosition(), map);
+////                        members.get(vHolder.getAdapterPosition()) = map;
+//                        notifyDataSetChanged();
+//                        //notify data set changed
+//                    }
+//                });
+//
+//        fsClient.collection("Users")
+//                .document(userId)
+//                .update("clubSecretary", FieldValue.arrayUnion(clubId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("members", FieldValue.arrayUnion(userId));
+//
+//        fsClient.collection("Clubs")
+//                .document(clubId)
+//                .update("memberNames." + userId, userName);
+//
+//
+//    }
+
+    public void updateClubDoc(Map update) {
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .document(clubId)
+                .update(update)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
     }
 
     @Override
@@ -198,4 +488,19 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
         }
 
     }
+
+//    @Override
+//    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+//        try {
+//            listener = (DataSetChangeListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement onDataSetChangeListener");
+//        }
+//        super.onAttachedToRecyclerView(recyclerView);
+//    }
+//
+//    public interface DataSetChangeListener {
+//        public void onDataSetChangeListener();
+//    }
+
 }

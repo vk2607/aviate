@@ -137,7 +137,7 @@ public class ClubDetails extends AppCompatActivity {
                             if (club.getPresident() != null && club.getPresidentName() != null) {
                                 Map<String, Object> user = new HashMap<>();
                                 user.put("userId", club.getPresident());
-                                user.put("userName", club.getSecretary());
+                                user.put("userName", club.getPresidentName());
                                 user.put("userType", "president");
                                 display_list_2.add(user);
                             }

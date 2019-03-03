@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.Timestamp;
@@ -54,11 +55,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VHolder> {
 
     public class VHolder extends RecyclerView.ViewHolder {
         TextView eventType, eventDate;
+        Button sendMom;
 
         public VHolder(@NonNull View itemView) {
             super(itemView);
             eventType = (TextView) itemView.findViewById(R.id.event_type_text);
             eventDate = (TextView) itemView.findViewById(R.id.event_date_text);
+//            sendMom = (Button) itemView.findViewById(R.id.)
         }
     }
 }

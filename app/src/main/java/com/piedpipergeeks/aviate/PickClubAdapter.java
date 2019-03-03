@@ -83,6 +83,7 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
         Map<String, Object> data = new HashMap<>();
         data.put("members", FieldValue.arrayUnion(userId));
         data.put("memberNames." + userId, firstname + " " + lastname);
+//        data.put("clubMember", FieldValue.arrayUnion(club.getClubId()));
 
         fsClient = FirebaseFirestore.getInstance();
         fsClient.collection("Clubs")
@@ -99,6 +100,10 @@ public class PickClubAdapter extends RecyclerView.Adapter<PickClubAdapter.VHolde
                         }
                     }
                 });
+
+        fsClient.collection("Users")
+                .document(userId)
+                .update("clubMember", FieldValue.arrayUnion(clubId));
     }
 
     @Override

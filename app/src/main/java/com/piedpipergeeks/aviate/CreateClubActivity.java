@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.cert.Certificate;
@@ -58,8 +59,9 @@ public class CreateClubActivity extends AppCompatActivity {
         club.setInfo(clubInfo);
         club.addAdmin(auth.getUid(), pref.getString("firstName", "") + " " + pref.getString("lastName", ""));
         club.setClubId(clubId);
+        club.setIsChatMuted(false);
 
-        Log.d("DOC ID", clubId);
+//        Log.d("DOC ID", clubId);
 
         fsClient.collection("Clubs")
                 .document(clubId)
@@ -80,11 +82,14 @@ public class CreateClubActivity extends AppCompatActivity {
                     }
                 });
 
-
 //
-              firebaseDatabase.getReference("Clubs")
+        firebaseDatabase.getReference("Clubs")
                 .child(clubId).setValue(clubName);
 
+
+        fsClient.collection("Users")
+                .document(auth.getUid())
+                .update("clubAdmin", FieldValue.arrayUnion(clubId));
 
     }
 

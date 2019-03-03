@@ -108,16 +108,18 @@ public class Club {
         return members;
     }
 
-    public void addMember(String memberName) {
-        members.add(memberName);
+    public void addMember(String memberId, String memberName) {
+        members.add(memberId);
+        memberNames.put(memberId, memberName);
     }
 
     public ArrayList<String> getGuests() {
         return guests;
     }
 
-    public void addGuest(String guestName) {
-        guests.add(guestName);
+    public void addGuest(String guestId, String guestName) {
+        guests.add(guestId);
+        guestNames.put(guestId, guestName);
     }
 
     public Map<String, Object> getMap() {
