@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private void sharedPreferencesLogin() {
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        if (sharedPreferences.contains(USER_ID)) {
+        if (sharedPreferences.contains(USER_ID) && sharedPreferences.getString(USER_ID, "").equals(mAuth.getUid())) {
             Log.d("SHARED PREF", "SHARED PREFERENCES CONTAINS USER");
             if (sharedPreferences.getString(USER_TYPE, "").equals("user")) {
                 startActivity(new Intent(MainActivity.this, HomeScreenUserActivity.class));
