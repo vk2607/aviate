@@ -10,6 +10,7 @@ public class Club {
     private ArrayList<String> admins, members, guests;
     private Map<String, Object> adminNames, memberNames, guestNames;
     private Boolean isChatMuted;
+    private int numberOfMembers;
 
     public Club() {
         admins = new ArrayList<>();
@@ -136,8 +137,17 @@ public class Club {
         map.put("members", members);
         map.put("memberName", memberNames);
         map.put("guests", guests);
+        map.put("numberOfMembers", numberOfMembers);
         map.put("guestNames", guestNames);
 
         return map;
+    }
+
+    public void setNumberOfMembers(int i) {
+        this.numberOfMembers = i;
+    }
+
+    public int getNumberOfMembers() {
+        return numberOfMembers;
     }
 }

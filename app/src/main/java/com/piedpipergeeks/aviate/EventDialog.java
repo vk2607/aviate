@@ -3,6 +3,7 @@ package com.piedpipergeeks.aviate;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,14 @@ public class EventDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.event_dialog_box, null);
+//        view = inflater.inflate(R.layout.event_dialog_box, null);
 
-        eventTime = view.findViewById(R.id.event_dialog_timestamp);
+//        eventTime = view.findViewById(R.id.event_dialog_timestamp);
 
-        eventTime.setText(time);
+//        eventTime.setText(time);
 
         if (timeInFuture) {
-//            ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.VISIBLE);
+// 0           ((TextView) view.findViewById(R.id.event_dialog_mom)).setVisibility(View.VISIBLE);
 //            ((TextView) view.findViewById(R.id.event_dialog_link)).setVisibility(View.INVISIBLE);
 
         } else {
@@ -48,9 +49,23 @@ public class EventDialog extends DialogFragment {
 
         }
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
-                .setTitle(type);
+                .setTitle(type)
+                .setMessage("Confirm participation?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
 
         return builder.create();
     }

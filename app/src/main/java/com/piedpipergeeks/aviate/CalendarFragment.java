@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -155,20 +157,67 @@ public class CalendarFragment extends Fragment {
 
         calendarView = v.findViewById(R.id.calendarView);
 
-        EpochConverter time = new EpochConverter(calendarView.getDate());
-        fetchEventsForUser(time.getYear(), time.getMonthAsInt(), time.getDay());
+//        EpochConverter time = new EpochConverter(calendarView.getDate());
+//        fetchEventsForUser(time.getYear(), time.getMonthAsInt(), time.getDay());
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 progressBar.setVisibility(View.VISIBLE);
                 events.clear();
-                fetchEventsForUser(dayOfMonth, month, year);
+//                fetchEventsForUser(dayOfMonth, month, year);
+                getEventsForUser(dayOfMonth, month, year);
                 Log.d("FRAGMENT", String.valueOf(events.size()));
 
             }
         });
         return v;
+
+    }
+
+    private void getEventsForUser(int dayOfMonth, int month, int year) {
+
+        Date selectedDate_lower = new Date(year, month, dayOfMonth);
+        final Timestamp timestamp_lower = new Timestamp(selectedDate_lower);
+        final Timestamp timestamp_upper = new Timestamp((selectedDate_lower.getTime() / 1000) + 86400, 0);
+
+
+        fsClient = FirebaseFirestore.getInstance();
+        fsClient.collection("Clubs")
+                .whereArrayContains("members", FirebaseAuth.getInstance().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                 DocumentReference reference = snapshot.getReference();
+                                 fsClient.collection("Events")
+                                         .whereGreaterThan("timestamp", timestamp_lower)
+                                         .whereLessThan("timestamp", timestamp_upper)
+                                         .get()
+                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                             @Override
+                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                 if (task.isSuccessful()) {
+                                                     for (DocumentSnapshot snapshot1 : task.getResult()) {
+                                                         events.add(snapshot1.toObject(Event.class));
+                                                     }
+                                                     Log.d("CALENDAR", events.toString());
+                                                     progressBar.setVisibility(View.GONE);
+                                                     adapter.updateEvents(events);
+                                                     adapter.notifyDataSetChanged();
+                                                 }
+                                             }
+                                         });
+                            }
+
+                            adapter.updateEvents(events);
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
 
     }
 

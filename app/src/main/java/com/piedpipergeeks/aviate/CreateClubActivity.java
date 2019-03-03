@@ -60,6 +60,7 @@ public class CreateClubActivity extends AppCompatActivity {
         club.addAdmin(auth.getUid(), pref.getString("firstName", "") + " " + pref.getString("lastName", ""));
         club.setClubId(clubId);
         club.setIsChatMuted(false);
+        club.setNumberOfMembers(1);
 
 //        Log.d("DOC ID", clubId);
 

@@ -1,6 +1,7 @@
 package com.piedpipergeeks.aviate;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -82,21 +83,19 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
 //        Intialize();
 //        LogOut();
 
+        setNavigationViewListner();
+
         fsClient = FirebaseFirestore.getInstance();
         fragmentManager = getFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_area, new ClubFragment());
         fragmentTransaction.commit();
         firebaseAuth=FirebaseAuth.getInstance();
-        setNavigationViewListner();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUserName = (TextView) headerView.findViewById(R.id.usernamesettings_textview);
 
-        SharedPreferences pref = getSharedPreferences("MyPrefs", Con)
+//        SharedPreferences pref = getSharedPreferences("MyPrefs", Con)
 
-        navUserName
+//        navUserName
 
     }
 
@@ -163,6 +162,15 @@ public class HomeScreenActivity extends AppCompatActivity implements ClubFragmen
     }
     private void setNavigationViewListner() {
         NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = (TextView) headerView.findViewById(R.id.usernamesettings_textview);
+
+        SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String firstName = pref.getString("firstName", "");
+        String lastName = pref.getString("lastName", "");
+
+        navUserName.setText(firstName + " " + lastName);
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 }

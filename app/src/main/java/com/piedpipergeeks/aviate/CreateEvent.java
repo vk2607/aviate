@@ -92,11 +92,9 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
                             onEmailQueryComplete();
 
 
-
                         }
                     }
                 });
-
 
 
     }
@@ -128,17 +126,15 @@ public class CreateEvent extends AppCompatActivity implements SetDateDialog.SetD
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent=new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
-                        intent.putExtra(Intent.EXTRA_SUBJECT,"Invitation to meeting");
-                        startActivity(Intent.createChooser(intent,null));
+                        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddresses, null));
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Invitation to meeting");
+                        startActivity(Intent.createChooser(intent, null));
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
 
-
     }
-
 
 
     private void createEvent() {

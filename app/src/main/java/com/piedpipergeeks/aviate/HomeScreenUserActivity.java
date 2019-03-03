@@ -1,8 +1,10 @@
 package com.piedpipergeeks.aviate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +114,16 @@ public class HomeScreenUserActivity extends AppCompatActivity implements Calenda
     }
     private void setNavigationViewListner() {
         NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = (TextView) headerView.findViewById(R.id.usernamesettings_textview);
+
+        SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String firstName = pref.getString("firstName", "");
+        String lastName = pref.getString("lastName", "");
+
+        navUserName.setText(firstName + " " + lastName);
+
         navigationView.setNavigationItemSelectedListener(this);
     }
     

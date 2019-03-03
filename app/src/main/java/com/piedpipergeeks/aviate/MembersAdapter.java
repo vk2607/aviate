@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -103,6 +105,22 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+
+//                                                for (int i = 0; i < members.size(); i++) {
+//                                                    if (members.get(i).get("userType").equals("secretary")) {
+//                                                        String tempId = String.valueOf(members.get(i).get("userId"));
+//
+//                                                        Log.d("CLUB", String.valueOf(vHolder.getAdapterPosition()));
+//
+//                                                        members.get(i).put("userId", members.get(vHolder.getAdapterPosition()).get("userId"));
+//                                                        members.get(vHolder.getAdapterPosition()).put("userId", tempId);
+//                                                        members.get(vHolder.getAdapterPosition()).put("userType", "secretary");
+//                                                        members.get(i).put("userId", "user");
+//                                                        notifyDataSetChanged();
+//                                                        break;
+//                                                    }
+//                                                }
+
                                                 setSecretary(vHolder, String.valueOf(member.get("userId")), String.valueOf(member.get("userName")), clubId);
                                             }
                                         })
@@ -116,6 +134,18 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+
+//                                                for (int i = 0; i < members.size(); i++) {
+//                                                    if (members.get(i).get("userType").equals("president")) {
+//                                                        String tempId = String.valueOf(members.get(i).get("userId"));
+//                                                        members.get(i).put("userId", members.get(vHolder.getAdapterPosition()).get("userId"));
+//                                                        members.get(vHolder.getAdapterPosition()).put("userId", tempId);
+//                                                        members.get(vHolder.getAdapterPosition()).put("userType", "president");
+//                                                        members.get(i).put("userId", "user");
+//                                                        notifyDataSetChanged();
+//                                                    }
+//                                                }
+
                                                 setPresident(vHolder, String.valueOf(member.get("userId")), String.valueOf(member.get("userName")), clubId);
                                             }
                                         })
@@ -129,6 +159,24 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.VHolder>
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                fsClient = FirebaseFirestore.getInstance();
+                                                fsClient.collection("Clubs")
+                                                        .document(clubId)
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    DocumentSnapshot snapshot = task.getResult();
+                                                                    int numMembers = Integer.valueOf(String.valueOf(snapshot.get("numberOfMembers")));
+
+                                                                    fsClient.collection("Clubs")
+                                                                            .document(clubId)
+                                                                            .update("numberOfMembers", numMembers -1);
+
+                                                                }
+                                                            }
+                                                        });
                                                 removeFromClub(vHolder, String.valueOf(member.get("userId")), clubId);
                                             }
                                         })
