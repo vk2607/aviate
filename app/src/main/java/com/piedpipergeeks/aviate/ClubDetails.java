@@ -40,7 +40,7 @@ public class ClubDetails extends AppCompatActivity {
     MembersAdapter membersAdapter;
     Boolean isScrolling = false;
     FirebaseFirestore fsClient;
-    Button createEventButton, eventsButton;
+    Button createEventButton, eventsButton,analaysisButton;
 
     String clubId, clubName, clubInfo;
 
@@ -64,6 +64,7 @@ public class ClubDetails extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         createEventButton = (Button) findViewById(R.id.create_event_button);
+        analaysisButton=(Button)findViewById(R.id.analysis_button);
 
         SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String userType = pref.getString("userType", "");
@@ -198,6 +199,17 @@ public class ClubDetails extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+        analysis();
+    }
+
+    private void analysis() {
+        analaysisButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ClubDetails.this,Analysis.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
